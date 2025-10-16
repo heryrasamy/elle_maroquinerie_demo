@@ -167,35 +167,35 @@
 
     <section class="products">
       <div class="card" data-index="0">
-       <img src="assets/images/p1.jpg" alt="Sac modèle 1">
+       <img src="assets/p1.jpg" alt="Sac modèle 1">
         <h3>Sac Élégant</h3>
         <p>Sac besace moderne,couleur bordeau, idéal pour les sorties.</p>
         <p class="price">59,00 €</p>
         <button>Ajouter</button>
       </div>
       <div class="card" data-index="1">
-      <img src="assets/images/p2.jpg" alt="Sac modèle 2">
+      <img src="assets/p2.jpg" alt="Sac modèle 2">
         <h3>Cabas Chiné</h3>
         <p>Sac besace moderne,couleur marron, pour transporter l'essentiel et plus</p>
         <p class="price">59,00 €</p>
         <button>Ajouter</button>
       </div>
       <div class="card" data-index="2">
-        <img src="assets/images/p3.jpg" alt="Sac modèle 3">
+        <img src="assets/p3.jpg" alt="Sac modèle 3">
         <h3>Sac en jean</h3>
         <p>Vous êtes jeune et tendance avec ce sac en jean,couleur bordeaux</p>
         <p class="price">60,50 €</p>
         <button>Ajouter</button>
       </div>
       <div class="card" data-index="3">
-       <img src="assets/images/p4.jpg" alt="Sac modèle 4">
+       <img src="assets/p4.jpg" alt="Sac modèle 4">
         <h3>Sac Classique</h3>
         <p>Un modèle intemporel de couleur noir</p>
         <p class="price">64,00 €</p>
         <button>Ajouter</button>
       </div>
       <div class="card" data-index="4">
-       <img src="assets/images/p5.jpg" alt="Sac modèle 5">
+       <img src="assets/p5.jpg" alt="Sac modèle 5">
         <h3>Sac de soirée</h3>
         <p>Restez élégante en soirée</p>
         <p class="price">72,00 €</p>
@@ -222,61 +222,55 @@
   <script>
     // Données des produits
     const products = [
-      {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p1.jpg",
-        title: "Sac Élégant",
-        desc: "Référence : ELLE-001<br>Nom : Ok anthony<br>plus de description<br>Dimensions : 28x20x10 cm<br>Doublure intérieure en coton.<br>Livraison offerte dès 80€ d’achat. Retour sous 30 jours.",
-        price: "59,00 €"
-      },
-      {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p2.jpg",
-        title: "Cabas Chiné",
-        desc: "Sac besace moderne,couleur marron, pour transporter l'essentiel et plus",
-        price: "59,00 €"
-      },
-      {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p3.jpg",
-        title: "Sac en jean",
-        desc: "Vous êtes jeune et tendance avec ce sac en jean,couleur bordeaux",
-        price: "60,50 €"
-      },
-      {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p4.jpg",
-        title: "Sac Classique",
-        desc: "Un modèle intemporel de couleur noir",
-        price: "64,00 €"
-      },
-      {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p5.jpg",
-        title: "Sac de soirée",
-        desc: "Restez élégante en soirée",
-        price: "72,00 €"
-      }
-    ];
-
+    {
+      img: "assets/p1.jpg",
+      title: "Sac Élégant",
+      desc: "Référence : ELLE-001<br>Nom : Ok anthony<br>Plus de description<br>Dimensions : 28x20x10 cm<br>Doublure intérieure en coton.<br>Livraison offerte dès 80€ d’achat. Retour sous 30 jours.",
+      price: "59,00 €"
+    },
+    {
+      img: "assets/p2.jpg",
+      title: "Cabas Chiné",
+      desc: "Sac besace moderne, couleur marron, pour transporter l'essentiel et plus.",
+      price: "59,00 €"
+    },
+    {
+      img: "assets/p3.jpg",
+      title: "Sac en jean",
+      desc: "Vous êtes jeune et tendance avec ce sac en jean, couleur bordeaux.",
+      price: "60,50 €"
+    },
+    {
+      img: "assets/p4.jpg",
+      title: "Sac Classique",
+      desc: "Un modèle intemporel de couleur noir.",
+      price: "64,00 €"
+    },
+    {
+      img: "assets/p5.jpg",
+      title: "Sac de soirée",
+      desc: "Restez élégante en soirée.",
+      price: "72,00 €"
+    }
+  ];
     // Ouvre la modale au clic sur une card
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', function(e) {
-        // Ignore le clic sur le bouton "Ajouter"
-        if (e.target.tagName === 'BUTTON') return;
-        const idx = card.getAttribute('data-index');
-        const prod = products[idx];
-        document.getElementById('modalImg').src = prod.img;
-        document.getElementById('modalTitle').textContent = prod.title;
-        document.getElementById('modalDesc').innerHTML = prod.desc;
-        document.getElementById('modalDesc').innerHTML = prod.desc;
-        document.getElementById('modalPrice').textContent = prod.price;
-        document.getElementById('productModal').style.display = 'flex';
-      });
+    ddocument.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Ignore le clic sur le bouton "Ajouter"
+      if (e.target.tagName === 'BUTTON') return;
+      const idx = card.getAttribute('data-index');
+      const prod = products[idx];
+      document.getElementById('modalImg').src = prod.img;
+      document.getElementById('modalTitle').textContent = prod.title;
+      document.getElementById('modalDesc').innerHTML = prod.desc;
+      document.getElementById('modalPrice').textContent = prod.price;
+      document.getElementById('productModal').style.display = 'flex';
     });
+  });
 
-    // Ferme la modale
-    document.getElementById('closeModal').onclick = function() {
-      document.getElementById('productModal').style.display = 'none';
-    };
-    // Ferme la modale si on clique en dehors
-    document.getElementById('productModal').onclick = function(e) {
-      if (e.target === this) this.style.display = 'none';
-    };
-  </script>
-</html>
+  // Fermer la modale
+  document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('productModal').style.display = 'none';
+  });
+</script>
+
