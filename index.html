@@ -189,6 +189,15 @@
       }
     }
   </style>
+  <style>
+.product-image img {
+    max-width: 100%;      /* l'image ne dépasse jamais la largeur du container */
+    max-height: 100%;     /* l'image ne dépasse jamais la hauteur du container */
+    object-fit: contain;  /* garde les proportions et centre l'image */
+    display: block;       /* supprime les petits décalages en ligne */
+    margin: 0 auto;       /* centre l'image horizontalement */
+}
+</style>
 </head>
 <body>
   <header>
