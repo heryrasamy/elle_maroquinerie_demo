@@ -70,8 +70,11 @@
     .card img {
       width: 100%;
       height: 220px;
-      object-fit: cover;
+      object-fit: contain;
+      background-color: white;
       border-radius: 6px;
+      border: 1px solid #ddd;
+      display: block;
     }
     .card h3 {
       margin-top: 10px;
@@ -103,30 +106,36 @@
       color: #7d6c5f;
       margin-top: 40px;
     }
-    /* Modale */
+    /* --- Modale --- */
     .modal {
       display: none;
       position: fixed;
       z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(0,0,0,0.4);
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
     .modal-content {
       background: #fff;
-      padding: 30px;
+      padding: 25px 25px 35px;
       border-radius: 10px;
-      max-width: 400px;
+      max-width: 420px;
       width: 90%;
       text-align: left;
       position: relative;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .close {
       position: absolute;
-      top: 10px; right: 15px;
+      top: 10px;
+      right: 15px;
       font-size: 1.5rem;
       cursor: pointer;
       color: #8b5e34;
@@ -134,7 +143,37 @@
     .modal-content img {
       width: 100%;
       border-radius: 6px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      background: white;
+      object-fit: contain;
+    }
+    .modal-content h3 {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+      color: #3e2f1c;
+    }
+    .modal-content p {
+      margin: 6px 0;
+      line-height: 1.5;
+      color: #4a3a2b;
+    }
+    .modal-content .price {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .modal-content button {
+      background-color: #8b5e34;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 10px;
+    }
+    .modal-content button:hover {
+      background-color: #a66d40;
     }
     @media (max-width: 600px) {
       header {
@@ -167,40 +206,67 @@
 
     <section class="products">
       <div class="card" data-index="0">
-        <img src="C:\Users\philr\Desktop\ELLE Maroquinerie\assets\p1.jpg" alt="Sac modèle 1">
-        <h3>Sac Élégant</h3>
-        <p>Sac besace moderne,couleur bordeau, idéal pour les sorties.</p>
+        <img src="assets/p1.jpg" alt="Sac Lydia">
+        <h3>Sac Lydia</h3>
+        <p>Sac besace moderne, idéal pour les sorties.</p>
         <p class="price">59,00 €</p>
         <button>Ajouter</button>
       </div>
+
       <div class="card" data-index="1">
-        <img src="C:\Users\philr\Desktop\ELLE Maroquinerie\assets\p2.jpg" alt="Sac modèle 2">
-        <h3>Cabas Chiné</h3>
-        <p>Sac besace moderne,couleur marron, pour transporter l'essentiel et plus</p>
-        <p class="price">59,00 €</p>
+        <img src="assets/p2.jpg" alt="Sac Salma">
+        <h3>Sac Salma</h3>
+        <p>Sac besace moderne, couleur marron, pour transporter l'essentiel et plus.</p>
+        <p class="price">80,00 €</p>
         <button>Ajouter</button>
       </div>
+
       <div class="card" data-index="2">
-        <img src="C:\Users\philr\Desktop\ELLE Maroquinerie\assets\p3.jpg" alt="Sac modèle 3">
-        <h3>Sac en jean</h3>
-        <p>Vous êtes jeune et tendance avec ce sac en jean,couleur bordeaux</p>
-        <p class="price">60,50 €</p>
+        <img src="assets/p3.jpg" alt="Sac Eva">
+        <h3>Sac Eva</h3>
+        <p>Sac en jean souple, style décontracté chic — idéal pour vos journées actives (45×50×17 cm).</p>
+        <p class="price">60,00 €</p>
         <button>Ajouter</button>
       </div>
+
       <div class="card" data-index="3">
-        <img src="C:\Users\philr\Desktop\ELLE Maroquinerie\assets\p4.jpg" alt="Sac modèle 4">
-        <h3>Sac Classique</h3>
-        <p>Un modèle intemporel de couleur noir</p>
-        <p class="price">64,00 €</p>
+        <img src="assets/p4.jpg" alt="Sac Anna">
+        <h3>Sac Anna</h3>
+        <p>Sac souple et pliable — parfait compagnon du quotidien (50×50×15 cm).</p>
+        <p class="price">55,00 €</p>
         <button>Ajouter</button>
       </div>
+
       <div class="card" data-index="4">
-        <img src="C:\Users\philr\Desktop\ELLE Maroquinerie\assets\p5.jpg" alt="Sac modèle 5">
-        <h3>Sac de soirée</h3>
-        <p>Restez élégante en soirée</p>
-        <p class="price">72,00 €</p>
+        <img src="assets/p5.jpg" alt="Pochette de soirée Amina">
+        <h3>Pochette de soirée</h3>
+        <p>Restez élégante en soirée.</p>
+        <p class="price">16,50 €</p>
         <button>Ajouter</button>
       </div>
+
+        <div class="card" data-index="5">
+        <img src="assets/p6.jpg" alt="Sac Carla">
+        <h3>Sac Carla</h3>
+        <p>Transporter l'essentiel dans vos voyage.</p>
+        <p class="price">68,00 €</p>
+        <button>Ajouter</button>
+      </div>
+       <div class="card" data-index="6">
+        <img src="assets/p7.jpg" alt="Sac Maya">
+        <h3>Sac Maya</h3>
+        <p>Léger et pratique, avec une touche de cuir grainé.</p>
+        <p class="price">45,00 €</p>
+        <button>Ajouter</button>
+          </div>
+       <div class="card" data-index="7">
+        <img src="assets/p8.jpg" alt="Pochette de soirée Nora">
+        <h3>Pochette de soirée Nora</h3>
+        <p>Petit format, grand style. Parfait pour vos soirées.</p>
+        <p class="price">16,50 €</p>
+        <button>Ajouter</button>
+         
+                 
     </section>
   </main>
 
@@ -219,64 +285,86 @@
   <footer>
     © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
   </footer>
+
   <script>
-    // Données des produits
+    // Données des produits (inchangées, ton bloc JS reste bon)
     const products = [
       {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p1.jpg",
-        title: "Sac Élégant",
-        desc: "Référence : ELLE-001<br>Nom : Ok anthony<br>plus de description<br>Dimensions : 28x20x10 cm<br>Doublure intérieure en coton.<br>Livraison offerte dès 80€ d’achat. Retour sous 30 jours.",
-        price: "59,00 €"
+        img: "assets/p1.jpg",
+        title: "Sac Lydia",
+        desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).",
+        price: "80,00 €"
       },
       {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p2.jpg",
-        title: "Cabas Chiné",
-        desc: "Sac besace moderne,couleur marron, pour transporter l'essentiel et plus",
-        price: "59,00 €"
+        img: "assets/p2.jpg",
+        title: "Sac Salma",
+        desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).",
+        price: "80,00 €"
       },
       {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p3.jpg",
-        title: "Sac en jean",
-        desc: "Vous êtes jeune et tendance avec ce sac en jean,couleur bordeaux",
-        price: "60,50 €"
+        img: "assets/p3.jpg",
+        title: "Sac Eva",
+        desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.<br>Sac en jean souple au design intemporel : pratique, robuste et toujours tendance.",
+        price: "60,00 €"
       },
       {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p4.jpg",
-        title: "Sac Classique",
-        desc: "Un modèle intemporel de couleur noir",
-        price: "64,00 €"
+        img: "assets/p4.jpg",
+        title: "Sac Anna",
+        desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).<br>Souple et raffiné, parfait pour le quotidien.",
+        price: "55,00 €"
+      },
+       {
+        img: "assets/p5.jpg",
+        title: "Pochette Amina",
+        desc: "Référence : poc01<br>Dimensions : Hauteur 10 cm, Longueur 17 cm, .<br>Souple et raffiné, parfait pour le quotidien.",
+        price: "16,500 €"
       },
       {
-        img: "C:\\Users\\philr\\Desktop\\ELLE Maroquinerie\\assets\\p5.jpg",
-        title: "Sac de soirée",
-        desc: "Restez élégante en soirée",
-        price: "72,00 €"
-      }
+        img: "assets/p6.jpg",
+        title: "Sac Carla",
+        desc: "Référence : poc01<br>Dimensions : Hauteur 35 cm, Longueur 35 cm,Largeur 17 cm .<br>Souple et raffiné, parfait pour le quotidien.",
+        price: "68,00 €"
+      },
+      {
+        img: "assets/p7.jpg",
+        title: "Sac Maya",
+        desc: "Référence : MC420<br>Dimensions : Hauteur 25 cm, Longueur 30 cm,Largeur 8 cm .",
+        price: "45,00 €"
+      },
+       {
+        img: "assets/p8.jpg",
+        title: "Pochette Nora",
+        desc: "Référence : Ml450<br>Dimensions : Hauteur 10 cm, Longueur 17 cm, .<br>Souple et raffiné, parfait pour le quotidien.",
+        price: "16,500 €"
+      },
+      
+      
     ];
 
     // Ouvre la modale au clic sur une card
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', function(e) {
-        // Ignore le clic sur le bouton "Ajouter"
         if (e.target.tagName === 'BUTTON') return;
         const idx = card.getAttribute('data-index');
         const prod = products[idx];
         document.getElementById('modalImg').src = prod.img;
         document.getElementById('modalTitle').textContent = prod.title;
         document.getElementById('modalDesc').innerHTML = prod.desc;
-        document.getElementById('modalDesc').innerHTML = prod.desc;
         document.getElementById('modalPrice').textContent = prod.price;
         document.getElementById('productModal').style.display = 'flex';
       });
     });
 
-    // Ferme la modale
-    document.getElementById('closeModal').onclick = function() {
+    // Fermer la modale au clic à l'extérieur
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('productModal');
+      if (e.target === modal) modal.style.display = 'none';
+    });
+
+    // Fermer via la croix
+    document.getElementById('closeModal').addEventListener('click', () => {
       document.getElementById('productModal').style.display = 'none';
-    };
-    // Ferme la modale si on clique en dehors
-    document.getElementById('productModal').onclick = function(e) {
-      if (e.target === this) this.style.display = 'none';
-    };
+    });
   </script>
+</body>
 </html>
