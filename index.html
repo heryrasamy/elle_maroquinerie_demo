@@ -120,6 +120,9 @@
       align-items: center;
       padding: 20px;
     }
+    .modal[aria-hidden="false"] {
+      display: flex;
+    }
     .modal-content {
       background: #fff;
       padding: 25px 25px 35px;
@@ -139,6 +142,8 @@
       font-size: 1.5rem;
       cursor: pointer;
       color: #8b5e34;
+      background: transparent;
+      border: none;
     }
     .modal-content img {
       width: 100%;
@@ -187,264 +192,110 @@
         width: 90%;
       }
       html {
-  scroll-behavior: smooth;
-}
+        scroll-behavior: smooth;
+      }
       .contact {
-  text-align: center;
-  padding: 50px 20px;
-  background-color: #fafafa;
-  border-top: 1px solid #ddd;
-}
+        text-align: center;
+        padding: 50px 20px;
+        background-color: #fafafa;
+        border-top: 1px solid #ddd;
+      }
 
-.contact h2 {
-  margin-bottom: 10px;
-  font-size: 1.8em;
-  color: #b23b3b;
-}
+      .contact h2 {
+        margin-bottom: 10px;
+        font-size: 1.8em;
+        color: #b23b3b;
+      }
 
-.contact form {
-  max-width: 500px;
-  margin: 20px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+      .contact form {
+        max-width: 500px;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-.contact input,
-.contact textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1em;
-}
+      .contact input,
+      .contact textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1em;
+      }
 
-.contact button {
-  background-color: #b23b3b;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+      .contact button {
+        background-color: #b23b3b;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-.contact button:hover {
-  background-color: #a12f2f;
-}
+      .contact button:hover {
+        background-color: #a12f2f;
+      }
 
-.contact-info {
-  margin-top: 30px;
-  font-size: 0.95em;
-  color: #555;
-}
-
-
+      .contact-info {
+        margin-top: 30px;
+        font-size: 0.95em;
+        color: #555;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>ELLE MAROQUINERIE</h1>
-    <nav>
+    <nav aria-label="Navigation principale">
       <a href="#">Accueil</a> |
-      <a href="#tous-les-sacs">Nos sacs</a>
       <a href="#">À propos</a>
     </nav>
-    <div class="cart">👜 Panier (0)</div>
+    <div class="cart" aria-live="polite">👜 Panier (0)</div>
   </header>
 
   <main>
     <h2>Collection Capsule — Élégance & Simplicité</h2>
     <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
 
-    <section class="products">
-      <div class="card" data-index="0">
-        <img src="assets/p1.jpg" alt="Sac Lydia">
-        <h3>Sac Lydia</h3>
-        <p>Sac besace moderne, idéal pour les sorties.</p>
-        <p class="price">59,00 €</p>
-        <button>Ajouter</button>
-      </div>
-
-      <div class="card" data-index="1">
-        <img src="assets/p2.jpg" alt="Sac Salma">
-        <h3>Sac Salma</h3>
-        <p>Sac besace moderne, couleur marron, pour transporter l'essentiel et plus.</p>
-        <p class="price">80,00 €</p>
-        <button>Ajouter</button>
-      </div>
-
-      <div class="card" data-index="2">
-        <img src="assets/p3.jpg" alt="Sac Eva">
-        <h3>Sac Eva</h3>
-        <p>Sac en jean souple, style décontracté chic — idéal pour vos journées actives (45×50×17 cm).</p>
-        <p class="price">60,00 €</p>
-        <button>Ajouter</button>
-      </div>
-
-      <div class="card" data-index="3">
-        <img src="assets/p4.jpg" alt="Sac Anna">
-        <h3>Sac Anna</h3>
-        <p>Sac souple et pliable — parfait compagnon du quotidien (50×50×15 cm).</p>
-        <p class="price">55,00 €</p>
-        <button>Ajouter</button>
-      </div>
-
-      <div class="card" data-index="4">
-        <img src="assets/p5.jpg" alt="Pochette de soirée Amina">
-        <h3>Pochette de soirée</h3>
-        <p>Restez élégante en soirée.</p>
-        <p class="price">16,50 €</p>
-        <button>Ajouter</button>
-      </div>
-       <div class="card" data-index="5">
-        <img src="assets/p6.jpg" alt="Sac Carla">
-        <h3>Sac Carla</h3>
-        <p>emporter l'essentiel sans perdre le style.</p>
-        <p class="price">40,00 €</p>
-        <button>Ajouter</button>
-      </div>
-       <div class="card" data-index="6">
-        <img src="assets/p7.jpg" alt="Sac Carla">
-        <h3>Sac Alma</h3>
-        <p>Se faire remarquer sans trop d'effort.</p>
-        <p class="price">45,00 €</p>
-        <button>Ajouter</button>
-      </div>
-       <div class="card" data-index="7">
-        <img src="assets/p8.jpg" alt="Pochette Livia">
-        <h3>Pochette Livia</h3>
-        <p>Une nuit ou vous portez une étoile .</p>
-        <p class="price">16,50 €</p>
-        <button>Ajouter</button>
-          </div>
-       <div class="card" data-index="8">
-        <img src="assets/p10.jpg" alt="Pochette Dora">
-        <h3>Pochette Dora</h3>
-        <p>Une soirée dorée .</p>
-        <p class="price">16,50 €</p>
-        <button>Ajouter</button>
-          </div>
-       <div class="card" data-index="9">
-        <img src="assets/p11.jpg" alt="Pochette Gemma">
-        <h3>Pochette Gemma</h3>
-        <p>Une soirée argentée .</p>
-        <p class="price">16,50 €</p>
-        <button>Ajouter</button>
-          </div>
-       <div class="card" data-index="10">
-        <img src="assets/p12.jpg" alt="Sac">
-        <h3>Sac?</h3>
-        <p>Sac Marron.</p>
-        <p class="price">80,00 €</p>
-        <button>Ajouter</button>
-         </div>
-       <div class="card" data-index="11">
-        <img src="assets/p13.jpg" alt="Pochette Mina">
-        <h3>Pochette Mina</h3>
-        <p>Pochette grise argentée.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-          </div>
-       <div class="card" data-index="12">
-        <img src="assets/p14.jpg" alt="Pochette Enya">
-        <h3>Pochette Enya</h3>
-        <p>Pochette vert sombre argentée.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-         </div>
-       <div class="card" data-index="13">
-        <img src="assets/p15.jpg" alt="Pochette Sia">
-        <h3>Pochette Sia</h3>
-        <p>Pochette marron tacheté.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-          </div>
-       <div class="card" data-index="14">
-        <img src="assets/p16.jpg" alt="Pochette Vitaa">
-        <h3>Pochette Vitaa</h3>
-        <p>Pochette marron léopard.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-         </div>
-          <div class="card" data-index="15">
-        <img src="assets/p17.jpg" alt="Pochette Celia">
-        <h3>Pochette Celia</h3>
-        <p>Pochette couleur unie.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-             </div>
-          <div class="card" data-index="16">
-        <img src="assets/p18.jpg" alt="Pochette Nina">
-        <h3>Pochette Nina</h3>
-        <p>Pochette couleur noire unie.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-             </div>
-          <div class="card" data-index="17">
-        <img src="assets/p20.jpg" alt="Pochette Dina">
-        <h3>Pochette Dina</h3>
-        <p>Pochette couleur Beige unie.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-             </div>
-          <div class="card" data-index="18">
-        <img src="assets/p21.jpg" alt="Pochette Mira">
-        <h3>Pochette Mira</h3>
-        <p>Pochette couleur bordeau foncée unie.</p>
-        <p class="price">17,50 €</p>
-        <button>Ajouter</button>
-             </div>
-          <div class="card" data-index="19">
-        <img src="assets/p22.jpg" alt="Sac Joy">
-        <h3>Sac Joy</h3>
-        <p>Sac pour grand voyage, marron.</p>
-        <p class="price">65,00 €</p>
-        <button>Ajouter</button>
-             </div>
-          <div class="card" data-index="20">
-        <img src="assets/p23.jpg" alt="Sac Joy">
-        <h3>Sac Liana</h3>
-        <p>Sac pour grand voyage, Noir.</p>
-        <p class="price">65,00 €</p>
-        <button>Ajouter</button>
-            </div>
-
+    <!-- Section produits : laissée vide en HTML, remplie dynamiquement depuis le tableau products -->
+    <section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
 
     <section id="contact" class="contact">
-  <h2>Contact</h2>
-  <p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
+      <h2>Contact</h2>
+      <p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
 
-  <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
-    <label for="name">Nom :</label>
-    <input type="text" id="name" name="name" placeholder="Votre nom" required>
+      <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" name="name" placeholder="Votre nom" required>
 
-    <label for="email">Email :</label>
-    <input type="email" id="email" name="email" placeholder="Votre email" required>
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" placeholder="Votre email" required>
 
-    <label for="message">Message :</label>
-    <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+        <label for="message">Message :</label>
+        <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
 
-    <button type="submit">Envoyer</button>
-  </form>
+        <button type="submit">Envoyer</button>
+      </form>
 
-  <div class="contact-info">
-    <p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
-    <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
-    <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
-  </div>
-</section>
+      <div class="contact-info">
+        <p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
+        <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
+        <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
+      </div>
+    </section>
 
   </main>
 
   <!-- Modale pour afficher les détails du produit -->
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
+  <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" aria-hidden="true">
+    <div class="modal-content" tabindex="-1">
+      <button class="close" id="closeModal" type="button" aria-label="Fermer la fenêtre produit">&times;</button>
       <img id="modalImg" src="" alt="">
       <h3 id="modalTitle"></h3>
       <p id="modalDesc"></p>
       <p class="price" id="modalPrice"></p>
-      <button>Ajouter au panier</button>
+      <button id="modalAddBtn" type="button">Ajouter au panier</button>
     </div>
   </div>
 
@@ -453,7 +304,7 @@
   </footer>
 
   <script>
-    // Données des produits (inchangées, ton bloc JS reste bon)
+    // Source de vérité : tableau products
     const products = [
       {
         img: "assets/p1.jpg",
@@ -479,133 +330,213 @@
         desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).<br>Souple et raffiné, parfait pour le quotidien.",
         price: "55,00 €"
       },
-       {
+      {
         img: "assets/p5.jpg",
         title: "Pochette Amina",
-        desc: "Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>",
+        desc: "Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p6.jpg",
         title: "Sac Carla",
-        desc: "Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm (non pliable) .<br>",
+        desc: "Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm (non pliable).",
         price: "40,00 €"
       },
       {
         img: "assets/p7.jpg",
         title: "Sac Alma",
-        desc: "Référence : MC420<br>Dimensions : Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm (non pliable) .<br>",
+        desc: "Référence : MC420<br>Dimensions : Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm (non pliable).",
         price: "45,00 €"
       },
-       {
+      {
         img: "assets/p8.jpg",
         title: "Pochette Livia",
-        desc: "Référence : Ml450<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>",
+        desc: "Référence : Ml450<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p10.jpg",
         title: "Pochette Dora",
-        desc: "Référence : Ml451<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>",
+        desc: "Référence : Ml451<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p11.jpg",
         title: "Pochette Gemma",
-        desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>",
+        desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p12.jpg",
-        title: "Sac Lydia",
+        title: "Sac Lydia (variante)",
         desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).",
         price: "80,00 €"
       },
       {
         img: "assets/p13.jpg",
         title: "Pochette Mina",
-        desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p14.jpg",
         title: "Pochette Enya",
-        desc: "Référence : Ml453<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml453<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p15.jpg",
         title: "Pochette Sia",
-        desc: "Référence : Ml454<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml454<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p16.jpg",
         title: "Pochette Vitaa",
-        desc: "Référence : Ml455<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml455<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p17.jpg",
         title: "Pochette Celia",
-        desc: "Référence : Ml456<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml456<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p18.jpg",
         title: "Pochette Nina",
-        desc: "Référence : Ml457<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml457<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p20.jpg",
         title: "Pochette Dina",
-        desc: "Référence : Ml458<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml458<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
       {
         img: "assets/p21.jpg",
         title: "Pochette Mira",
-        desc: "Référence : Ml459<br>Dimensions : Hauteur 17 cm, Longueur 10 cm, .<br>.",
+        desc: "Référence : Ml459<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",
         price: "17,50 €"
       },
-       {
+      {
         img: "assets/p22.jpg",
         title: "Sac Joy",
-        desc: "Référence : PF908<br>Dimensions : Hauteur 35 cm, Longueur 42 cm, .<br>.",
+        desc: "Référence : PF908<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.",
         price: "65,00 €"
       },
-       {
+      {
         img: "assets/p23.jpg",
         title: "Sac Liana",
-        desc: "Référence : PF909<br>Dimensions : Hauteur 35 cm, Longueur 42 cm, .<br>.",
+        desc: "Référence : PF909<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.",
         price: "65,00 €"
-      },
+      }
     ];
 
-    // Ouvre la modale au clic sur une card
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', function(e) {
-        if (e.target.tagName === 'BUTTON') return;
-        const idx = card.getAttribute('data-index');
-        const prod = products[idx];
-        document.getElementById('modalImg').src = prod.img;
-        document.getElementById('modalTitle').textContent = prod.title;
-        document.getElementById('modalDesc').innerHTML = prod.desc;
-        document.getElementById('modalPrice').textContent = prod.price;
-        document.getElementById('productModal').style.display = 'flex';
-      });
+    // Génère les cards dynamiquement à partir de products
+    const productsSection = document.getElementById('tous-les-sacs');
+
+    function safeDescToText(html) {
+      // convertit <br> en retours à la ligne visibles et retire balises indésirables si besoin
+      return html.replace(/<br\s*\/?>/gi, ' ').replace(/</g, '&lt;').replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+    }
+
+    productsSection.innerHTML = products.map((p, i) => {
+      const descText = p.desc.replace(/<br\s*\/?>/gi, ' ');
+      return `
+        <div class="card" data-index="${i}" role="article" aria-label="${p.title}">
+          <img loading="lazy" src="${p.img}" alt="${p.title}" width="400" height="300">
+          <h3>${p.title}</h3>
+          <p>${descText}</p>
+          <p class="price">${p.price}</p>
+          <button type="button" class="add-btn">Ajouter</button>
+        </div>
+      `;
+    }).join('');
+
+    // Comportements : délégation d'événements pour ouverture modale + ajout au panier
+    const cartEl = document.querySelector('.cart');
+    let cartCount = 0;
+    const modal = document.getElementById('productModal');
+    const modalContent = modal.querySelector('.modal-content');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalAddBtn = document.getElementById('modalAddBtn');
+    let lastFocusedElement = null;
+    let currentModalProductIndex = null;
+
+    productsSection.addEventListener('click', (e) => {
+      // Clic sur Ajouter (dans la card)
+      const addBtn = e.target.closest('.add-btn');
+      if (addBtn) {
+        e.stopPropagation(); // éviter d'ouvrir la modale
+        cartCount++;
+        cartEl.textContent = `👜 Panier (${cartCount})`;
+        return;
+      }
+
+      // Clic sur la card -> ouvrir la modale
+      const card = e.target.closest('.card');
+      if (card) {
+        lastFocusedElement = document.activeElement;
+        const idx = parseInt(card.dataset.index, 10);
+        openModalWithProduct(idx);
+      }
     });
 
-    // Fermer la modale au clic à l'extérieur
-    window.addEventListener('click', (e) => {
-      const modal = document.getElementById('productModal');
-      if (e.target === modal) modal.style.display = 'none';
+    function openModalWithProduct(idx) {
+      const prod = products[idx];
+      if (!prod) return;
+      currentModalProductIndex = idx;
+      modalImg.src = prod.img;
+      modalImg.alt = prod.title;
+      modalTitle.textContent = prod.title;
+      // autoriser quelques balises HTML simples dans la description (<br>)
+      modalDesc.innerHTML = prod.desc.replace(/</g, '&lt;').replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      modalPrice.textContent = prod.price;
+
+      modal.setAttribute('aria-hidden', 'false');
+      modal.style.display = 'flex';
+      // mettre le focus à l'intérieur de la modal pour accessibilité
+      modalContent.focus();
+    }
+
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+      // vider image src pour éviter chargements inutiles si tu veux
+      // modalImg.src = '';
+      currentModalProductIndex = null;
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+
+    // Fermer modal quand on clique en dehors (sur le backdrop)
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
     });
 
     // Fermer via la croix
-    document.getElementById('closeModal').addEventListener('click', () => {
-      document.getElementById('productModal').style.display = 'none';
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+
+    // Ajouter au panier depuis la modal
+    modalAddBtn.addEventListener('click', () => {
+      cartCount++;
+      cartEl.textContent = `👜 Panier (${cartCount})`;
+      // Optionnel : fermer la modal après ajout
+      closeModal();
+    });
+
+    // Fermer la modal avec Escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+        closeModal();
+      }
+      // gestion simple des flèches/tab pour rester dans la modal pourrait être ajoutée plus tard (focus trap)
     });
   </script>
 </body>
