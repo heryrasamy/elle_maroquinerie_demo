@@ -243,7 +243,28 @@
         font-size: 0.95em;
         color: #555;
       }
-     
+  .cart-link {
+  font-size: 18px;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 20px;
+  transition: color 0.3s ease;
+}
+
+.cart-link {
+  font-size: 18px;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 20px;
+  transition: color 0.3s ease;
+}
+
+.cart-link:hover {
+  color: #d42a67;
+}
+    
     }
   </style>
 </head>
@@ -508,13 +529,12 @@
     let currentModalProductIndex = null;
 
     productsSection.addEventListener('click', (e) => {
+      // Clic sur Ajouter (dans la card)
       const addBtn = e.target.closest('.add-btn');
       if (addBtn) {
-        e.stopPropagation();
-        // find parent card index
-        const card = addBtn.closest('.card');
-        const idx = parseInt(card.dataset.index, 10);
-        addToCartFromProductIndex(idx, 1);
+        e.stopPropagation(); // éviter d'ouvrir la modale
+        cartCount++;
+        cartEl.textContent = `👜 Panier (${cartCount})`;
         return;
       }
       const card = e.target.closest('.card');
@@ -542,7 +562,8 @@
       currentModalProductIndex = null;
       if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
     }
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) 
+      closeModal(); });
     document.getElementById('closeModal').addEventListener('click', closeModal);
     modalAddBtn.addEventListener('click', () => {
       if (currentModalProductIndex !== null) {
@@ -588,14 +609,27 @@
         changeQty(id, -1);
         return;
       }
-    });
+      {// Ouvrir la modale panier
+const openCart = document.getElementById("openCart");
+const cartModal = document.getElementById("cartModal");
+const closeCart = document.getElementById("closeCart");
 
-    // Re-render cart after changes to DOM (simple observer in case)
-    // (not strictly necessary, we call renderCart/saveCart after ops)
+openCart.addEventListener("click", function(e) {
+  e.preventDefault();
+  cartModal.style.display = "flex";
+});
 
-    // Accessibility note: focus trap could be added for cart and modal for a11y improvements.
+closeCart.addEventListener("click", function() {
+  cartModal.style.display = "none";
+});
 
-    // End script
+// Fermer la modale si on clique à l'extérieur
+window.addEventListener("click", function(e) {
+  if (e.target === cartModal) {
+    cartModal.style.display = "none";
+  }
+});
+
   </script>
 </body>
 </html>
