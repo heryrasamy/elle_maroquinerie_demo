@@ -189,6 +189,54 @@
       html {
   scroll-behavior: smooth;
 }
+      .contact {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #fafafa;
+  border-top: 1px solid #ddd;
+}
+
+.contact h2 {
+  margin-bottom: 10px;
+  font-size: 1.8em;
+  color: #b23b3b;
+}
+
+.contact form {
+  max-width: 500px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact input,
+.contact textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+.contact button {
+  background-color: #b23b3b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.contact button:hover {
+  background-color: #a12f2f;
+}
+
+.contact-info {
+  margin-top: 30px;
+  font-size: 0.95em;
+  color: #555;
+}
+
 
     }
   </style>
@@ -361,8 +409,30 @@
         <button>Ajouter</button>
             </div>
 
-<section id="contact">
+<section id="contact" class="contact">
+  <h2>Contact</h2>
+  <p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
+
+  <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" placeholder="Votre nom" required>
+
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+    <label for="message">Message :</label>
+    <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <div class="contact-info">
+    <p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
+    <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
+    <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
+  </div>
   <!-- ton formulaire ou tes infos -->
+  
 </section>
   </main>
 
