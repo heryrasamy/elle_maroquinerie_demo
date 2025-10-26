@@ -147,13 +147,20 @@
       background: transparent;
       border: none;
     }
+    .modal-content img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      background: white;
+      object-fit: contain;
+    }
 
     /* --- Cart drawer --- */
     .cart-drawer {
       position: fixed;
       right: 0;
       top: 0;
-      height: 100vh;
+      height: 100%;
       width: 360px;
       max-width: 95%;
       background: #fff;
@@ -168,17 +175,57 @@
     .cart-drawer[aria-hidden="false"] {
       transform: translateX(0);
     }
+    .cart-drawer h3 {
+      margin: 0 0 10px;
+    }
     .cart-items {
       flex: 1;
       overflow-y: auto;
-      margin-bottom: 20px;
+      margin-top: 10px;
+      display: grid;
+      gap: 12px;
+    }
+    .cart-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .cart-item img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    .cart-item .meta {
+      flex: 1;
+      text-align: left;
+    }
+    .cart-item .meta h4 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+    }
+    .qty-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .qty-controls button {
+      padding: 4px 8px;
+      font-size: 0.95rem;
     }
     .cart-footer {
       border-top: 1px solid #eee;
       padding-top: 12px;
       margin-top: 12px;
-      flex-shrink: 0;
-      background-color: #fff;
+    }
+    .cart-empty {
+      color: #666;
+      text-align: center;
+      margin-top: 40px;
     }
 
     @media (max-width: 600px) {
@@ -186,4 +233,405 @@
         flex-direction: column;
         gap: 10px;
       }
-      .
+      .products {
+        padding: 0 10px;
+      }
+      .card {
+        width: 90%;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      .contact {
+        text-align: center;
+        padding: 50px 20px;
+        background-color: #fafafa;
+        border-top: 1px solid #ddd;
+      }
+      .contact h2 {
+        margin-bottom: 10px;
+        font-size: 1.8em;
+        color: #b23b3b;
+      }
+      .contact form {
+        max-width: 500px;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .contact input,
+      .contact textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1em;
+      }
+      .contact button {
+        background-color: #b23b3b;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .contact button:hover {
+        background-color: #a12f2f;
+      }
+      .contact-info {
+        margin-top: 30px;
+        font-size: 0.95em;
+        color: #555;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ELLE MAROQUINERIE</h1>
+    <nav aria-label="Navigation principale">
+      <a href="#">Accueil</a> |
+      <a href="#">À propos</a>
+    </nav>
+    <div class="cart" id="cartToggle" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0" aria-live="polite">👜 Panier (0)</div>
+  </header>
+
+  <main>
+    <h2>Collection Capsule — Élégance & Simplicité</h2>
+    <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
+
+    <!-- Section produits : remplie dynamiquement depuis products -->
+    <section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
+
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
+
+      <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+        <label for="message">Message :</label>
+        <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+
+        <button type="submit">Envoyer</button>
+      </form>
+
+      <div class="contact-info">
+        <p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
+        <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
+        <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modale produit -->
+  <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" aria-hidden="true">
+    <div class="modal-content" tabindex="-1">
+      <button class="close" id="closeModal" type="button" aria-label="Fermer la fenêtre produit">&times;</button>
+      <img id="modalImg" src="" alt="">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <p class="price" id="modalPrice"></p>
+      <button id="modalAddBtn" type="button">Ajouter au panier</button>
+    </div>
+  </div>
+
+  <!-- Cart drawer -->
+  <aside class="cart-drawer" id="cartDrawer" role="region" aria-label="Panier" aria-hidden="true">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3>Votre panier</h3>
+      <button id="closeCartBtn" type="button" aria-label="Fermer le panier" class="close">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>Total</strong>
+        <strong id="cartTotal">0,00 €</strong>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button id="checkoutBtn" type="button">Procéder au paiement</button>
+        <button id="clearCartBtn" type="button" style="background:#b23b3b;">Vider</button>
+      </div>
+    </div>
+  </aside>
+
+  <footer>
+    © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
+  </footer>
+
+  <script>
+    // ---------- Données produits (source de vérité) ----------
+    const products = [
+      { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
+      { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
+      { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.<br>Sac en jean souple au design intemporel : pratique, robuste et toujours tendance.", price: "60,00 €" },
+      { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).<br>Souple et raffiné, parfait pour le quotidien.", price: "55,00 €" },
+      { img: "assets/p5.jpg", title: "Pochette Amina", desc: "Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p6.jpg", title: "Sac Carla", desc: "Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm (non pliable).", price: "40,00 €" },
+      { img: "assets/p7.jpg", title: "Sac Alma", desc: "Référence : MC420<br>Dimensions : Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm (non pliable).", price: "45,00 €" },
+      { img: "assets/p8.jpg", title: "Pochette Livia", desc: "Référence : Ml450<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p10.jpg", title: "Pochette Dora", desc: "Référence : Ml451<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p11.jpg", title: "Pochette Gemma", desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p12.jpg", title: "Sac Lydia (variante)", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
+      { img: "assets/p13.jpg", title: "Pochette Mina", desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p14.jpg", title: "Pochette Enya", desc: "Référence : Ml453<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p15.jpg", title: "Pochette Sia", desc: "Référence : Ml454<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p16.jpg", title: "Pochette Vitaa", desc: "Référence : Ml455<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p17.jpg", title: "Pochette Celia", desc: "Référence : Ml456<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p18.jpg", title: "Pochette Nina", desc: "Référence : Ml457<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p20.jpg", title: "Pochette Dina", desc: "Référence : Ml458<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p21.jpg", title: "Pochette Mira", desc: "Référence : Ml459<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+      { img: "assets/p22.jpg", title: "Sac Joy", desc: "Référence : PF908<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
+      { img: "assets/p23.jpg", title: "Sac Liana", desc: "Référence : PF909<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" }
+    ];
+
+    // ---------- Helpers prix / formatage ----------
+    const priceFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+
+    function parsePrice(str) {
+      if (typeof str === 'number') return str;
+      // keep digits, comma, dot, minus; then normalize comma to dot
+      const cleaned = String(str).replace(/[^\d,.\-]/g, '').replace(',', '.');
+      const n = parseFloat(cleaned);
+      return isNaN(n) ? 0 : n;
+    }
+
+    // ---------- Génération des cartes ----------
+    const productsSection = document.getElementById('tous-les-sacs');
+    productsSection.innerHTML = products.map((p, i) => {
+      const descText = p.desc.replace(/<br\s*\/?>/gi, ' ');
+      return `
+        <div class="card" data-index="${i}" role="article" aria-label="${p.title}">
+          <img loading="lazy" src="${p.img}" alt="${p.title}" width="400" height="300">
+          <h3>${p.title}</h3>
+          <p>${descText}</p>
+          <p class="price">${p.price}</p>
+          <button type="button" class="add-btn">Ajouter</button>
+        </div>
+      `;
+    }).join('');
+
+    // ---------- Cart (localStorage persistence) ----------
+    const STORAGE_KEY = 'elle_cart_v1';
+    let cart = []; // array of {id, title, price, qty, img}
+
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        cart = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        cart = [];
+      }
+    }
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+    function getCartCount() {
+      return cart.reduce((s, it) => s + it.qty, 0);
+    }
+    function updateCartBadge() {
+      const cartEl = document.getElementById('cartToggle');
+      cartEl.textContent = `👜 Panier (${getCartCount()})`;
+      cartEl.setAttribute('aria-expanded', isCartOpen() ? 'true' : 'false');
+    }
+
+    // ---------- Cart rendering ----------
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartTotalEl = document.getElementById('cartTotal');
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItemsEl.innerHTML = '<div class="cart-empty">Votre panier est vide.</div>';
+        cartTotalEl.textContent = priceFormatter.format(0);
+        return;
+      }
+      cartItemsEl.innerHTML = cart.map(item => {
+        const subtotal = item.price * item.qty;
+        return `
+          <div class="cart-item" data-id="${item.id}">
+            <img src="${item.img}" alt="${item.title}" loading="lazy">
+            <div class="meta">
+              <h4>${item.title}</h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div class="qty-controls" data-id="${item.id}">
+                  <button type="button" class="dec-btn" aria-label="Réduire quantité">−</button>
+                  <span class="qty">${item.qty}</span>
+                  <button type="button" class="inc-btn" aria-label="Augmenter quantité">+</button>
+                </div>
+                <div style="text-align:right;">
+                  <div>${priceFormatter.format(item.price)}</div>
+                  <div style="font-weight:bold;">${priceFormatter.format(subtotal)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      const total = cart.reduce((s, it) => s + it.price * it.qty, 0);
+      cartTotalEl.textContent = priceFormatter.format(total);
+    }
+
+    // ---------- Cart operations ----------
+    function addToCartFromProductIndex(idx, qty = 1) {
+      const p = products[idx];
+      if (!p) return;
+      const id = idx; // using index as id for demo; in prod use stable id
+      const price = parsePrice(p.price);
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ id, title: p.title, price, qty, img: p.img });
+      }
+      saveCart();
+      renderCart();
+      updateCartBadge();
+    }
+
+    function changeQty(itemId, delta) {
+      const item = cart.find(i => i.id === itemId);
+      if (!item) return;
+      item.qty = Math.max(0, item.qty + delta);
+      if (item.qty === 0) {
+        cart = cart.filter(i => i.id !== itemId);
+      }
+      saveCart();
+      renderCart();
+      updateCartBadge();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+      renderCart();
+      updateCartBadge();
+    }
+
+    // ---------- UI: open/close cart ----------
+    function openCart() {
+      cartDrawer.setAttribute('aria-hidden', 'false');
+      cartDrawer.focus?.();
+      document.getElementById('cartToggle').setAttribute('aria-expanded', 'true');
+    }
+    function closeCart() {
+      cartDrawer.setAttribute('aria-hidden', 'true');
+      document.getElementById('cartToggle').setAttribute('aria-expanded', 'false');
+    }
+    function isCartOpen() {
+      return cartDrawer.getAttribute('aria-hidden') === 'false';
+    }
+
+    // ---------- Wire events ----------
+    loadCart();
+    renderCart();
+    updateCartBadge();
+
+    // Delegation on products section: add to cart or open modal
+    const modal = document.getElementById('productModal');
+    const modalContent = modal.querySelector('.modal-content');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalAddBtn = document.getElementById('modalAddBtn');
+    let lastFocusedElement = null;
+    let currentModalProductIndex = null;
+
+    productsSection.addEventListener('click', (e) => {
+      const addBtn = e.target.closest('.add-btn');
+      if (addBtn) {
+        e.stopPropagation();
+        // find parent card index
+        const card = addBtn.closest('.card');
+        const idx = parseInt(card.dataset.index, 10);
+        addToCartFromProductIndex(idx, 1);
+        return;
+      }
+      const card = e.target.closest('.card');
+      if (card) {
+        lastFocusedElement = document.activeElement;
+        const idx = parseInt(card.dataset.index, 10);
+        openModalWithProduct(idx);
+      }
+    });
+
+    function openModalWithProduct(idx) {
+      const prod = products[idx];
+      if (!prod) return;
+      currentModalProductIndex = idx;
+      modalImg.src = prod.img;
+      modalImg.alt = prod.title;
+      modalTitle.textContent = prod.title;
+      modalDesc.innerHTML = prod.desc.replace(/</g, '&lt;').replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      modalPrice.textContent = prod.price;
+      modal.setAttribute('aria-hidden', 'false');
+      modalContent.focus();
+    }
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      currentModalProductIndex = null;
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
+    }
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modalAddBtn.addEventListener('click', () => {
+      if (currentModalProductIndex !== null) {
+        addToCartFromProductIndex(currentModalProductIndex, 1);
+      }
+      closeModal();
+    });
+
+    // Keyboard: Escape closes modal or cart
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modal.getAttribute('aria-hidden') === 'false') closeModal();
+        else if (isCartOpen()) closeCart();
+      }
+    });
+
+    // Cart toggle open
+    document.getElementById('cartToggle').addEventListener('click', () => openCart());
+    document.getElementById('cartToggle').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCart(); }
+    });
+    document.getElementById('closeCartBtn').addEventListener('click', closeCart);
+
+    // Clear & checkout buttons
+    document.getElementById('clearCartBtn').addEventListener('click', () => {
+      if (confirm('Vider le panier ?')) clearCart();
+    });
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      alert('Démo : paiement non connecté. Ici vous redirigeriez vers la page de paiement.');
+    });
+
+    // Delegate events inside cart for qty controls
+    cartItemsEl.addEventListener('click', (e) => {
+      const inc = e.target.closest('.inc-btn');
+      if (inc) {
+        const id = parseInt(inc.closest('[data-id]').getAttribute('data-id'), 10);
+        changeQty(id, +1);
+        return;
+      }
+      const dec = e.target.closest('.dec-btn');
+      if (dec) {
+        const id = parseInt(dec.closest('[data-id]').getAttribute('data-id'), 10);
+        changeQty(id, -1);
+        return;
+      }
+    });
+
+    // Re-render cart after changes to DOM (simple observer in case)
+    // (not strictly necessary, we call renderCart/saveCart after ops)
+
+    // Accessibility note: focus trap could be added for cart and modal for a11y improvements.
+
+    // End script
+  </script>
+</body>
+</html>
