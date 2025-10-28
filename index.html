@@ -147,41 +147,7 @@
       background: transparent;
       border: none;
     }
-    /* Ajustement uniquement pour la modale du panier */
-#cartModal .modal-content {
-  max-height: 90vh; /* limite la hauteur au viewport */
-  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 
-/* Pour garder le total et le bouton visibles */
-#cartModal .cart-footer {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
-
-    /* Ajustement uniquement pour la modale du panier */
-#cartModal .modal-content {
-  max-height: 90vh; /* limite la hauteur au viewport */
-  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Pour garder le total et le bouton visibles */
-#cartModal .cart-footer {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
 
     .modal-content img {
       width: 100%;
@@ -198,14 +164,6 @@
   justify-content: space-between;
 }
 
-/* Pour garder le total et le bouton visibles */
-#cartModal .cart-footer {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
 
     /* --- Cart drawer --- */
     .cart-drawer {
@@ -335,6 +293,24 @@
         font-size: 0.95em;
         color: #555;
       }
+      /* Ajustement uniquement pour la modale du panier */
+#cartModal .modal-content {
+  max-height: 90vh; /* limite la hauteur au viewport */
+  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Pour garder le total et le bouton visibles */
+#cartModal .cart-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
     }
   </style>
 </head>
