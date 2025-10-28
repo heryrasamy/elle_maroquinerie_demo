@@ -154,6 +154,22 @@
       background: white;
       object-fit: contain;
     }
+    .modal-content {
+  max-height: 90vh; /* limite la hauteur au viewport */
+  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Pour garder le total et le bouton visibles */
+#cartModal .cart-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
 
     /* --- Cart drawer --- */
     .cart-drawer {
