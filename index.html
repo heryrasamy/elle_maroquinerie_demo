@@ -313,10 +313,99 @@
   padding-top: 10px;
   border-top: 1px solid #ddd;
 }
+      .payment-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-modal[aria-hidden="false"] {
+  display: flex;
+}
+
+.payment-content {
+  background: #fff;
+  padding: 25px 30px 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.payment-content h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-content input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.payment-content .row {
+  display: flex;
+  gap: 10px;
+}
+
+.payment-success {
+  margin-top: 20px;
+  text-align: center;
+  color: #3e8b3e;
+  font-weight: bold;
+}
 
     }
   </style>
 </head>
+ <!-- Remplace l'ancien listener checkoutBtn par ceci (script principal) -->
+<script>
+  // Exemple minimal : avant redirection on sauve le panier
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  checkoutBtn.addEventListener('click', () => {
+    // Récupère les données du panier existantes dans l'UI
+    // <-- ADAPTEZ cette partie si votre app stocke déjà le panier différemment -->
+    const cartItemsNode = document.querySelectorAll('.cart-item');
+    const items = [];
+    cartItemsNode.forEach(node => {
+      // exemple d'éléments attendus dans .cart-item
+      const title = node.querySelector('.meta h4')?.innerText || '';
+      const priceText = node.querySelector('.meta .price')?.innerText || '0€';
+      const price = parseFloat(priceText.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
+      const qty = parseInt(node.querySelector('.qty')?.innerText || node.querySelector('.qty-input')?.value || '1') || 1;
+      items.push({ title, price, qty });
+    });
+
+    // Si tu as déjà un objet cart global, préfère l'utiliser ici
+    const cart = {
+      items,
+      total: items.reduce((s,i) => s + i.price * i.qty, 0)
+    };
+
+    // Sauvegarde dans localStorage pour que payment.html puisse le lire
+    localStorage.setItem('elle_cart', JSON.stringify(cart));
+
+    // Redirection vers la page de paiement dédiée
+    window.location.href = 'payment.html';
+  });
+</script>
+
 <body>
   <header>
     <h1>ELLE MAROQUINERIE</h1>
@@ -390,6 +479,38 @@
       </div>
     </div>
   </aside>
+  <!-- Section Paiement (démo) -->
+<div class="payment-modal" id="paymentModal" aria-hidden="true">
+  <div class="payment-content">
+    <button class="close" id="closePayment" aria-label="Fermer le paiement">&times;</button>
+    <h3>Paiement par carte</h3>
+    <form id="fakePaymentForm">
+      <label for="cardName">Titulaire de la carte</label>
+      <input type="text" id="cardName" name="cardName" placeholder="Jean Dupont" required>
+
+      <label for="cardNumber">Numéro de carte</label>
+      <input type="text" id="cardNumber" name="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
+
+      <div class="row">
+        <div>
+          <label for="expiry">Date d’expiration</label>
+          <input type="text" id="expiry" name="expiry" maxlength="5" placeholder="MM/AA" required>
+        </div>
+        <div>
+          <label for="cvc">CVC</label>
+          <input type="text" id="cvc" name="cvc" maxlength="3" placeholder="123" required>
+        </div>
+      </div>
+
+      <button type="submit">Payer maintenant</button>
+    </form>
+
+    <p class="payment-success" id="paymentSuccess" hidden>
+      ✅ Paiement accepté ! Merci pour votre commande 💕
+    </p>
+  </div>
+</div>
+
 
   <footer>
     © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
