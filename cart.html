@@ -1,64 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panier — ELLE Maroquinerie</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ELLE MAROQUINERIE — Panier</title>
   <style>
-    body { font-family: "Georgia", serif; background:#f6f1eb; color:#3e2f1c; margin:0; padding:20px; }
-    h1 { text-align:center; margin-bottom:20px; }
-    table { width:100%; border-collapse: collapse; margin-bottom:20px; }
-    th, td { padding:10px; border-bottom:1px solid #ddd; text-align:left; }
-    th { background:#f0e8e0; }
-    img { width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #ddd; }
+    body {
+      font-family: "Georgia", serif;
+      background-color: #f6f1eb;
+      margin: 0;
+      color: #3e2f1c;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      gap: 12px;
+    }
+    header h1 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; margin: 0; }
+    nav a { color: #3e2f1c; text-decoration: none; margin: 0 8px; }
+    nav a:hover { text-decoration: underline; }
+
+    main { padding: 40px; max-width: 900px; margin: auto; }
+    h2 { font-weight: bold; margin-bottom: 10px; }
+    .cart-items { display: grid; gap: 12px; margin-bottom: 20px; }
+    .cart-item { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; background: #fff; }
+    .meta { flex: 1; text-align: left; }
     .qty-controls { display:flex; gap:6px; align-items:center; }
-    button { background:#8b5e34; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-family:inherit; }
-    button:hover { background:#a66d40; }
-    .cart-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:10px; }
-    .total { text-align:right; font-weight:bold; margin-top:10px; }
-    a { text-decoration:none; color:#8b5e34; font-weight:bold; }
+
+    .cart-footer { border-top: 1px solid #eee; padding-top: 12px; margin-top: 12px; display:flex; flex-direction: column; gap:10px; }
+    .cart-footer div.total { display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px; }
+    .cart-footer .actions { display:flex; gap:8px; flex-wrap: wrap; }
+    .cart-footer button { background-color: #8b5e34; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer; flex:1; }
+    .cart-footer button.clear { background-color:#b23b3b; }
+
+    footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #7d6c5f; margin-top: 40px; }
+
+    @media (max-width: 600px) {
+      main { padding: 20px 10px; }
+      .cart-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .cart-item img { width: 100%; height: auto; }
+      .meta { margin-left: 0; width: 100%; }
+      .qty-controls { justify-content: flex-start; }
+      .cart-footer div.total { flex-direction: column; align-items: flex-start; gap: 5px; }
+      .cart-footer .actions { flex-direction: column; }
+      .cart-footer button { width: 100%; }
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>ELLE MAROQUINERIE</h1>
+    <nav>
+      <a href="index.html">Accueil</a> |
+      <a href="#">À propos</a>
+    </nav>
+  </header>
 
-  <h1>Votre panier</h1>
-  <table id="cartTable">
-    <thead>
-      <tr>
-        <th>Produit</th>
-        <th>Description</th>
-        <th>Prix unitaire</th>
-        <th>Quantité</th>
-        <th>Sous-total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <main>
+    <h2>Votre Panier</h2>
+    <div class="cart-items" id="cartItems"></div>
 
-  <div class="total" id="cartTotal">Total : 0,00 €</div>
-  <div class="cart-actions">
-    <button id="clearCartBtn">Vider le panier</button>
-    <button id="checkoutBtn">Simuler paiement</button>
-    <a href="index.html">← Retour à la boutique</a>
-  </div>
+    <div class="cart-footer">
+      <div class="total">
+        <span>Total</span>
+        <span id="cartTotal">0,00 €</span>
+      </div>
+      <div class="actions">
+        <button id="checkoutBtn">Procéder au paiement</button>
+        <button id="clearCartBtn" class="clear">Vider</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
 
   <script>
     const STORAGE_KEY = 'elle_cart_v1';
-    const cartTableBody = document.querySelector('#cartTable tbody');
+    const cartItemsEl = document.getElementById('cartItems');
     const cartTotalEl = document.getElementById('cartTotal');
     const clearCartBtn = document.getElementById('clearCartBtn');
     const checkoutBtn = document.getElementById('checkoutBtn');
 
+    let cart = [];
+
     function loadCart() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch(e) { return []; }
+      const raw = localStorage.getItem(STORAGE_KEY);
+      cart = raw ? JSON.parse(raw) : [];
     }
 
-    function saveCart(cart) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    }
+    function saveCart() { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
 
     function priceFormatter(n) {
       return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
@@ -71,65 +106,65 @@
     }
 
     function renderCart() {
-      const cart = loadCart();
       if (!cart.length) {
-        cartTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Votre panier est vide.</td></tr>';
-        cartTotalEl.textContent = 'Total : 0,00 €';
+        cartItemsEl.innerHTML = '<div>Votre panier est vide.</div>';
+        cartTotalEl.textContent = priceFormatter(0);
         return;
       }
 
-      cartTableBody.innerHTML = cart.map(item => {
+      cartItemsEl.innerHTML = cart.map(item => {
         const subtotal = item.price * item.qty;
-        return `<tr data-id="${item.id}">
-          <td><img src="${item.img}" alt="${item.title}"><br>${item.title}</td>
-          <td>${item.title}</td>
-          <td>${priceFormatter(item.price)}</td>
-          <td>
-            <div class="qty-controls">
-              <button class="dec-btn">−</button>
-              <span class="qty">${item.qty}</span>
-              <button class="inc-btn">+</button>
+        return `
+          <div class="cart-item" data-id="${item.id}">
+            <img src="${item.img}" alt="${item.title}" loading="lazy">
+            <div class="meta">
+              <h4>${item.title}</h4>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="qty-controls" data-id="${item.id}">
+                  <button class="dec-btn">−</button>
+                  <span class="qty">${item.qty}</span>
+                  <button class="inc-btn">+</button>
+                </div>
+                <div style="text-align:right;">
+                  <div>${priceFormatter(item.price)}</div>
+                  <div style="font-weight:bold;">${priceFormatter(subtotal)}</div>
+                </div>
+              </div>
             </div>
-          </td>
-          <td>${priceFormatter(subtotal)}</td>
-        </tr>`;
+          </div>
+        `;
       }).join('');
 
-      const total = cart.reduce((s,it)=>s + it.price * it.qty,0);
-      cartTotalEl.textContent = 'Total : ' + priceFormatter(total);
+      const total = cart.reduce((s,it) => s + it.price * it.qty,0);
+      cartTotalEl.textContent = priceFormatter(total);
     }
 
     function changeQty(itemId, delta) {
-      let cart = loadCart();
       const item = cart.find(i => i.id === itemId);
       if (!item) return;
       item.qty = Math.max(0, item.qty + delta);
       if (item.qty === 0) cart = cart.filter(i => i.id !== itemId);
-      saveCart(cart);
+      saveCart();
       renderCart();
     }
 
-    cartTableBody.addEventListener('click', (e) => {
-      const row = e.target.closest('tr');
-      if (!row) return;
-      const id = parseInt(row.dataset.id,10);
-      if (e.target.classList.contains('inc-btn')) changeQty(id, +1);
-      else if (e.target.classList.contains('dec-btn')) changeQty(id, -1);
+    function clearCart() { cart = []; saveCart(); renderCart(); }
+
+    loadCart();
+    renderCart();
+
+    cartItemsEl.addEventListener('click', (e) => {
+      const inc = e.target.closest('.inc-btn');
+      if (inc) { const id = parseInt(inc.closest('[data-id]').dataset.id,10); changeQty(id,1); return; }
+      const dec = e.target.closest('.dec-btn');
+      if (dec) { const id = parseInt(dec.closest('[data-id]').dataset.id,10); changeQty(id,-1); return; }
     });
 
-    clearCartBtn.addEventListener('click', () => {
-      if (confirm('Vider le panier ?')) {
-        saveCart([]);
-        renderCart();
-      }
-    });
+    clearCartBtn.addEventListener('click', () => { if(confirm('Vider le panier ?')) clearCart(); });
 
     checkoutBtn.addEventListener('click', () => {
-      alert('Démo : paiement non connecté.');
+      window.location.href = 'index.html'; // ici tu peux mettre une page de paiement réelle
     });
-
-    renderCart();
   </script>
-
 </body>
 </html>
