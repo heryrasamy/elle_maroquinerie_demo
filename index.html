@@ -265,13 +265,32 @@
 
   <script>
     // ---------- Données produits ----------
-    const products = [
-      { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm.", price: "80,00 €" },
-      { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm.", price: "80,00 €" },
-      { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.", price: "60,00 €" },
-      { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm.", price: "55,00 €" }
-      // Ajouter les autres produits si nécessaire
-    ];
+   const products = [
+        { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
+        { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
+        { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.", price: "60,00 €" },
+        { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).", price: "55,00 €" },
+        { img: "assets/p5.jpg", title: "Pochette Amina", desc: "Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p6.jpg", title: "Sac Carla", desc: "Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm.", price: "40,00 €" },
+        { img: "assets/p7.jpg", title: "Sac Alma", desc: "Référence : MC420<br>Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm.", price: "45,00 €" },
+        { img: "assets/p8.jpg", title: "Pochette Livia", desc: "Référence : Ml450<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p9.jpg", title: "Sac Week-end", desc: "Grand format, cuir souple, idéal pour escapades.", price: "89,00 €" },
+        { img: "assets/p10.jpg", title: "Pochette Dora", desc: "Référence : Ml451<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p11.jpg", title: "Pochette Gemma", desc: "Référence : Ml452<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p12.jpg", title: "Sac Lydia (variante)", desc: "Référence : Elle 02<br>Longueur 50 cm, largeur 15 cm.", price: "80,00 €" },
+        { img: "assets/p13.jpg", title: "Pochette Mina", desc: "Référence : Ml452<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p14.jpg", title: "Pochette Enya", desc: "Référence : Ml453<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p15.jpg", title: "Pochette Sia", desc: "Référence : Ml454<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p16.jpg", title: "Pochette Vitaa", desc: "Référence : Ml455<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p17.jpg", title: "Pochette Celia", desc: "Référence : Ml456<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p18.jpg", title: "Pochette Nina", desc: "Référence : Ml457<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p19.jpg", title: "Sac Sport Chic", desc: "Mélange parfait entre style et confort.", price: "68,00 €" },
+        { img: "assets/p20.jpg", title: "Pochette Dina", desc: "Référence : Ml458<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p21.jpg", title: "Pochette Mira", desc: "Référence : Ml459<br>Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
+        { img: "assets/p22.jpg", title: "Sac Joy", desc: "Référence : PF908<br>Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
+        { img: "assets/p23.jpg", title: "Sac Liana", desc: "Référence : PF909<br>Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
+        { img: "assets/p24.jpg", title: "Sac Luxe", desc: "Pièce d’exception pour les grandes occasions.", price: "120,00 €" }
+      ];
 
     const productsSection = document.getElementById('tous-les-sacs');
     productsSection.innerHTML = products.map((p, i) => {
