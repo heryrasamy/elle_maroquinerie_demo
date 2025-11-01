@@ -1,209 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panier & Paiement — ELLE Maroquinerie (démo)</title>
-
-<style>
-body {
-  font-family: "Georgia", serif;
-  background-color: #f6f1eb;
-  margin: 0;
-  color: #3e2f1c;
-  -webkit-font-smoothing: antialiased;
-}
-header {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:15px 40px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05);
-}
-header h1 { font-size:1.1rem; letter-spacing:2px; margin:0; }
-main { max-width: 950px; margin: 30px auto; padding: 0 16px; }
-h2 { margin-bottom:6px; }
-.layout { display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start; }
-@media (max-width:900px){ .layout { grid-template-columns:1fr; } }
-
-/* --- panier --- */
-.cart-summary {
-  background:linear-gradient(to bottom,#fff,#faf7f4);
-  border-radius:10px; padding:18px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.06);
-}
-.cart-item { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid #f0e8e0; }
-.cart-item:last-child { border-bottom:none; }
-.cart-item .left { max-width:70%; }
-.cart-total { display:flex; justify-content:space-between; margin-top:12px; font-weight:bold; font-size:1.05rem; }
-
-/* --- paiement --- */
-.payment-panel {
-  background:#fff; border-radius:10px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08);
-}
-.payment-options { display:flex; gap:10px; margin-bottom:12px; }
-.pay-method {
-  flex:1; padding:10px; border:1px solid #ddd; border-radius:6px;
-  cursor:pointer; background:#faf7f4; display:flex; align-items:center; justify-content:center; gap:8px; font-weight:600;
-}
-.pay-method.active { border:2px solid #8b5e34; background:#fff; }
-.payment-form { display:flex; flex-direction:column; gap:12px; }
-label { font-size:0.9rem; color:#6a5d4b; }
-input[type="text"], input[type="tel"], input[type="email"] {
-  padding:10px; border-radius:6px; border:1px solid #ddd; font-size:1rem;
-}
-.btn-pay { background:#8b5e34; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:1rem; }
-.btn-pay:disabled { opacity:0.6; cursor:not-allowed; }
-
-.success {
-  text-align:center; padding:18px; border-radius:8px; background:linear-gradient(180deg,#e9f9ec,#f7fff7);
-  border:1px solid #dff2de; color:#2b7d3a; font-weight:700; display:none;
-}
-.back-home { display:block; margin-top:12px; text-align:center; color:#8b5e34; text-decoration:none; font-weight:600; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panier — ELLE Maroquinerie</title>
+  <style>
+    body {
+      font-family: "Georgia", serif;
+      background-color: #f6f1eb;
+      margin: 0;
+      color: #3e2f1c;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    header h1 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; }
+    nav a { text-decoration: none; color: #3e2f1c; margin: 0 10px; font-weight: bold; }
+    nav a:hover { color: #b07a2b; text-decoration: underline; }
+    main { padding: 40px; max-width: 800px; margin: 0 auto; }
+    h2 { font-weight: bold; margin-bottom: 20px; text-align: center; }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .cart-item img { width: 80px; height: 80px; object-fit: contain; border: 1px solid #ddd; border-radius: 6px; }
+    .cart-item-details { flex-grow: 1; margin-left: 15px; }
+    .cart-item-details h3 { margin: 0 0 5px; font-size: 1rem; }
+    .cart-item-details p { margin: 0; font-size: 0.9rem; }
+    .price { font-weight: bold; margin-left: 15px; }
+    .total { text-align: right; font-weight: bold; font-size: 1.2rem; margin-top: 20px; }
+    .payment-buttons { display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px; }
+    .payment-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+    .cb { background-color: #8b5e34; }
+    .cb:hover { background-color: #a66d40; }
+    .paypal { background-color: #003087; }
+    .paypal:hover { background-color: #0053ba; }
+    footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #7d6c5f; margin-top: 40px; }
+  </style>
 </head>
-
 <body>
-<header>
-  <h1>ELLE MAROQUINERIE</h1>
-  <div></div>
-</header>
+  <header>
+    <h1>ELLE MAROQUINERIE</h1>
+    <nav aria-label="Navigation principale">
+      <a href="index.html">Accueil</a> |
+      <a href="#">À propos</a>
+    </nav>
+  </header>
 
-<main>
-<h2>Panier & Paiement (démo)</h2>
-<p class="small-muted">Mode démo : aucun paiement réel n'est effectué.</p>
+  <main>
+    <h2>Votre Panier</h2>
 
-<div class="layout">
-
-  <!-- gauche: panier -->
-  <aside class="cart-summary">
-    <h3>Votre panier</h3>
-    <div id="cartItemsList"></div>
-    <div class="cart-total">
-      <span>Total</span>
-      <span id="summaryTotal">0,00 €</span>
-    </div>
-  </aside>
-
-  <!-- droite: paiement -->
-  <section class="payment-panel">
-    <h3>Choisissez votre mode de paiement</h3>
-
-    <div class="payment-options">
-      <button class="pay-method active" data-method="card">
-        <img src="cb-icon.png" alt="Carte bancaire" style="height:24px;"> Carte bancaire
-      </button>
-      <button class="pay-method" data-method="paypal">
-        <img src="paypal-logo.png" alt="PayPal" style="height:24px;"> PayPal
-      </button>
-    </div>
-
-    <!-- formulaire CB -->
-    <form id="cardForm" class="payment-form">
-      <label for="cardName">Titulaire de la carte</label>
-      <input type="text" id="cardName" placeholder="Jean Dupont" required>
-
-      <label for="cardNumber">Numéro de carte</label>
-      <input type="tel" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
-
-      <div style="display:flex; gap:10px;">
-        <input type="text" id="expiry" maxlength="5" placeholder="MM/AA" required style="flex:1;">
-        <input type="tel" id="cvc" maxlength="4" placeholder="CVC" required style="width:80px;">
+    <div id="cartItems">
+      <!-- Exemple de produits ajoutés (démo) -->
+      <div class="cart-item">
+        <img src="assets/p3.jpg" alt="Sac Eva">
+        <div class="cart-item-details">
+          <h3>Sac Eva</h3>
+          <p>Quantité: 1</p>
+        </div>
+        <div class="price">60,00 €</div>
       </div>
 
-      <label for="email">Email (reçu factice)</label>
-      <input type="email" id="email" placeholder="client@exemple.com" required>
-
-      <button type="submit" class="btn-pay">Payer avec CB</button>
-    </form>
-
-    <!-- bouton PayPal -->
-    <div id="paypalForm" class="payment-form" style="display:none;">
-      <button class="btn-pay">Payer avec PayPal (démo)</button>
-    </div>
-
-    <div class="success" id="successBox">
-      ✅ Paiement accepté (mode démo) — Merci !<br>
-      <a class="back-home" href="index.html">← Retour à la boutique</a>
-    </div>
-  </section>
-</div>
-</main>
-
-<script>
-// --- affichage panier ---
-const stored = localStorage.getItem('elle_cart');
-let cart = { items: [], total:0 };
-if(stored){ try{ cart = JSON.parse(stored); } catch(e){ console.error(e);} }
-
-const cartItemsList = document.getElementById('cartItemsList');
-const summaryTotal = document.getElementById('summaryTotal');
-
-function formatPrice(n){ return n.toLocaleString('fr-FR',{style:'currency',currency:'EUR'}); }
-
-function renderCart(){
-  cartItemsList.innerHTML='';
-  if(!cart.items.length){
-    cartItemsList.innerHTML='<p class="small-muted">Votre panier est vide.</p>';
-  } else {
-    cart.items.forEach(it=>{
-      const line=document.createElement('div');
-      line.className='cart-item';
-      line.innerHTML=`<div class="left">
-        <div style="font-weight:600">${it.title || 'Produit'}</div>
-        <div class="small-muted">Quantité : ${it.qty||1}</div>
+      <div class="cart-item">
+        <img src="assets/p4.jpg" alt="Sac Anna">
+        <div class="cart-item-details">
+          <h3>Sac Anna</h3>
+          <p>Quantité: 2</p>
+        </div>
+        <div class="price">110,00 €</div>
       </div>
-      <div style="min-width:80px;text-align:right;">${formatPrice((it.price||0)*(it.qty||1))}</div>`;
-      cartItemsList.appendChild(line);
-    });
-  }
-  const total = cart.total || cart.items.reduce((s,i)=>s+(i.price||0)*(i.qty||1),0);
-  summaryTotal.innerText = formatPrice(total);
-}
-renderCart();
+    </div>
 
-// --- switch CB / PayPal ---
-const payButtons=document.querySelectorAll('.pay-method');
-const cardForm=document.getElementById('cardForm');
-const paypalForm=document.getElementById('paypalForm');
-payButtons.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    payButtons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const method=btn.dataset.method;
-    cardForm.style.display = method==='card' ? 'block':'none';
-    paypalForm.style.display = method==='paypal' ? 'block':'none';
-  });
-});
+    <div class="total">
+      Total : 170,00 €
+    </div>
 
-// --- formulaire CB factice ---
-const fakeForm=cardForm;
-const payNowBtn=fakeForm.querySelector('.btn-pay');
-const successBox=document.getElementById('successBox');
+    <div class="payment-buttons">
+      <button class="cb" onclick="alert('Paiement CB (démo)')">Payer par CB</button>
+      <button class="paypal" onclick="alert('Paiement PayPal (démo)')">Payer avec PayPal</button>
+    </div>
+  </main>
 
-fakeForm.addEventListener('submit',e=>{
-  e.preventDefault();
-  // validations basiques
-  const name=document.getElementById('cardName').value.trim();
-  const email=document.getElementById('email').value.trim();
-  const cardNum=document.getElementById('cardNumber').value.replace(/\s/g,'');
-  const expiry=document.getElementById('expiry').value;
-  const cvc=document.getElementById('cvc').value;
-
-  if(!name || cardNum.length<12 || !expiry.match(/^\d{2}\/\d{2}$/) || cvc.length<3 || !email.includes('@')){
-    alert('Vérifiez les informations (mode démo)');
-    return;
-  }
-
-  payNowBtn.disabled=true; payNowBtn.innerText='Traitement…';
-  setTimeout(()=>{
-    successBox.style.display='block';
-    fakeForm.style.display='none';
-    localStorage.removeItem('elle_cart');
-    payNowBtn.disabled=false; payNowBtn.innerText='Payer avec CB';
-  },1200);
-});
-
-// --- PayPal factice ---
-paypalForm.querySelector('button').addEventListener('click',()=>{
-  paypalForm.querySelector('button').disabled=true;
-  paypalForm.querySelector('button').innerText='Traitement…';
-  setTimeout(()=>{
-    successBox.style.display='block';
+  <footer>
+    © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
+  </footer>
+</body>
+</html>
