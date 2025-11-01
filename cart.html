@@ -1,170 +1,110 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ELLE MAROQUINERIE — Panier</title>
-  <style>
-    body {
-      font-family: "Georgia", serif;
-      background-color: #f6f1eb;
-      margin: 0;
-      color: #3e2f1c;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      gap: 12px;
-    }
-    header h1 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; margin: 0; }
-    nav a { color: #3e2f1c; text-decoration: none; margin: 0 8px; }
-    nav a:hover { text-decoration: underline; }
-
-    main { padding: 40px; max-width: 900px; margin: auto; }
-    h2 { font-weight: bold; margin-bottom: 10px; }
-    .cart-items { display: grid; gap: 12px; margin-bottom: 20px; }
-    .cart-item { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    .cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; background: #fff; }
-    .meta { flex: 1; text-align: left; }
-    .qty-controls { display:flex; gap:6px; align-items:center; }
-
-    .cart-footer { border-top: 1px solid #eee; padding-top: 12px; margin-top: 12px; display:flex; flex-direction: column; gap:10px; }
-    .cart-footer div.total { display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px; }
-    .cart-footer .actions { display:flex; gap:8px; flex-wrap: wrap; }
-    .cart-footer button { background-color: #8b5e34; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer; flex:1; }
-    .cart-footer button.clear { background-color:#b23b3b; }
-
-    footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #7d6c5f; margin-top: 40px; }
-
-    @media (max-width: 600px) {
-      main { padding: 20px 10px; }
-      .cart-item { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .cart-item img { width: 100%; height: auto; }
-      .meta { margin-left: 0; width: 100%; }
-      .qty-controls { justify-content: flex-start; }
-      .cart-footer div.total { flex-direction: column; align-items: flex-start; gap: 5px; }
-      .cart-footer .actions { flex-direction: column; }
-      .cart-footer button { width: 100%; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panier — ELLE MAROQUINERIE</title>
+<style>
+body{font-family:"Georgia",serif;margin:0;background:#f6f1eb;color:#3e2f1c;}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 40px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
+header h1{margin:0;font-size:1.2rem;letter-spacing:2px;}
+main{padding:40px;}
+h2{margin-bottom:20px;}
+.cart-container{max-width:900px;margin:0 auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.cart-items{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.cart-item{display:flex;gap:10px;align-items:center;border-bottom:1px solid #eee;padding-bottom:10px;}
+.cart-item img{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #ddd;background:#fff;}
+.meta{flex:1;}
+.qty-controls{display:flex;gap:6px;align-items:center;margin-top:5px;}
+.qty-controls button{width:28px;height:28px;font-size:16px;padding:0;border-radius:4px;border:none;background:#8b5e34;color:#fff;cursor:pointer;}
+.qty-controls span{min-width:24px;text-align:center;display:inline-block;}
+.cart-footer{display:flex;flex-direction:column;gap:10px;}
+.cart-footer div{display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:1.1em;}
+.cart-footer button{padding:10px;border:none;border-radius:6px;cursor:pointer;font-family:inherit;}
+.clear-btn{background:#b23b3b;color:white;}
+.checkout-btn{background:#8b5e34;color:white;}
+@media(max-width:600px){.cart-item{flex-direction:column;align-items:flex-start;}.qty-controls{margin-top:5px;}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>ELLE MAROQUINERIE</h1>
-    <nav>
-      <a href="index.html">Accueil</a> |
-      <a href="#">À propos</a>
-    </nav>
-  </header>
+<header>
+<h1>ELLE MAROQUINERIE</h1>
+</header>
 
-  <main>
-    <h2>Votre Panier</h2>
-    <div class="cart-items" id="cartItems"></div>
+<main>
+<h2>Votre panier</h2>
+<div class="cart-container">
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div><span>Total</span><span id="cartTotal">0,00 €</span></div>
+    <div style="display:flex;gap:10px;margin-top:10px;">
+      <button class="checkout-btn" id="checkoutBtn">Procéder au paiement</button>
+      <button class="clear-btn" id="clearCartBtn">Vider le panier</button>
+    </div>
+  </div>
+</div>
+</main>
 
-    <div class="cart-footer">
-      <div class="total">
-        <span>Total</span>
-        <span id="cartTotal">0,00 €</span>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+
+const STORAGE_KEY='elle_cart_v1';
+let cart=[];
+const cartItemsEl=document.getElementById('cartItems');
+const cartTotalEl=document.getElementById('cartTotal');
+const clearCartBtn=document.getElementById('clearCartBtn');
+const checkoutBtn=document.getElementById('checkoutBtn');
+
+function loadCart(){try{cart=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){cart=[];}}
+function saveCart(){localStorage.setItem(STORAGE_KEY,JSON.stringify(cart));}
+function parsePrice(str){return parseFloat(str.replace(/[^\d,.-]/g,'').replace(',','.'))||0;}
+function formatPrice(num){return num.toLocaleString('fr-FR',{style:'currency',currency:'EUR'});}
+function renderCart(){
+  if(!cart.length){cartItemsEl.innerHTML='<p>Votre panier est vide.</p>';cartTotalEl.textContent=formatPrice(0);return;}
+  cartItemsEl.innerHTML=cart.map(item=>`
+    <div class="cart-item" data-id="${item.id}">
+      <img src="${item.img}" alt="${item.title}">
+      <div class="meta">
+        <h4>${item.title}</h4>
+        <div class="qty-controls">
+          <button class="dec-btn">−</button>
+          <span class="qty">${item.qty}</span>
+          <button class="inc-btn">+</button>
+        </div>
       </div>
-      <div class="actions">
-        <button id="checkoutBtn">Procéder au paiement</button>
-        <button id="clearCartBtn" class="clear">Vider</button>
+      <div style="text-align:right;">
+        <div>${formatPrice(item.price)}</div>
+        <div style="font-weight:bold;">${formatPrice(item.price*item.qty)}</div>
       </div>
     </div>
-  </main>
+  `).join('');
+  const total=cart.reduce((s,it)=>s+it.price*it.qty,0);
+  cartTotalEl.textContent=formatPrice(total);
+}
 
-  <footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
+// Quantity controls
+cartItemsEl.addEventListener('click',e=>{
+  const inc=e.target.closest('.inc-btn');
+  const dec=e.target.closest('.dec-btn');
+  if(inc||dec){
+    const id=parseInt((e.target.closest('.cart-item')).dataset.id,10);
+    const item=cart.find(i=>i.id===id);if(!item)return;
+    item.qty+=(inc?1:-1);
+    if(item.qty<=0) cart=cart.filter(i=>i.id!==id);
+    saveCart();renderCart();
+  }
+});
 
-  <script>
-    const STORAGE_KEY = 'elle_cart_v1';
-    const cartItemsEl = document.getElementById('cartItems');
-    const cartTotalEl = document.getElementById('cartTotal');
-    const clearCartBtn = document.getElementById('clearCartBtn');
-    const checkoutBtn = document.getElementById('checkoutBtn');
+// Clear cart
+clearCartBtn.addEventListener('click',()=>{if(confirm('Vider le panier ?')){cart=[];saveCart();renderCart();}});
 
-    let cart = [];
+// Checkout
+checkoutBtn.addEventListener('click',()=>{alert('Total : '+cart.reduce((s,it)=>s+it.price*it.qty,0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})+'\nDémo : paiement non connecté.');});
 
-    function loadCart() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      cart = raw ? JSON.parse(raw) : [];
-    }
+loadCart();
+renderCart();
 
-    function saveCart() { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-
-    function priceFormatter(n) {
-      return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
-    }
-
-    function parsePrice(str) {
-      const cleaned = String(str).replace(/[^\d,.\-]/g,'').replace(',', '.');
-      const n = parseFloat(cleaned);
-      return isNaN(n) ? 0 : n;
-    }
-
-    function renderCart() {
-      if (!cart.length) {
-        cartItemsEl.innerHTML = '<div>Votre panier est vide.</div>';
-        cartTotalEl.textContent = priceFormatter(0);
-        return;
-      }
-
-      cartItemsEl.innerHTML = cart.map(item => {
-        const subtotal = item.price * item.qty;
-        return `
-          <div class="cart-item" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.title}" loading="lazy">
-            <div class="meta">
-              <h4>${item.title}</h4>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="qty-controls" data-id="${item.id}">
-                  <button class="dec-btn">−</button>
-                  <span class="qty">${item.qty}</span>
-                  <button class="inc-btn">+</button>
-                </div>
-                <div style="text-align:right;">
-                  <div>${priceFormatter(item.price)}</div>
-                  <div style="font-weight:bold;">${priceFormatter(subtotal)}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      const total = cart.reduce((s,it) => s + it.price * it.qty,0);
-      cartTotalEl.textContent = priceFormatter(total);
-    }
-
-    function changeQty(itemId, delta) {
-      const item = cart.find(i => i.id === itemId);
-      if (!item) return;
-      item.qty = Math.max(0, item.qty + delta);
-      if (item.qty === 0) cart = cart.filter(i => i.id !== itemId);
-      saveCart();
-      renderCart();
-    }
-
-    function clearCart() { cart = []; saveCart(); renderCart(); }
-
-    loadCart();
-    renderCart();
-
-    cartItemsEl.addEventListener('click', (e) => {
-      const inc = e.target.closest('.inc-btn');
-      if (inc) { const id = parseInt(inc.closest('[data-id]').dataset.id,10); changeQty(id,1); return; }
-      const dec = e.target.closest('.dec-btn');
-      if (dec) { const id = parseInt(dec.closest('[data-id]').dataset.id,10); changeQty(id,-1); return; }
-    });
-
-    clearCartBtn.addEventListener('click', () => { if(confirm('Vider le panier ?')) clearCart(); });
-
-    checkoutBtn.addEventListener('click', () => {
-      window.location.href = 'index.html'; // ici tu peux mettre une page de paiement réelle
-    });
-  </script>
+});
+</script>
 </body>
 </html>
