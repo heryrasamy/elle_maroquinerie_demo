@@ -407,15 +407,14 @@
 </script>
 
 <body>
-  <header>
-    <h1>ELLE MAROQUINERIE</h1>
-    <nav aria-label="Navigation principale">
-      <a href="#">Accueil</a> |
-      <a href="#">À propos</a>
-    </nav>
-    <div class="cart" id="cartToggle" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0" aria-live="polite">👜 Panier (0)</div>
-  </header>
-
+ <header>
+  <h1>ELLE MAROQUINERIE</h1>
+  <nav aria-label="Navigation principale">
+    <a href="index.html">Accueil</a> |
+    <a href="#">À propos</a> |
+    <a href="cart.html">🛒 Voir panier</a>
+  </nav>
+</header>
   <main>
     <h2>Collection Capsule — Élégance & Simplicité</h2>
     <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
@@ -461,24 +460,17 @@
     </div>
   </div>
 
-  <!-- Cart drawer -->
-  <aside class="cart-drawer" id="cartDrawer" role="region" aria-label="Panier" aria-hidden="true">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h3>Votre panier</h3>
-      <button id="closeCartBtn" type="button" aria-label="Fermer le panier" class="close">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong>Total</strong>
-        <strong id="cartTotal">0,00 €</strong>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:8px;">
-        <button id="checkoutBtn" type="button">Procéder au paiement</button>
-        <button id="clearCartBtn" type="button" style="background:#b23b3b;">Vider</button>
-      </div>
-    </div>
-  </aside>
+<!--
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <h3>Votre panier</h3>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <p>Total : <span id="cartTotal">0 €</span></p>
+    <button id="checkoutBtn">Procéder au paiement</button>
+  </div>
+</aside>
+-->
+
   <!-- Section Paiement (démo) -->
 <div class="payment-modal" id="paymentModal" aria-hidden="true">
   <div class="payment-content">
@@ -593,7 +585,6 @@
     }
 
     // ---------- Cart rendering ----------
-    const cartDrawer = document.getElementById('cartDrawer');
     const cartItemsEl = document.getElementById('cartItems');
     const cartTotalEl = document.getElementById('cartTotal');
 
