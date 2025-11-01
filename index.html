@@ -170,6 +170,43 @@
   </style>
 </head>
 <body>
+  <script>
+  const STORAGE_KEY = 'elle_cart';
+
+  // Fonction pour ajouter un produit au panier
+  function addToCart(productIndex, qty = 1) {
+    const products = [
+      { title: "Sac Lydia", price: 80, img: "assets/p1.jpg" },
+      { title: "Sac Salma", price: 80, img: "assets/p2.jpg" },
+      { title: "Sac Eva", price: 60, img: "assets/p3.jpg" },
+      { title: "Sac Anna", price: 55, img: "assets/p4.jpg" },
+      // ... ajoute tous les produits ici ou importe-les dynamiquement
+    ];
+
+    const prod = products[productIndex];
+    if (!prod) return;
+
+    // Récupère le panier existant
+    let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    // Vérifie si le produit est déjà dans le panier
+    const existing = cart.find(item => item.title === prod.title);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      cart.push({ ...prod, qty });
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    alert(`${prod.title} ajouté au panier !`);
+  }
+
+  // Exemple : ajouter un bouton sur chaque produit
+  document.querySelectorAll('.add-btn').forEach((btn, idx) => {
+    btn.addEventListener('click', () => addToCart(idx, 1));
+  });
+</script>
+
   <header>
     <h1>ELLE MAROQUINERIE</h1>
     <nav aria-label="Navigation principale">
