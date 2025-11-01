@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ELLE MAROQUINERIE — Démo</title>
   <style>
+    /* --- Base --- */
     body {
       font-family: "Georgia", serif;
       background-color: #f6f1eb;
@@ -15,38 +16,36 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 60px;
+      padding: 15px 40px;
       background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      gap: 12px;
     }
     header h1 {
       font-size: 1.2rem;
       letter-spacing: 2px;
       font-weight: 600;
+      margin: 0;
     }
     nav a {
       color: #3e2f1c;
       text-decoration: none;
-      margin: 0 10px;
+      margin: 0 8px;
+    }
+    nav a:hover { text-decoration: underline; }
+    .cart-link, .cart {
       font-weight: bold;
+      cursor: pointer;
     }
-    nav a:hover {
-      color: #b07a2b;
-      text-decoration: underline;
-    }
+
     main {
       text-align: center;
       padding: 40px 0;
     }
-    h2 {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    p.subtitle {
-      font-style: italic;
-      color: #6a5d4b;
-      margin-bottom: 40px;
-    }
+    h2 { font-weight: bold; margin-bottom: 10px; }
+    p.subtitle { font-style: italic; color: #6a5d4b; margin-bottom: 40px; }
+
+    /* --- Produits --- */
     .products {
       display: flex;
       justify-content: center;
@@ -62,10 +61,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.2s;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
-    .card:hover {
-      transform: translateY(-5px);
-    }
+    .card:hover { transform: translateY(-5px); }
     .card img {
       width: 100%;
       height: 220px;
@@ -75,17 +75,10 @@
       border: 1px solid #ddd;
       display: block;
     }
-    .card h3 {
-      margin-top: 10px;
-      font-size: 1rem;
-    }
-    .card p {
-      font-size: 0.9rem;
-      margin: 5px 0 10px;
-    }
-    .price {
-      font-weight: bold;
-    }
+    .card h3 { margin-top: 10px; font-size: 1rem; }
+    .card p { font-size: 0.9rem; margin: 5px 0 10px; }
+    .price { font-weight: bold; margin-top: auto; }
+
     button {
       background-color: #8b5e34;
       color: white;
@@ -95,9 +88,8 @@
       cursor: pointer;
       font-family: inherit;
     }
-    button:hover {
-      background-color: #a66d40;
-    }
+    button:hover { background-color: #a66d40; }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -105,146 +97,104 @@
       color: #7d6c5f;
       margin-top: 40px;
     }
+
     /* --- Modale produit --- */
     .modal {
       display: none;
       position: fixed;
       z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4); 
-      justify-content: center;
-      align-items: center;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center; align-items: center;
       padding: 20px;
     }
-    .modal[aria-hidden="false"] {
-      display: flex;
-    }
+    .modal[aria-hidden="false"] { display: flex; }
     .modal-content {
-      background: #fff;
-      padding: 25px 25px 35px;
-      border-radius: 10px;
-      max-width: 420px;
-      width: 90%;
-      text-align: left;
-      position: relative;
+      background: #fff; padding: 25px 25px 35px;
+      border-radius: 10px; max-width: 520px; width: 95%;
+      text-align: left; position: relative;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      max-height: 90vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      max-height: 90vh; overflow-y: auto;
     }
+    .modal-content img { width: 100%; border-radius: 6px; margin-bottom: 10px; object-fit: contain; }
+
     .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #8b5e34;
-      background: transparent;
-      border: none;
-    }
-    .modal-content img {
-      width: 100%;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      background: white;
-      object-fit: contain;
+      position: absolute; top: 10px; right: 15px; font-size: 1.5rem;
+      cursor: pointer; color: #8b5e34; background: transparent; border: none;
     }
 
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .products {
-        padding: 0 10px;
-      }
-      .card {
-        width: 90%;
-      }
+    /* --- Cart drawer --- */
+    .cart-drawer {
+      position: fixed; right: 0; top: 0;
+      height: 100vh; width: 380px; max-width: 95%;
+      background: #fff; box-shadow: -8px 0 24px rgba(0,0,0,0.15);
+      transform: translateX(100%); transition: transform 0.25s ease;
+      z-index: 1500; display: flex; flex-direction: column; padding: 20px;
     }
+    .cart-drawer[aria-hidden="false"] { transform: translateX(0); }
+    .cart-items { flex: 1; overflow-y: auto; margin-top: 10px; display: grid; gap: 12px; }
+    .cart-item { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; background: #fff; }
+    .cart-item .meta { flex: 1; text-align: left; }
+    .qty-controls { display:flex; gap:6px; align-items:center; }
+    .cart-footer { border-top: 1px solid #eee; padding-top: 12px; margin-top: 12px; }
+
+    /* --- Contact (global) --- */
+    .contact {
+      text-align: center; padding: 40px 20px; background-color: #fafafa; border-top: 1px solid #ddd; margin-top: 40px;
+    }
+    .contact h2 { margin-bottom: 10px; font-size: 1.6em; color: #b23b3b; }
+    .contact form { max-width: 600px; margin: 20px auto; display:flex; flex-direction:column; gap:10px; }
+    .contact input, .contact textarea { padding:10px; border:1px solid #ccc; border-radius:6px; font-size:1em; }
+    .contact button { background-color:#b23b3b; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer; }
+    .contact-info { margin-top: 20px; color:#555; }
+
+    @media (max-width: 800px) {
+      header { padding: 12px 20px; }
+      .products { gap: 16px; padding: 0 20px; }
+    }
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 10px; align-items: flex-start; }
+      .card { width: 100%; max-width: 420px; }
+      html { scroll-behavior: smooth; }
+    }
+
   </style>
 </head>
 <body>
-  <script>
-  const STORAGE_KEY = 'elle_cart';
-
-  // Fonction pour ajouter un produit au panier
-  function addToCart(productIndex, qty = 1) {
-    const products = [
-      { title: "Sac Lydia", price: 80, img: "assets/p1.jpg" },
-      { title: "Sac Salma", price: 80, img: "assets/p2.jpg" },
-      { title: "Sac Eva", price: 60, img: "assets/p3.jpg" },
-      { title: "Sac Anna", price: 55, img: "assets/p4.jpg" },
-      // ... ajoute tous les produits ici ou importe-les dynamiquement
-    ];
-
-    const prod = products[productIndex];
-    if (!prod) return;
-
-    // Récupère le panier existant
-    let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-    // Vérifie si le produit est déjà dans le panier
-    const existing = cart.find(item => item.title === prod.title);
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({ ...prod, qty });
-    }
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    alert(`${prod.title} ajouté au panier !`);
-  }
-
-  // Exemple : ajouter un bouton sur chaque produit
-  document.querySelectorAll('.add-btn').forEach((btn, idx) => {
-    btn.addEventListener('click', () => addToCart(idx, 1));
-  });
-</script>
-
   <header>
     <h1>ELLE MAROQUINERIE</h1>
     <nav aria-label="Navigation principale">
-      <a href="index.html">Accueil</a> |
-      <a href="#">À propos</a> |
-      <a href="cart.html">🛒 Voir panier</a>
+      <a href="#">Accueil</a> |
+      <a href="#">À propos</a>
     </nav>
+    <div id="cartToggle" class="cart-link" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0">👜 Panier (0)</div>
   </header>
 
   <main>
     <h2>Collection Capsule — Élégance & Simplicité</h2>
     <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
 
+    <!-- Section produits -->
     <section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
 
     <section id="contact" class="contact">
       <h2>Contact</h2>
       <p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
-
       <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
-        <label for="name">Nom :</label>
         <input type="text" id="name" name="name" placeholder="Votre nom" required>
-
-        <label for="email">Email :</label>
         <input type="email" id="email" name="email" placeholder="Votre email" required>
-
-        <label for="message">Message :</label>
         <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
-
         <button type="submit">Envoyer</button>
       </form>
-
       <div class="contact-info">
         <p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
         <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
         <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
       </div>
     </section>
+
   </main>
 
   <!-- Modale produit -->
@@ -259,13 +209,32 @@
     </div>
   </div>
 
-  <footer>
-    © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
-  </footer>
+  <!-- Cart drawer -->
+  <aside class="cart-drawer" id="cartDrawer" role="region" aria-label="Panier" aria-hidden="true">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3>Votre panier</h3>
+      <button id="closeCartBtn" type="button" aria-label="Fermer le panier" class="close">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>Total</strong>
+        <strong id="cartTotal">0,00 €</strong>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <a href="cart.html">
+          <button id="checkoutBtn" type="button">Procéder au paiement</button>
+        </a>
+        <button id="clearCartBtn" type="button" style="background:#b23b3b;">Vider</button>
+      </div>
+    </div>
+  </aside>
+
+  <footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
 
   <script>
-    // ---------- Données produits ----------
-   const products = [
+    document.addEventListener('DOMContentLoaded', () => {
+      const products = [
         { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
         { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
         { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.", price: "60,00 €" },
@@ -292,64 +261,115 @@
         { img: "assets/p24.jpg", title: "Sac Luxe", desc: "Pièce d’exception pour les grandes occasions.", price: "120,00 €" }
       ];
 
-    const productsSection = document.getElementById('tous-les-sacs');
-    productsSection.innerHTML = products.map((p, i) => {
-      const descText = p.desc.replace(/<br\s*\/?>/gi, ' ');
-      return `
-        <div class="card" data-index="${i}" role="article" aria-label="${p.title}">
-          <img loading="lazy" src="${p.img}" alt="${p.title}" width="400" height="300">
+      const productsSection = document.getElementById('tous-les-sacs');
+      const cartDrawer = document.getElementById('cartDrawer');
+      const cartItemsEl = document.getElementById('cartItems');
+      const cartTotalEl = document.getElementById('cartTotal');
+      const cartToggle = document.getElementById('cartToggle');
+      const closeCartBtn = document.getElementById('closeCartBtn');
+      const clearCartBtn = document.getElementById('clearCartBtn');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+
+      const modal = document.getElementById('productModal');
+      const modalContent = modal.querySelector('.modal-content');
+      const modalImg = document.getElementById('modalImg');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalPrice = document.getElementById('modalPrice');
+      const modalAddBtn = document.getElementById('modalAddBtn');
+      const closeModalBtn = document.getElementById('closeModal');
+
+      const STORAGE_KEY = 'elle_cart_v1';
+      let cart = [];
+
+      function loadCart() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        cart = stored ? JSON.parse(stored) : [];
+        updateCartDisplay();
+      }
+
+      function saveCart() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      }
+
+      function updateCartDisplay() {
+        cartItemsEl.innerHTML = '';
+        let total = 0;
+        cart.forEach((item,index) => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item';
+          itemEl.innerHTML = `
+            <img src="${item.img}" alt="${item.title}">
+            <div class="meta">
+              <div>${item.title}</div>
+              <div class="qty-controls">
+                <button data-action="minus" data-index="${index}">-</button>
+                <span>${item.qty}</span>
+                <button data-action="plus" data-index="${index}">+</button>
+              </div>
+              <div>${item.price}</div>
+            </div>
+          `;
+          cartItemsEl.appendChild(itemEl);
+
+          // Calcul du total
+          let p = parseFloat(item.price.replace('€','').replace(',','.')) || 0;
+          total += p * item.qty;
+        });
+        cartTotalEl.textContent = total.toFixed(2).replace('.',',') + ' €';
+        cartToggle.textContent = `👜 Panier (${cart.reduce((s,a)=>s+a.qty,0)})`;
+      }
+
+      function addToCart(product) {
+        const idx = cart.findIndex(p => p.title===product.title);
+        if(idx>=0){ cart[idx].qty++; } else { cart.push({...product,qty:1}); }
+        saveCart(); updateCartDisplay();
+      }
+
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.title}">
           <h3>${p.title}</h3>
-          <p>${descText}</p>
+          <p>${p.desc}</p>
           <p class="price">${p.price}</p>
-          <button type="button" class="add-btn">Ajouter</button>
-        </div>
-      `;
-    }).join('');
+          <button type="button">Ajouter au panier</button>
+        `;
+        card.querySelector('button').addEventListener('click', ()=> addToCart(p));
+        card.querySelector('img').addEventListener('click', ()=>{
+          modalImg.src = p.img;
+          modalTitle.innerHTML = p.title;
+          modalDesc.innerHTML = p.desc;
+          modalPrice.innerHTML = p.price;
+          modalAddBtn.onclick = ()=>{ addToCart(p); modal.setAttribute('aria-hidden','true'); }
+          modal.setAttribute('aria-hidden','false');
+        });
+        productsSection.appendChild(card);
+      });
 
-    // ---------- Modal produit ----------
-    const modal = document.getElementById('productModal');
-    const modalContent = modal.querySelector('.modal-content');
-    const modalImg = document.getElementById('modalImg');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalPrice = document.getElementById('modalPrice');
-    const modalAddBtn = document.getElementById('modalAddBtn');
-    let currentModalProductIndex = null;
+      cartItemsEl.addEventListener('click', e=>{
+        const btn = e.target;
+        if(btn.dataset.action){
+          const idx = parseInt(btn.dataset.index);
+          if(btn.dataset.action==='plus'){ cart[idx].qty++; }
+          if(btn.dataset.action==='minus'){ cart[idx].qty--; if(cart[idx].qty<=0) cart.splice(idx,1); }
+          saveCart(); updateCartDisplay();
+        }
+      });
 
-    productsSection.addEventListener('click', (e) => {
-      const addBtn = e.target.closest('.add-btn');
-      if (addBtn) {
-        const card = addBtn.closest('.card');
-        const idx = parseInt(card.dataset.index, 10);
-        alert(`${products[idx].title} ajouté au panier (démo)`); // juste alerte démo
-        return;
-      }
-      const card = e.target.closest('.card');
-      if (card) {
-        const idx = parseInt(card.dataset.index, 10);
-        openModalWithProduct(idx);
-      }
+      cartToggle.addEventListener('click', ()=>{
+        const expanded = cartDrawer.getAttribute('aria-hidden')==='false';
+        cartDrawer.setAttribute('aria-hidden', expanded?'true':'false');
+      });
+      closeCartBtn.addEventListener('click', ()=>cartDrawer.setAttribute('aria-hidden','true'));
+      clearCartBtn.addEventListener('click', ()=>{ cart=[]; saveCart(); updateCartDisplay(); });
+
+      closeModalBtn.addEventListener('click', ()=> modal.setAttribute('aria-hidden','true'));
+      modal.addEventListener('click', e=> { if(e.target===modal) modal.setAttribute('aria-hidden','true'); });
+
+      loadCart();
     });
-
-    function openModalWithProduct(idx) {
-      const prod = products[idx];
-      if (!prod) return;
-      currentModalProductIndex = idx;
-      modalImg.src = prod.img;
-      modalImg.alt = prod.title;
-      modalTitle.textContent = prod.title;
-      modalDesc.innerHTML = prod.desc.replace(/</g, '&lt;').replace(/&lt;br\s*\/?&gt;/gi, '<br>');
-      modalPrice.textContent = prod.price;
-      modal.setAttribute('aria-hidden', 'false');
-      modalContent.focus();
-    }
-    function closeModal() {
-      modal.setAttribute('aria-hidden', 'true');
-      currentModalProductIndex = null;
-    }
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    window.addEventListener('keydown', (e) => { if(e.key==='Escape') closeModal(); });
   </script>
 </body>
 </html>
