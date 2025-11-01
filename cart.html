@@ -5,226 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panier — ELLE Maroquinerie</title>
   <style>
-    body {
-      font-family: "Georgia", serif;
-      background-color: #f6f1eb;
-      margin: 0;
-      color: #3e2f1c;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      gap: 12px;
-    }
-    header img {
-      width: 50px;
-      height: auto;
-      border-radius: 6px;
-    }
-    header h1 {
-      font-size: 1.2rem;
-      margin: 0;
-      letter-spacing: 1px;
-    }
-    nav a {
-      text-decoration: none;
-      color: #3e2f1c;
-      margin-left: 12px;
-    }
-    main { padding: 30px 20px; }
-    h2 { font-weight: bold; margin-bottom: 10px; }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 20px;
-    }
-    .card {
-      background: linear-gradient(to bottom, #f8f4ef, #f0e8e0);
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .card img { width: 100%; height: 180px; object-fit: contain; border-radius:6px; border:1px solid #ddd; background:#fff; }
-    .card h3 { margin: 10px 0 5px; font-size:1rem; }
-    .card p { font-size:0.9rem; margin:3px 0; }
-    .price { font-weight:bold; margin-top:auto; }
-    .qty-controls { display:flex; gap:6px; align-items:center; margin:5px 0; }
-    button {
-      background-color: #8b5e34;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover { background-color: #a66d40; }
-    .cart-footer { margin-top:20px; border-top:1px solid #ddd; padding-top:12px; display:flex; flex-direction:column; gap:10px; }
-    .cart-footer div { display:flex; justify-content:space-between; }
-    .checkout-section { margin-top:20px; border-top:1px solid #ddd; padding-top:15px; }
-    label { display:block; margin:5px 0 2px; }
-    input { padding:6px 10px; width:100%; border:1px solid #ccc; border-radius:4px; margin-bottom:8px; }
-    .payment-methods { display:flex; gap:10px; margin-bottom:10px; }
-    @media(max-width:600px){ .products{grid-template-columns:1fr;} }
+    body { font-family: "Georgia", serif; background:#f6f1eb; color:#3e2f1c; margin:0; padding:20px; }
+    h1 { text-align:center; margin-bottom:20px; }
+    table { width:100%; border-collapse: collapse; margin-bottom:20px; }
+    th, td { padding:10px; border-bottom:1px solid #ddd; text-align:left; }
+    th { background:#f0e8e0; }
+    img { width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #ddd; }
+    .qty-controls { display:flex; gap:6px; align-items:center; }
+    button { background:#8b5e34; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-family:inherit; }
+    button:hover { background:#a66d40; }
+    .cart-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:10px; }
+    .total { text-align:right; font-weight:bold; margin-top:10px; }
+    a { text-decoration:none; color:#8b5e34; font-weight:bold; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Logo ELLE Maroquinerie">
-    <h1>ELLE Maroquinerie</h1>
-    <nav><a href="index.html">Retour aux produits</a></nav>
-  </header>
 
-  <main>
-    <h2>Votre Panier</h2>
-    <div id="cartProducts" class="products"></div>
+  <h1>Votre panier</h1>
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Description</th>
+        <th>Prix unitaire</th>
+        <th>Quantité</th>
+        <th>Sous-total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-    <div class="cart-footer">
-      <div><strong>Total</strong><strong id="cartTotal">0,00 €</strong></div>
-      <button id="exportPdfBtn">Exporter / Imprimer facture</button>
-    </div>
+  <div class="total" id="cartTotal">Total : 0,00 €</div>
+  <div class="cart-actions">
+    <button id="clearCartBtn">Vider le panier</button>
+    <button id="checkoutBtn">Simuler paiement</button>
+    <a href="index.html">← Retour à la boutique</a>
+  </div>
 
-    <div class="checkout-section">
-      <h2>Paiement</h2>
-      <div class="payment-methods">
-        <label><input type="radio" name="payment" value="cb" checked> Carte Bancaire</label>
-        <label><input type="radio" name="payment" value="paypal"> PayPal</label>
-      </div>
-      <label>Nom</label>
-      <input type="text" id="custName" value="Test Client">
-      <label>Email</label>
-      <input type="email" id="custEmail" value="test@example.com">
-      <label>Adresse</label>
-      <input type="text" id="custAddr" value="25 Rue du Cuir, 75002 Paris">
-      <button id="payBtn">Valider le paiement</button>
-    </div>
-  </main>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // ---------- Données produits ----------
-    const products = [
-      { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01\nDimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
-      { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02\nDimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
-      { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910\nHauteur 45 cm, Longueur 50 cm, Largeur 17 cm.", price: "60,00 €" },
-      { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909\nHauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).", price: "55,00 €" },
-      { img: "assets/p5.jpg", title: "Pochette Amina", desc: "Référence : PF909\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p6.jpg", title: "Sac Carla", desc: "Référence : 31\nHauteur 35 cm, Longueur 35 cm, Largeur 17 cm.", price: "40,00 €" },
-      { img: "assets/p7.jpg", title: "Sac Alma", desc: "Référence : MC420\nHauteur 25 cm, Longueur 30 cm, Largeur 8 cm.", price: "45,00 €" },
-      { img: "assets/p8.jpg", title: "Pochette Livia", desc: "Référence : Ml450\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p9.jpg", title: "Sac Week-end", desc: "Grand format, cuir souple, idéal pour escapades.", price: "89,00 €" },
-      { img: "assets/p10.jpg", title: "Pochette Dora", desc: "Référence : Ml451\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p11.jpg", title: "Pochette Gemma", desc: "Référence : Ml452\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p12.jpg", title: "Sac Lydia (variante)", desc: "Référence : Elle 02\nLongueur 50 cm, largeur 15 cm.", price: "80,00 €" },
-      { img: "assets/p13.jpg", title: "Pochette Mina", desc: "Référence : Ml452\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p14.jpg", title: "Pochette Enya", desc: "Référence : Ml453\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p15.jpg", title: "Pochette Sia", desc: "Référence : Ml454\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p16.jpg", title: "Pochette Vitaa", desc: "Référence : Ml455\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p17.jpg", title: "Pochette Celia", desc: "Référence : Ml456\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p18.jpg", title: "Pochette Nina", desc: "Référence : Ml457\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p19.jpg", title: "Sac Sport Chic", desc: "Mélange parfait entre style et confort.", price: "68,00 €" },
-      { img: "assets/p20.jpg", title: "Pochette Dina", desc: "Référence : Ml458\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p21.jpg", title: "Pochette Mira", desc: "Référence : Ml459\nHauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p22.jpg", title: "Sac Joy", desc: "Référence : PF908\nHauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
-      { img: "assets/p23.jpg", title: "Sac Liana", desc: "Référence : PF909\nHauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
-      { img: "assets/p24.jpg", title: "Sac Luxe", desc: "Pièce d’exception pour les grandes occasions.", price: "120,00 €" }
-    ];
-
-    // ---------- Gestion localStorage ----------
     const STORAGE_KEY = 'elle_cart_v1';
-    let cart = [];
-
-    function loadCart(){ try{ cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e){ cart=[]; } }
-    function saveCart(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-
-    function parsePrice(str){ return parseFloat(str.replace(/[^\d,.-]/g,'').replace(',','.'))||0; }
-    function priceFmt(n){ return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n); }
-
-    // ---------- Affichage panier ----------
-    const cartProductsEl = document.getElementById('cartProducts');
+    const cartTableBody = document.querySelector('#cartTable tbody');
     const cartTotalEl = document.getElementById('cartTotal');
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
 
-    function renderCart(){
-      if(cart.length===0){ cartProductsEl.innerHTML='<p>Votre panier est vide.</p>'; cartTotalEl.textContent='0,00 €'; return; }
-      cartProductsEl.innerHTML = cart.map(item=>{
-        const subtotal = item.price*item.qty;
-        return `
-          <div class="card" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.title}">
-            <h3>${item.title}</h3>
-            <p>${item.desc}</p>
-            <p class="price">${priceFmt(item.price)}</p>
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch(e) { return []; }
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function priceFormatter(n) {
+      return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
+    }
+
+    function parsePrice(str) {
+      const cleaned = String(str).replace(/[^\d,.\-]/g,'').replace(',', '.');
+      const n = parseFloat(cleaned);
+      return isNaN(n) ? 0 : n;
+    }
+
+    function renderCart() {
+      const cart = loadCart();
+      if (!cart.length) {
+        cartTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Votre panier est vide.</td></tr>';
+        cartTotalEl.textContent = 'Total : 0,00 €';
+        return;
+      }
+
+      cartTableBody.innerHTML = cart.map(item => {
+        const subtotal = item.price * item.qty;
+        return `<tr data-id="${item.id}">
+          <td><img src="${item.img}" alt="${item.title}"><br>${item.title}</td>
+          <td>${item.title}</td>
+          <td>${priceFormatter(item.price)}</td>
+          <td>
             <div class="qty-controls">
               <button class="dec-btn">−</button>
               <span class="qty">${item.qty}</span>
               <button class="inc-btn">+</button>
             </div>
-            <button class="remove-btn">Supprimer</button>
-          </div>
-        `;
+          </td>
+          <td>${priceFormatter(subtotal)}</td>
+        </tr>`;
       }).join('');
-      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-      cartTotalEl.textContent = priceFmt(total);
+
+      const total = cart.reduce((s,it)=>s + it.price * it.qty,0);
+      cartTotalEl.textContent = 'Total : ' + priceFormatter(total);
     }
 
-    // ---------- Modifications panier ----------
-    function addQty(id,delta){
-      const item = cart.find(i=>i.id===id); if(!item) return;
-      item.qty=Math.max(0,item.qty+delta); if(item.qty===0) cart=cart.filter(i=>i.id!==id);
-      saveCart(); renderCart();
+    function changeQty(itemId, delta) {
+      let cart = loadCart();
+      const item = cart.find(i => i.id === itemId);
+      if (!item) return;
+      item.qty = Math.max(0, item.qty + delta);
+      if (item.qty === 0) cart = cart.filter(i => i.id !== itemId);
+      saveCart(cart);
+      renderCart();
     }
-    function removeItem(id){ cart=cart.filter(i=>i.id!==id); saveCart(); renderCart(); }
 
-    cartProductsEl.addEventListener('click',e=>{
-      const card=e.target.closest('.card'); if(!card) return;
-      const id=parseInt(card.dataset.id);
-      if(e.target.classList.contains('inc-btn')) addQty(id,1);
-      else if(e.target.classList.contains('dec-btn')) addQty(id,-1);
-      else if(e.target.classList.contains('remove-btn')) removeItem(id);
+    cartTableBody.addEventListener('click', (e) => {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      const id = parseInt(row.dataset.id,10);
+      if (e.target.classList.contains('inc-btn')) changeQty(id, +1);
+      else if (e.target.classList.contains('dec-btn')) changeQty(id, -1);
     });
 
-    // ---------- Initialisation ----------
-    loadCart();
-    // Associer info produit complet
-    cart=cart.map(c=>{
-      const p=products[c.id];
-      return {...p, qty:c.qty, id:c.id};
+    clearCartBtn.addEventListener('click', () => {
+      if (confirm('Vider le panier ?')) {
+        saveCart([]);
+        renderCart();
+      }
     });
+
+    checkoutBtn.addEventListener('click', () => {
+      alert('Démo : paiement non connecté.');
+    });
+
     renderCart();
-
-    // ---------- Paiement simulé ----------
-    document.getElementById('payBtn').addEventListener('click',()=>{
-      if(cart.length===0){ alert("Votre panier est vide !"); return; }
-      const name=document.getElementById('custName').value;
-      const email=document.getElementById('custEmail').value;
-      const addr=document.getElementById('custAddr').value;
-      const method=document.querySelector('input[name="payment"]:checked').value;
-      alert(`Paiement simulé effectué !\nMode : ${method}\nNom : ${name}\nEmail : ${email}\nAdresse : ${addr}`);
-      cart=[]; saveCart(); renderCart();
-    });
-
-    // ---------- Export PDF ----------
-    document.getElementById('exportPdfBtn').addEventListener('click',()=>{
-      if(cart.length===0){ alert("Panier vide !"); return; }
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      let y=10;
-      doc.setFontSize(14); doc.text("Facture ELLE Maroquinerie",10,y); y+=10;
-      cart.forEach(item=>{
-        doc.setFontSize(12);
-        doc.text(`${item.title} x ${item.qty} - ${priceFmt(item.price*item.qty)}`,10,y);
-        y+=7;
-      });
-      const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-      y+=5; doc.setFontSize(14); doc.text(`Total: ${priceFmt(total)}`,10,y);
-      doc.save("facture.pdf");
-    });
   </script>
+
 </body>
 </html>
