@@ -28,13 +28,11 @@
       color: #3e2f1c;
       text-decoration: none;
       margin: 0 10px;
+      font-weight: bold;
     }
     nav a:hover {
+      color: #b07a2b;
       text-decoration: underline;
-    }
-    .cart {
-      font-weight: bold;
-      cursor: pointer;
     }
     main {
       text-align: center;
@@ -107,9 +105,8 @@
       color: #7d6c5f;
       margin-top: 40px;
     }
-
     /* --- Modale produit --- */
-   .modal {
+    .modal {
       display: none;
       position: fixed;
       z-index: 1000;
@@ -136,6 +133,9 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       max-height: 90vh;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .close {
       position: absolute;
@@ -147,98 +147,12 @@
       background: transparent;
       border: none;
     }
-
-
     .modal-content img {
       width: 100%;
       border-radius: 6px;
       margin-bottom: 10px;
       background: white;
       object-fit: contain;
-    }
-    .modal-content {
-  max-height: 90vh; /* limite la hauteur au viewport */
-  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-
-    /* --- Cart drawer --- */
-    .cart-drawer {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 360px;
-      max-width: 95%;
-      background: #fff;
-      box-shadow: -8px 0 24px rgba(0,0,0,0.15);
-      transform: translateX(100%);
-      transition: transform 0.25s ease;
-      z-index: 1500;
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-    }
-    .cart-drawer[aria-hidden="false"] {
-      transform: translateX(0);
-    }
-    .cart-drawer h3 {
-      margin: 0 0 10px;
-    }
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      margin-top: 10px;
-      display: grid;
-      gap: 12px;
-    }
-    .cart-item {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-    }
-    .cart-item img {
-      width: 64px;
-      height: 64px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-      background: #fff;
-    }
-    .cart-item .meta {
-      flex: 1;
-      text-align: left;
-    }
-    .cart-item .meta h4 {
-      margin: 0 0 6px;
-      font-size: 0.95rem;
-    }
-    .qty-controls {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-    .qty-controls button {
-      padding: 4px 8px;
-      font-size: 0.95rem;
-    }
-  .cart-footer {
-  border-top: 1px solid #eee;
-  padding: 20px 16px 30px; /* espace intérieur plus grand */
-  background: #fff;
-  position: sticky;
-  bottom: 0;
-  margin-top: 12px;
-}
-    .cart-empty {
-      color: #666;
-      text-align: center;
-      margin-top: 40px;
     }
 
     @media (max-width: 600px) {
@@ -252,174 +166,23 @@
       .card {
         width: 90%;
       }
-      html {
-        scroll-behavior: smooth;
-      }
-      .contact {
-        text-align: center;
-        padding: 50px 20px;
-        background-color: #fafafa;
-        border-top: 1px solid #ddd;
-      }
-      .contact h2 {
-        margin-bottom: 10px;
-        font-size: 1.8em;
-        color: #b23b3b;
-      }
-      .contact form {
-        max-width: 500px;
-        margin: 20px auto;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .contact input,
-      .contact textarea {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1em;
-      }
-      .contact button {
-        background-color: #b23b3b;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .contact button:hover {
-        background-color: #a12f2f;
-      }
-      .contact-info {
-        margin-top: 30px;
-        font-size: 0.95em;
-        color: #555;
-      }
-      /* Ajustement uniquement pour la modale du panier */
-#cartModal .modal-content {
-  max-height: 90vh; /* limite la hauteur au viewport */
-  overflow-y: auto; /* ajoute un scroll interne si nécessaire */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Pour garder le total et le bouton visibles */
-#cartModal .cart-footer {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
-      .payment-modal {
-  display: none;
-  position: fixed;
-  z-index: 2000;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  justify-content: center;
-  align-items: center;
-}
-
-.payment-modal[aria-hidden="false"] {
-  display: flex;
-}
-
-.payment-content {
-  background: #fff;
-  padding: 25px 30px 35px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-}
-
-.payment-content h3 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.payment-content form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.payment-content input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  width: 100%;
-}
-
-.payment-content .row {
-  display: flex;
-  gap: 10px;
-}
-
-.payment-success {
-  margin-top: 20px;
-  text-align: center;
-  color: #3e8b3e;
-  font-weight: bold;
-}
-
     }
   </style>
 </head>
- <!-- Remplace l'ancien listener checkoutBtn par ceci (script principal) -->
-<script>
-  // Exemple minimal : avant redirection on sauve le panier
-  const checkoutBtn = document.getElementById('checkoutBtn');
-
-  checkoutBtn.addEventListener('click', () => {
-    // Récupère les données du panier existantes dans l'UI
-    // <-- ADAPTEZ cette partie si votre app stocke déjà le panier différemment -->
-    const cartItemsNode = document.querySelectorAll('.cart-item');
-    const items = [];
-    cartItemsNode.forEach(node => {
-      // exemple d'éléments attendus dans .cart-item
-      const title = node.querySelector('.meta h4')?.innerText || '';
-      const priceText = node.querySelector('.meta .price')?.innerText || '0€';
-      const price = parseFloat(priceText.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
-      const qty = parseInt(node.querySelector('.qty')?.innerText || node.querySelector('.qty-input')?.value || '1') || 1;
-      items.push({ title, price, qty });
-    });
-
-    // Si tu as déjà un objet cart global, préfère l'utiliser ici
-    const cart = {
-      items,
-      total: items.reduce((s,i) => s + i.price * i.qty, 0)
-    };
-
-    // Sauvegarde dans localStorage pour que payment.html puisse le lire
-    localStorage.setItem('elle_cart', JSON.stringify(cart));
-
-    // Redirection vers la page de paiement dédiée
-    window.location.href = 'payment.html';
-  });
-</script>
-
 <body>
- <header>
-  <h1>ELLE MAROQUINERIE</h1>
-  <nav aria-label="Navigation principale">
-    <a href="index.html">Accueil</a> |
-    <a href="#">À propos</a> |
-    <a href="cart.html">🛒 Voir panier</a>
-  </nav>
-</header>
+  <header>
+    <h1>ELLE MAROQUINERIE</h1>
+    <nav aria-label="Navigation principale">
+      <a href="index.html">Accueil</a> |
+      <a href="#">À propos</a> |
+      <a href="cart.html">🛒 Voir panier</a>
+    </nav>
+  </header>
+
   <main>
     <h2>Collection Capsule — Élégance & Simplicité</h2>
     <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
 
-    <!-- Section produits : remplie dynamiquement depuis products -->
     <section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
 
     <section id="contact" class="contact">
@@ -445,7 +208,6 @@
         <p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
       </div>
     </section>
-
   </main>
 
   <!-- Modale produit -->
@@ -460,92 +222,20 @@
     </div>
   </div>
 
-<!--
-<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
-  <h3>Votre panier</h3>
-  <div class="cart-items"></div>
-  <div class="cart-footer">
-    <p>Total : <span id="cartTotal">0 €</span></p>
-    <button id="checkoutBtn">Procéder au paiement</button>
-  </div>
-</aside>
--->
-
-  <!-- Section Paiement (démo) -->
-<div class="payment-modal" id="paymentModal" aria-hidden="true">
-  <div class="payment-content">
-    <button class="close" id="closePayment" aria-label="Fermer le paiement">&times;</button>
-    <h3>Paiement par carte</h3>
-    <form id="fakePaymentForm">
-      <label for="cardName">Titulaire de la carte</label>
-      <input type="text" id="cardName" name="cardName" placeholder="Jean Dupont" required>
-
-      <label for="cardNumber">Numéro de carte</label>
-      <input type="text" id="cardNumber" name="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
-
-      <div class="row">
-        <div>
-          <label for="expiry">Date d’expiration</label>
-          <input type="text" id="expiry" name="expiry" maxlength="5" placeholder="MM/AA" required>
-        </div>
-        <div>
-          <label for="cvc">CVC</label>
-          <input type="text" id="cvc" name="cvc" maxlength="3" placeholder="123" required>
-        </div>
-      </div>
-
-      <button type="submit">Payer maintenant</button>
-    </form>
-
-    <p class="payment-success" id="paymentSuccess" hidden>
-      ✅ Paiement accepté ! Merci pour votre commande 💕
-    </p>
-  </div>
-</div>
-
-
   <footer>
     © 2025 ELLE Maroquinerie — Démo. Paiement non connecté.
   </footer>
 
   <script>
-    // ---------- Données produits (source de vérité) ----------
+    // ---------- Données produits ----------
     const products = [
-      { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
-      { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
-      { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.<br>Sac en jean souple au design intemporel : pratique, robuste et toujours tendance.", price: "60,00 €" },
-      { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).<br>Souple et raffiné, parfait pour le quotidien.", price: "55,00 €" },
-      { img: "assets/p5.jpg", title: "Pochette Amina", desc: "Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p6.jpg", title: "Sac Carla", desc: "Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm (non pliable).", price: "40,00 €" },
-      { img: "assets/p7.jpg", title: "Sac Alma", desc: "Référence : MC420<br>Dimensions : Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm (non pliable).", price: "45,00 €" },
-      { img: "assets/p8.jpg", title: "Pochette Livia", desc: "Référence : Ml450<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p10.jpg", title: "Pochette Dora", desc: "Référence : Ml451<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p11.jpg", title: "Pochette Gemma", desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p12.jpg", title: "Sac Lydia (variante)", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).", price: "80,00 €" },
-      { img: "assets/p13.jpg", title: "Pochette Mina", desc: "Référence : Ml452<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p14.jpg", title: "Pochette Enya", desc: "Référence : Ml453<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p15.jpg", title: "Pochette Sia", desc: "Référence : Ml454<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p16.jpg", title: "Pochette Vitaa", desc: "Référence : Ml455<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p17.jpg", title: "Pochette Celia", desc: "Référence : Ml456<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p18.jpg", title: "Pochette Nina", desc: "Référence : Ml457<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p20.jpg", title: "Pochette Dina", desc: "Référence : Ml458<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p21.jpg", title: "Pochette Mira", desc: "Référence : Ml459<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.", price: "17,50 €" },
-      { img: "assets/p22.jpg", title: "Sac Joy", desc: "Référence : PF908<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" },
-      { img: "assets/p23.jpg", title: "Sac Liana", desc: "Référence : PF909<br>Dimensions : Hauteur 35 cm, Longueur 42 cm.", price: "65,00 €" }
+      { img: "assets/p1.jpg", title: "Sac Lydia", desc: "Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm.", price: "80,00 €" },
+      { img: "assets/p2.jpg", title: "Sac Salma", desc: "Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm.", price: "80,00 €" },
+      { img: "assets/p3.jpg", title: "Sac Eva", desc: "Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.", price: "60,00 €" },
+      { img: "assets/p4.jpg", title: "Sac Anna", desc: "Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm.", price: "55,00 €" }
+      // Ajouter les autres produits si nécessaire
     ];
 
-    // ---------- Helpers prix / formatage ----------
-    const priceFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
-
-    function parsePrice(str) {
-      if (typeof str === 'number') return str;
-      // keep digits, comma, dot, minus; then normalize comma to dot
-      const cleaned = String(str).replace(/[^\d,.\-]/g, '').replace(',', '.');
-      const n = parseFloat(cleaned);
-      return isNaN(n) ? 0 : n;
-    }
-
-    // ---------- Génération des cartes ----------
     const productsSection = document.getElementById('tous-les-sacs');
     productsSection.innerHTML = products.map((p, i) => {
       const descText = p.desc.replace(/<br\s*\/?>/gi, ' ');
@@ -560,122 +250,7 @@
       `;
     }).join('');
 
-    // ---------- Cart (localStorage persistence) ----------
-    const STORAGE_KEY = 'elle_cart_v1';
-    let cart = []; // array of {id, title, price, qty, img}
-
-    function loadCart() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        cart = raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        cart = [];
-      }
-    }
-    function saveCart() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    }
-    function getCartCount() {
-      return cart.reduce((s, it) => s + it.qty, 0);
-    }
-    function updateCartBadge() {
-      const cartEl = document.getElementById('cartToggle');
-      cartEl.textContent = `👜 Panier (${getCartCount()})`;
-      cartEl.setAttribute('aria-expanded', isCartOpen() ? 'true' : 'false');
-    }
-
-    // ---------- Cart rendering ----------
-    const cartItemsEl = document.getElementById('cartItems');
-    const cartTotalEl = document.getElementById('cartTotal');
-
-    function renderCart() {
-      if (!cart.length) {
-        cartItemsEl.innerHTML = '<div class="cart-empty">Votre panier est vide.</div>';
-        cartTotalEl.textContent = priceFormatter.format(0);
-        return;
-      }
-      cartItemsEl.innerHTML = cart.map(item => {
-        const subtotal = item.price * item.qty;
-        return `
-          <div class="cart-item" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.title}" loading="lazy">
-            <div class="meta">
-              <h4>${item.title}</h4>
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div class="qty-controls" data-id="${item.id}">
-                  <button type="button" class="dec-btn" aria-label="Réduire quantité">−</button>
-                  <span class="qty">${item.qty}</span>
-                  <button type="button" class="inc-btn" aria-label="Augmenter quantité">+</button>
-                </div>
-                <div style="text-align:right;">
-                  <div>${priceFormatter.format(item.price)}</div>
-                  <div style="font-weight:bold;">${priceFormatter.format(subtotal)}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-      const total = cart.reduce((s, it) => s + it.price * it.qty, 0);
-      cartTotalEl.textContent = priceFormatter.format(total);
-    }
-
-    // ---------- Cart operations ----------
-    function addToCartFromProductIndex(idx, qty = 1) {
-      const p = products[idx];
-      if (!p) return;
-      const id = idx; // using index as id for demo; in prod use stable id
-      const price = parsePrice(p.price);
-      const existing = cart.find(item => item.id === id);
-      if (existing) {
-        existing.qty += qty;
-      } else {
-        cart.push({ id, title: p.title, price, qty, img: p.img });
-      }
-      saveCart();
-      renderCart();
-      updateCartBadge();
-    }
-
-    function changeQty(itemId, delta) {
-      const item = cart.find(i => i.id === itemId);
-      if (!item) return;
-      item.qty = Math.max(0, item.qty + delta);
-      if (item.qty === 0) {
-        cart = cart.filter(i => i.id !== itemId);
-      }
-      saveCart();
-      renderCart();
-      updateCartBadge();
-    }
-
-    function clearCart() {
-      cart = [];
-      saveCart();
-      renderCart();
-      updateCartBadge();
-    }
-
-    // ---------- UI: open/close cart ----------
-    function openCart() {
-      cartDrawer.setAttribute('aria-hidden', 'false');
-      cartDrawer.focus?.();
-      document.getElementById('cartToggle').setAttribute('aria-expanded', 'true');
-    }
-    function closeCart() {
-      cartDrawer.setAttribute('aria-hidden', 'true');
-      document.getElementById('cartToggle').setAttribute('aria-expanded', 'false');
-    }
-    function isCartOpen() {
-      return cartDrawer.getAttribute('aria-hidden') === 'false';
-    }
-
-    // ---------- Wire events ----------
-    loadCart();
-    renderCart();
-    updateCartBadge();
-
-    // Delegation on products section: add to cart or open modal
+    // ---------- Modal produit ----------
     const modal = document.getElementById('productModal');
     const modalContent = modal.querySelector('.modal-content');
     const modalImg = document.getElementById('modalImg');
@@ -683,22 +258,18 @@
     const modalDesc = document.getElementById('modalDesc');
     const modalPrice = document.getElementById('modalPrice');
     const modalAddBtn = document.getElementById('modalAddBtn');
-    let lastFocusedElement = null;
     let currentModalProductIndex = null;
 
     productsSection.addEventListener('click', (e) => {
       const addBtn = e.target.closest('.add-btn');
       if (addBtn) {
-        e.stopPropagation();
-        // find parent card index
         const card = addBtn.closest('.card');
         const idx = parseInt(card.dataset.index, 10);
-        addToCartFromProductIndex(idx, 1);
+        alert(`${products[idx].title} ajouté au panier (démo)`); // juste alerte démo
         return;
       }
       const card = e.target.closest('.card');
       if (card) {
-        lastFocusedElement = document.activeElement;
         const idx = parseInt(card.dataset.index, 10);
         openModalWithProduct(idx);
       }
@@ -719,62 +290,10 @@
     function closeModal() {
       modal.setAttribute('aria-hidden', 'true');
       currentModalProductIndex = null;
-      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
     }
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.getElementById('closeModal').addEventListener('click', closeModal);
-    modalAddBtn.addEventListener('click', () => {
-      if (currentModalProductIndex !== null) {
-        addToCartFromProductIndex(currentModalProductIndex, 1);
-      }
-      closeModal();
-    });
-
-    // Keyboard: Escape closes modal or cart
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (modal.getAttribute('aria-hidden') === 'false') closeModal();
-        else if (isCartOpen()) closeCart();
-      }
-    });
-
-    // Cart toggle open
-    document.getElementById('cartToggle').addEventListener('click', () => openCart());
-    document.getElementById('cartToggle').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCart(); }
-    });
-    document.getElementById('closeCartBtn').addEventListener('click', closeCart);
-
-    // Clear & checkout buttons
-    document.getElementById('clearCartBtn').addEventListener('click', () => {
-      if (confirm('Vider le panier ?')) clearCart();
-    });
-    document.getElementById('checkoutBtn').addEventListener('click', () => {
-      alert('Démo : paiement non connecté. Ici vous redirigeriez vers la page de paiement.');
-    });
-
-    // Delegate events inside cart for qty controls
-    cartItemsEl.addEventListener('click', (e) => {
-      const inc = e.target.closest('.inc-btn');
-      if (inc) {
-        const id = parseInt(inc.closest('[data-id]').getAttribute('data-id'), 10);
-        changeQty(id, +1);
-        return;
-      }
-      const dec = e.target.closest('.dec-btn');
-      if (dec) {
-        const id = parseInt(dec.closest('[data-id]').getAttribute('data-id'), 10);
-        changeQty(id, -1);
-        return;
-      }
-    });
-
-    // Re-render cart after changes to DOM (simple observer in case)
-    // (not strictly necessary, we call renderCart/saveCart after ops)
-
-    // Accessibility note: focus trap could be added for cart and modal for a11y improvements.
-
-    // End script
+    window.addEventListener('keydown', (e) => { if(e.key==='Escape') closeModal(); });
   </script>
 </body>
 </html>
