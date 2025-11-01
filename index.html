@@ -168,15 +168,14 @@
 </head>
 <body>
   <header>
-    <a href="index.html"><img src="assets/logo.png" alt="Logo ELLE Maroquinerie" class="logo"></a>
-    <h1>ELLE MAROQUINERIE</h1>
-    <nav aria-label="Navigation principale">
-      <a href="#">Accueil</a> |
-      <a href="#">À propos</a>
-    </nav>
-    <div id="cartToggle" class="cart-link" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0">👜 Panier (0)</div>
-  </header>
-
+  <img src="assets/Logo.png" alt="ELLE Maroquinerie Logo" style="height:50px;">
+  <h1>ELLE MAROQUINERIE</h1>
+  <nav aria-label="Navigation principale">
+    <a href="#">Accueil</a> |
+    <a href="#">À propos</a>
+  </nav>
+  <div id="cartToggle" class="cart-link" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0">👜 Panier (0)</div>
+</header>
   <main>
     <h2>Collection Capsule — Élégance & Simplicité</h2>
     <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
@@ -365,7 +364,9 @@
       });
       closeCartBtn.addEventListener('click', () => cartDrawer.setAttribute('aria-hidden','true'));
       clearCartBtn.addEventListener('click', () => { cart=[]; saveCart(); renderCart(); });
-      checkoutBtn.addEventListener('click', () => alert('Paiement simulé. Merci !'));
+      checkoutBtn.addEventListener('click', () => {
+  window.location.href = 'cart.html'; // redirection vers la page panier
+});
 
       renderCart();
     });
