@@ -1,140 +1,105 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panier — ELLE Maroquinerie</title>
 <style>
-  body {
-    font-family: "Georgia", serif;
-    background: #f6f1eb;
-    color: #3e2f1c;
-    margin: 0;
-  }
-  header {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:15px 30px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05);
-  }
-  header h1 { font-size:1.2rem; margin:0; letter-spacing:2px; font-weight:600; }
-  main { padding: 30px; max-width: 1000px; margin: auto; }
-  h2 { font-weight:bold; margin-bottom:20px; }
-  .cart-items { display:flex; flex-direction:column; gap:12px; }
-  .cart-item {
-    display:flex; gap:10px; align-items:center; border-bottom:1px solid #eee; padding-bottom:10px;
-  }
-  .cart-item img { width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #ddd; background:#fff; }
-  .meta { flex:1; }
-  .qty-controls { display:flex; gap:6px; align-items:center; margin-top:5px; }
-  .cart-footer {
-    margin-top:20px; padding-top:10px; border-top:1px solid #eee;
-    display:flex; flex-direction:column; gap:10px;
-  }
-  button {
-    background:#8b5e34; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;
-    font-family:inherit;
-  }
-  button:hover { background:#a66d40; }
-  .btn-clear { background:#b23b3b; }
-  .back-btn { background:#555; }
-  @media (max-width:600px){
-    .cart-item { flex-direction:column; align-items:flex-start; }
-    .cart-item img { margin-bottom:5px; }
-  }
+  body{font-family:Georgia,serif;margin:0;background:#f6f1eb;color:#3e2f1c;}
+  header{display:flex;justify-content:space-between;align-items:center;padding:15px 40px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
+  header img{height:40px;}
+  nav a{color:#3e2f1c;text-decoration:none;margin:0 8px;}
+  nav a:hover{text-decoration:underline;}
+  main{padding:40px;}
+  h2{font-weight:bold;margin-bottom:20px;}
+  .cart-container{max-width:800px;margin:0 auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+  .cart-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eee;}
+  .cart-item img{width:64px;height:64px;object-fit:cover;border:1px solid #ddd;border-radius:6px;background:#fff;}
+  .meta{flex:1;text-align:left;}
+  .qty-controls{display:flex;gap:6px;align-items:center;margin-top:4px;}
+  .cart-footer{margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .cart-footer button{background:#8b5e34;color:white;border:none;padding:10px 16px;border-radius:6px;cursor:pointer;font-family:inherit;}
+  .cart-footer button:hover{background:#a66d40;}
+  .remove-btn{background:#b23b3b;}
+  .remove-btn:hover{background:#d04a4a;}
+  footer{text-align:center;padding:20px;font-size:0.9rem;color:#7d6c5f;margin-top:40px;}
+  @media(max-width:600px){.cart-item{flex-direction:column;align-items:flex-start;} .cart-footer{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>ELLE Maroquinerie</h1>
-  <a href="index.html">Retour à la boutique</a>
+  <img src="assets/Logo.png" alt="ELLE Maroquinerie">
+  <nav>
+    <a href="index.html">Accueil</a> |
+    <a href="admin.html">Admin</a>
+  </nav>
 </header>
 
 <main>
   <h2>Votre panier</h2>
-  <div class="cart-items" id="cartItems">
-    <!-- Articles ajoutés via JS -->
-  </div>
-  <div class="cart-footer">
-    <div style="display:flex; justify-content:space-between; font-weight:bold;">
-      <span>Total</span>
-      <span id="cartTotal">0,00 €</span>
-    </div>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button id="checkoutBtn">Procéder au paiement</button>
-      <button id="clearCartBtn" class="btn-clear">Vider le panier</button>
-      <button onclick="window.location.href='index.html'" class="back-btn">Retour à la boutique</button>
+  <div class="cart-container" id="cartContainer">
+    <div id="cartItems"></div>
+    <div class="cart-footer">
+      <strong>Total : <span id="cartTotal">0,00 €</span></strong>
+      <div style="display:flex;gap:10px;">
+        <button id="simulatePayment">Simuler paiement</button>
+        <button id="clearCart" class="remove-btn">Vider le panier</button>
+      </div>
     </div>
   </div>
 </main>
 
+<footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
+
 <script>
-  const STORAGE_KEY = 'elle_cart_v1';
-  let cart = [];
-
-  function loadCart() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      cart = raw ? JSON.parse(raw) : [];
-    } catch(e){ cart=[]; }
-  }
-
-  function saveCart(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-
-  const priceFormatter = new Intl.NumberFormat('fr-FR', {style:'currency',currency:'EUR'});
-  function parsePrice(str){ const n=parseFloat(String(str).replace(/[^\d,.\-]/g,'').replace(',','.')); return isNaN(n)?0:n; }
+document.addEventListener('DOMContentLoaded',()=>{
+  let cart=JSON.parse(localStorage.getItem('cart'))||[];
+  const cartItemsDiv=document.getElementById('cartItems');
+  const cartTotalEl=document.getElementById('cartTotal');
+  const simulateBtn=document.getElementById('simulatePayment');
+  const clearBtn=document.getElementById('clearCart');
 
   function renderCart(){
-    const container = document.getElementById('cartItems');
-    if(!cart.length){
-      container.innerHTML='<p>Votre panier est vide.</p>';
-      document.getElementById('cartTotal').textContent='0,00 €';
-      return;
-    }
-    container.innerHTML=cart.map(item=>{
-      const subtotal = item.price * item.qty;
-      return `
-      <div class="cart-item" data-id="${item.id}">
-        <img src="${item.img}" alt="${item.title}">
-        <div class="meta">
-          <strong>${item.title}</strong>
-          <div class="qty-controls" data-id="${item.id}">
-            <button class="dec-btn">−</button>
-            <span class="qty">${item.qty}</span>
-            <button class="inc-btn">+</button>
-          </div>
-          <div style="margin-top:4px;">Prix: ${priceFormatter.format(item.price)} — Total: ${priceFormatter.format(subtotal)}</div>
+    cartItemsDiv.innerHTML='';
+    cart.forEach((item,i)=>{
+      const div=document.createElement('div'); div.className='cart-item';
+      div.innerHTML=`<img src="${item.img}" alt="${item.title}">
+        <div class="meta"><strong>${item.title}</strong><div>${item.price}</div>
+        <div class="qty-controls">
+          <button class="dec">-</button>
+          <span>${item.qty}</span>
+          <button class="inc">+</button>
         </div>
-      </div>
-      `;
-    }).join('');
-    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-    document.getElementById('cartTotal').textContent = priceFormatter.format(total);
+        </div>
+        <button class="remove-btn">Supprimer</button>`;
+      cartItemsDiv.appendChild(div);
+
+      div.querySelector('.inc').addEventListener('click',()=>{
+        item.qty++; saveCart();
+      });
+      div.querySelector('.dec').addEventListener('click',()=>{
+        if(item.qty>1){ item.qty--; saveCart(); }
+      });
+      div.querySelector('.remove-btn').addEventListener('click',()=>{
+        cart.splice(i,1); saveCart();
+      });
+    });
+    let total=cart.reduce((sum,item)=>sum+parseFloat(item.price.replace(',','.').replace('€',''))*item.qty,0);
+    cartTotalEl.textContent=total.toFixed(2).replace('.',',')+' €';
   }
 
-  function changeQty(id, delta){
-    const item = cart.find(i=>i.id===id);
-    if(!item) return;
-    item.qty=Math.max(0,item.qty+delta);
-    if(item.qty===0) cart=cart.filter(i=>i.id!==id);
-    saveCart(); renderCart();
-  }
+  function saveCart(){ localStorage.setItem('cart',JSON.stringify(cart)); renderCart(); }
 
-  function clearCart(){ cart=[]; saveCart(); renderCart(); }
-
-  // Load & render
-  loadCart(); renderCart();
-
-  // Quantity buttons delegation
-  document.getElementById('cartItems').addEventListener('click', e=>{
-    const inc = e.target.closest('.inc-btn');
-    const dec = e.target.closest('.dec-btn');
-    if(inc){ const id=parseInt(inc.closest('[data-id]').dataset.id); changeQty(id,1); }
-    if(dec){ const id=parseInt(dec.closest('[data-id]').dataset.id); changeQty(id,-1); }
+  simulateBtn.addEventListener('click',()=>{
+    if(cart.length===0){ alert("Votre panier est vide !"); return; }
+    alert("Paiement simulé.\nMerci pour votre commande !");
+    cart=[]; saveCart();
   });
 
-  document.getElementById('clearCartBtn').addEventListener('click', ()=>{ if(confirm('Vider le panier ?')) clearCart(); });
-  document.getElementById('checkoutBtn').addEventListener('click', ()=>{ alert('Démo : paiement simulé. Total : '+document.getElementById('cartTotal').textContent); });
-</script>
+  clearBtn.addEventListener('click',()=>{ if(confirm("Vider complètement le panier ?")){ cart=[]; saveCart(); }});
 
+  renderCart();
+});
+</script>
 </body>
 </html>
