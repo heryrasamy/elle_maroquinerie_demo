@@ -3,198 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - ELLE Maroquinerie</title>
+  <title>Admin — ELLE Maroquinerie</title>
   <style>
     body {
-      font-family: "Poppins", sans-serif;
-      background: #f9f9f9;
-      margin: 0; padding: 0;
-      display: flex; flex-direction: column; align-items: center;
+      font-family: "Georgia", serif;
+      background-color: #f6f1eb;
+      margin: 0;
+      color: #3e2f1c;
     }
     header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
       background: #fff;
-      width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 20px; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
     }
-    header img { height: 40px; }
-    header h1 { font-size: 1.2rem; margin: 0; }
-    header a {
-      background: #000; color: #fff; text-decoration: none;
-      padding: 8px 14px; border-radius: 8px;
-    }
-    main { width: 95%; max-width: 600px; margin-top: 20px; }
+    header h1 { font-size: 1.3rem; margin: 0; }
+    header button { padding: 6px 12px; border:none; border-radius:6px; cursor:pointer; background:#8b5e34; color:white; }
+    header button:hover { background:#a66d40; }
 
-    .product-list { margin-bottom: 20px; }
-    .product-item {
-      background: #fff; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      padding: 12px; margin-bottom: 10px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    main { padding: 20px; max-width: 900px; margin: auto; }
+    h2 { margin-top: 0; }
 
-    button {
-      background: #000; color: #fff; border: none; border-radius: 8px;
-      padding: 8px 12px; cursor: pointer;
+    .success-msg {
+      display: none;
+      padding: 10px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 6px;
+      margin-bottom: 15px;
     }
-    button:hover { opacity: 0.85; }
 
     form {
-      background: #fff; border-radius: 12px; padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none;
-      flex-direction: column; gap: 10px;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 15px; border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    input, textarea {
-      width: 100%; padding: 8px;
-      border: 1px solid #ccc; border-radius: 8px;
-      font-size: 1rem;
-    }
+    input, textarea { padding:8px; border:1px solid #ccc; border-radius:6px; width:100%; }
+    button.add-update { background:#8b5e34; color:white; border:none; padding:8px 12px; cursor:pointer; border-radius:6px; }
+    button.add-update:hover { background:#a66d40; }
 
-    .image-drop {
-      border: 2px dashed #aaa; border-radius: 12px;
-      padding: 20px; text-align: center;
-      color: #777; cursor: pointer;
+    .sacs-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
     }
-    .image-drop img {
-      max-width: 100px; margin-top: 10px; border-radius: 8px;
+    .sac-item {
+      background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); position:relative;
     }
+    .sac-item img { width:100%; height:140px; object-fit:contain; background:#f9f9f9; border:1px solid #ddd; border-radius:6px; }
+    .sac-item h4 { margin:5px 0 2px; font-size:1rem; }
+    .sac-item p { font-size:0.85rem; margin:0 0 5px; }
+    .sac-item button { margin-right:5px; margin-top:5px; padding:5px 8px; font-size:0.85rem; border:none; border-radius:5px; cursor:pointer; }
+    .edit-btn { background:#b23b3b; color:white; }
+    .edit-btn:hover { background:#d33c3c; }
+    .delete-btn { background:#6c757d; color:white; }
+    .delete-btn:hover { background:#5a6268; }
 
-    .preview-card {
-      display: none; background: #fff; border-radius: 12px;
-      padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      margin-top: 15px; text-align: center;
-    }
-    .preview-card img { max-width: 150px; border-radius: 8px; }
-
-    @media(max-width:600px){
-      header h1 { font-size: 1rem; }
-      button, input, textarea { font-size: 0.9rem; }
+    /* Responsive */
+    @media(max-width:600px) {
+      .sacs-list { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="assets/Logo.png" alt="Logo">
-    <h1>Espace Admin</h1>
-    <a href="index.html">← Retour</a>
+    <h1>Admin — ELLE Maroquinerie</h1>
+    <button id="backBtn">← Retour</button>
   </header>
 
   <main>
-    <div class="product-list" id="productList"></div>
+    <div class="success-msg" id="successMsg">Modification réussie !</div>
 
-    <button id="addBtn">➕ Ajouter un sac</button>
-
-    <form id="productForm">
-      <h3 id="formTitle">Ajouter un nouveau sac</h3>
-      <div class="image-drop" id="imageDrop">Déposez une image ou cliquez ici</div>
-      <input type="file" id="imageInput" accept="image/*" hidden>
-      <input type="text" id="nameInput" placeholder="Nom du sac" required>
-      <textarea id="descInput" placeholder="Description" required></textarea>
-      <input type="number" id="priceInput" placeholder="Prix (€)" required>
-      <button type="button" id="previewBtn">👁️ Prévisualiser</button>
-      <button type="submit">💾 Enregistrer</button>
-      <button type="button" id="cancelBtn">❌ Annuler</button>
+    <form id="sacForm">
+      <input type="hidden" id="sacIndex">
+      <input type="text" id="sacTitle" placeholder="Titre du sac" required>
+      <textarea id="sacDesc" rows="3" placeholder="Description" required></textarea>
+      <input type="text" id="sacPrice" placeholder="Prix (€)" required>
+      <input type="file" id="sacImg" accept="image/*">
+      <button type="submit" class="add-update">Ajouter / Modifier</button>
     </form>
 
-    <div class="preview-card" id="previewCard">
-      <h3 id="prevName"></h3>
-      <img id="prevImg" alt="aperçu">
-      <p id="prevDesc"></p>
-      <p><strong id="prevPrice"></strong> €</p>
-    </div>
+    <h2>Liste des sacs</h2>
+    <div class="sacs-list" id="sacsList"></div>
   </main>
 
   <script>
-    const productList = document.getElementById('productList');
-    const addBtn = document.getElementById('addBtn');
-    const productForm = document.getElementById('productForm');
-    const previewCard = document.getElementById('previewCard');
-    const imageDrop = document.getElementById('imageDrop');
-    const imageInput = document.getElementById('imageInput');
+    const sacsListEl = document.getElementById('sacsList');
+    const sacForm = document.getElementById('sacForm');
+    const sacTitle = document.getElementById('sacTitle');
+    const sacDesc = document.getElementById('sacDesc');
+    const sacPrice = document.getElementById('sacPrice');
+    const sacImg = document.getElementById('sacImg');
+    const sacIndexEl = document.getElementById('sacIndex');
+    const successMsg = document.getElementById('successMsg');
+    const backBtn = document.getElementById('backBtn');
 
-    let currentImg = '';
+    let sacs = JSON.parse(localStorage.getItem('admin_sacs_v1') || '[]');
 
-    // Chargement initial
-    const products = JSON.parse(localStorage.getItem('products') || '[]');
-    refreshList();
+    function saveSacs() {
+      localStorage.setItem('admin_sacs_v1', JSON.stringify(sacs));
+    }
 
-    addBtn.addEventListener('click', () => {
-      productForm.style.display = 'flex';
-      addBtn.style.display = 'none';
-    });
+    function renderSacs() {
+      sacsListEl.innerHTML = sacs.map((sac, idx) => `
+        <div class="sac-item" data-index="${idx}">
+          <img src="${sac.img}" alt="${sac.title}">
+          <h4>${sac.title}</h4>
+          <p>${sac.desc}</p>
+          <p><strong>${sac.price} €</strong></p>
+          <button class="edit-btn">Modifier</button>
+          <button class="delete-btn">Supprimer</button>
+        </div>
+      `).join('');
+    }
 
-    imageDrop.addEventListener('click', () => imageInput.click());
-    imageInput.addEventListener('change', e => handleImage(e.target.files[0]));
+    function showSuccess(msg = "Modification réussie !") {
+      successMsg.textContent = msg;
+      successMsg.style.display = 'block';
+      setTimeout(()=> successMsg.style.display='none', 2000);
+    }
 
-    imageDrop.addEventListener('dragover', e => { e.preventDefault(); imageDrop.style.borderColor = '#000'; });
-    imageDrop.addEventListener('dragleave', e => imageDrop.style.borderColor = '#aaa');
-    imageDrop.addEventListener('drop', e => {
+    sacForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      imageDrop.style.borderColor = '#aaa';
-      handleImage(e.dataTransfer.files[0]);
-    });
-
-    function handleImage(file) {
+      const idx = sacIndexEl.value ? parseInt(sacIndexEl.value,10) : null;
       const reader = new FileReader();
-      reader.onload = e => {
-        currentImg = e.target.result;
-        imageDrop.innerHTML = `<img src="${currentImg}" alt="preview">`;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    document.getElementById('previewBtn').addEventListener('click', () => {
-      previewCard.style.display = 'block';
-      document.getElementById('prevName').textContent = document.getElementById('nameInput').value;
-      document.getElementById('prevDesc').textContent = document.getElementById('descInput').value;
-      document.getElementById('prevPrice').textContent = document.getElementById('priceInput').value;
-      document.getElementById('prevImg').src = currentImg;
+      reader.onload = function(event) {
+        const imgSrc = event.target.result || 'assets/p1.jpg';
+        const sacData = { title: sacTitle.value, desc: sacDesc.value, price: sacPrice.value, img: imgSrc };
+        if(idx !== null) { sacs[idx] = sacData; showSuccess("Modification réussie !"); }
+        else { sacs.push(sacData); showSuccess("Ajout réussi !"); }
+        saveSacs();
+        renderSacs();
+        sacForm.reset();
+        sacIndexEl.value = '';
+      }
+      if(sacImg.files[0]) reader.readAsDataURL(sacImg.files[0]);
+      else reader.onload({target:{result:'assets/p1.jpg'}});
     });
 
-    productForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const newProduct = {
-        name: document.getElementById('nameInput').value,
-        desc: document.getElementById('descInput').value,
-        price: document.getElementById('priceInput').value,
-        img: currentImg
-      };
-      products.push(newProduct);
-      localStorage.setItem('products', JSON.stringify(products));
-      productForm.reset();
-      currentImg = '';
-      imageDrop.innerHTML = 'Déposez une image ou cliquez ici';
-      previewCard.style.display = 'none';
-      productForm.style.display = 'none';
-      addBtn.style.display = 'block';
-      refreshList();
+    sacsListEl.addEventListener('click', (e) => {
+      const parent = e.target.closest('.sac-item');
+      if(!parent) return;
+      const idx = parseInt(parent.dataset.index,10);
+      if(e.target.classList.contains('edit-btn')) {
+        const sac = sacs[idx];
+        sacTitle.value = sac.title;
+        sacDesc.value = sac.desc;
+        sacPrice.value = sac.price;
+        sacIndexEl.value = idx;
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+      if(e.target.classList.contains('delete-btn')) {
+        if(confirm('Supprimer ce sac ?')) {
+          sacs.splice(idx,1);
+          saveSacs();
+          renderSacs();
+          showSuccess("Suppression réussie !");
+        }
+      }
     });
 
-    document.getElementById('cancelBtn').addEventListener('click', () => {
-      productForm.reset();
-      currentImg = '';
-      productForm.style.display = 'none';
-      addBtn.style.display = 'block';
-      previewCard.style.display = 'none';
-    });
+    backBtn.addEventListener('click', () => { window.history.back(); });
 
-    function refreshList() {
-      productList.innerHTML = '';
-      products.forEach((p, i) => {
-        const div = document.createElement('div');
-        div.className = 'product-item';
-        div.innerHTML = `
-          <span><strong>${p.name}</strong> - ${p.price} €</span>
-          <button onclick="deleteProduct(${i})">🗑️ Supprimer</button>
-        `;
-        productList.appendChild(div);
-      });
-    }
-
-    function deleteProduct(i) {
-      products.splice(i, 1);
-      localStorage.setItem('products', JSON.stringify(products));
-      refreshList();
-    }
+    renderSacs();
   </script>
 </body>
 </html>
