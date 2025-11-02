@@ -1,177 +1,106 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — ELLE Maroquinerie</title>
-  <style>
-    body {
-      font-family: "Georgia", serif;
-      background-color: #f6f1eb;
-      margin: 0;
-      color: #3e2f1c;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      flex-wrap: wrap;
-    }
-    header h1 { font-size: 1.3rem; margin: 0; }
-    header button { padding: 6px 12px; border:none; border-radius:6px; cursor:pointer; background:#8b5e34; color:white; }
-    header button:hover { background:#a66d40; }
-
-    main { padding: 20px; max-width: 900px; margin: auto; }
-    h2 { margin-top: 0; }
-
-    .success-msg {
-      display: none;
-      padding: 10px;
-      background: #d4edda;
-      color: #155724;
-      border-radius: 6px;
-      margin-bottom: 15px;
-    }
-
-    form {
-      display: flex; flex-direction: column; gap: 10px;
-      margin-bottom: 20px;
-      background: #fff;
-      padding: 15px; border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    input, textarea { padding:8px; border:1px solid #ccc; border-radius:6px; width:100%; }
-    button.add-update { background:#8b5e34; color:white; border:none; padding:8px 12px; cursor:pointer; border-radius:6px; }
-    button.add-update:hover { background:#a66d40; }
-
-    .sacs-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 15px;
-    }
-    .sac-item {
-      background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); position:relative;
-    }
-    .sac-item img { width:100%; height:140px; object-fit:contain; background:#f9f9f9; border:1px solid #ddd; border-radius:6px; }
-    .sac-item h4 { margin:5px 0 2px; font-size:1rem; }
-    .sac-item p { font-size:0.85rem; margin:0 0 5px; }
-    .sac-item button { margin-right:5px; margin-top:5px; padding:5px 8px; font-size:0.85rem; border:none; border-radius:5px; cursor:pointer; }
-    .edit-btn { background:#b23b3b; color:white; }
-    .edit-btn:hover { background:#d33c3c; }
-    .delete-btn { background:#6c757d; color:white; }
-    .delete-btn:hover { background:#5a6268; }
-
-    /* Responsive */
-    @media(max-width:600px) {
-      .sacs-list { grid-template-columns: 1fr; }
-      header { flex-direction: column; align-items: flex-start; gap: 10px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Gestion des sacs</title>
+<style>
+body{font-family:Georgia,serif;background:#f6f1eb;margin:0;color:#3e2f1c;padding:20px;}
+h1{text-align:center;margin-bottom:20px;}
+#sacList{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
+.sac-card{border:1px solid #ddd;border-radius:6px;padding:8px;width:120px;text-align:center;background:#fff;position:relative;}
+.sac-card img{width:100%;height:80px;object-fit:cover;border-radius:4px;margin-bottom:4px;}
+.sac-card button{position:absolute;top:4px;right:4px;background:#b23b3b;color:white;border:none;border-radius:4px;padding:2px 6px;font-size:0.8rem;cursor:pointer;}
+form{display:flex;flex-direction:column;gap:10px;background:#fff;padding:15px;border-radius:8px;border:1px solid #ddd;}
+form input, form textarea{padding:8px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;width:100%;}
+form button{background:#8b5e34;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;}
+form button:hover{background:#a66d40;}
+#preview{border:1px solid #ccc;padding:10px;margin-top:10px;border-radius:6px;text-align:center;background:#fafafa;}
+#preview img{width:100px;height:100px;object-fit:cover;border-radius:4px;margin-bottom:4px;}
+#message{margin:10px 0;color:green;font-weight:bold;text-align:center;}
+#backBtn{margin-bottom:15px;background:#6a5d4b;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;}
+@media(max-width:600px){#sacList{justify-content:center;}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Admin — ELLE Maroquinerie</h1>
-    <button id="backBtn">← Retour</button>
-  </header>
 
-  <main>
-    <div class="success-msg" id="successMsg">Modification réussie !</div>
+<h1>Admin — Gestion des sacs</h1>
+<button id="backBtn">← Retour à l’accueil</button>
+<div id="message"></div>
 
-    <form id="sacForm">
-      <input type="hidden" id="sacIndex">
-      <input type="text" id="sacTitle" placeholder="Titre du sac" required>
-      <textarea id="sacDesc" rows="3" placeholder="Description" required></textarea>
-      <input type="text" id="sacPrice" placeholder="Prix (€)" required>
-      <input type="file" id="sacImg" accept="image/*">
-      <button type="submit" class="add-update">Ajouter / Modifier</button>
-    </form>
+<h2>Liste des sacs</h2>
+<div id="sacList"></div>
 
-    <h2>Liste des sacs</h2>
-    <div class="sacs-list" id="sacsList"></div>
-  </main>
+<h2>Ajouter un nouveau sac</h2>
+<form id="addSacForm">
+  <input type="text" id="title" placeholder="Titre du sac" required>
+  <input type="text" id="price" placeholder="Prix (ex: 45,00 €)" required>
+  <textarea id="desc" placeholder="Description" rows="3" required></textarea>
+  <input type="file" id="img" accept="image/*" required>
+  <button type="submit">Ajouter le sac</button>
+</form>
 
-  <script>
-    const sacsListEl = document.getElementById('sacsList');
-    const sacForm = document.getElementById('sacForm');
-    const sacTitle = document.getElementById('sacTitle');
-    const sacDesc = document.getElementById('sacDesc');
-    const sacPrice = document.getElementById('sacPrice');
-    const sacImg = document.getElementById('sacImg');
-    const sacIndexEl = document.getElementById('sacIndex');
-    const successMsg = document.getElementById('successMsg');
-    const backBtn = document.getElementById('backBtn');
+<div id="preview"></div>
 
-    let sacs = JSON.parse(localStorage.getItem('admin_sacs_v1') || '[]');
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const STORAGE_KEY='elle_products_v1';
+  const sacList=document.getElementById('sacList');
+  const addForm=document.getElementById('addSacForm');
+  const message=document.getElementById('message');
+  const preview=document.getElementById('preview');
+  const backBtn=document.getElementById('backBtn');
 
-    function saveSacs() {
-      localStorage.setItem('admin_sacs_v1', JSON.stringify(sacs));
+  let products=[];
+  function loadProducts(){try{const raw=localStorage.getItem(STORAGE_KEY);products=raw?JSON.parse(raw):[];}catch(e){products=[];}}
+  function saveProducts(){localStorage.setItem(STORAGE_KEY,JSON.stringify(products));}
+
+  function renderProducts(){
+    sacList.innerHTML=products.map((p,i)=>`
+      <div class="sac-card" data-id="${i}">
+        <img src="${p.img}" alt="${p.title}">
+        <div>${p.title}</div>
+        <button class="delBtn">×</button>
+      </div>
+    `).join('');
+  }
+
+  function showMessage(txt){message.textContent=txt; setTimeout(()=>{message.textContent='';},2000);}
+
+  sacList.addEventListener('click',e=>{
+    if(e.target.classList.contains('delBtn')){
+      const id=parseInt(e.target.closest('.sac-card').dataset.id,10);
+      products.splice(id,1);
+      saveProducts(); renderProducts(); showMessage('Sac supprimé !');
     }
+  });
 
-    function renderSacs() {
-      sacsListEl.innerHTML = sacs.map((sac, idx) => `
-        <div class="sac-item" data-index="${idx}">
-          <img src="${sac.img}" alt="${sac.title}">
-          <h4>${sac.title}</h4>
-          <p>${sac.desc}</p>
-          <p><strong>${sac.price} €</strong></p>
-          <button class="edit-btn">Modifier</button>
-          <button class="delete-btn">Supprimer</button>
-        </div>
-      `).join('');
-    }
+  addForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const title=document.getElementById('title').value;
+    const price=document.getElementById('price').value;
+    const desc=document.getElementById('desc').value;
+    const imgFile=document.getElementById('img').files[0];
+    if(!imgFile)return;
+    const reader=new FileReader();
+    reader.onload=()=>{ 
+      products.push({title,price,desc,img:reader.result});
+      saveProducts(); renderProducts(); showMessage('Sac ajouté !'); addForm.reset(); preview.innerHTML=''; 
+    };
+    reader.readAsDataURL(imgFile);
+  });
 
-    function showSuccess(msg = "Modification réussie !") {
-      successMsg.textContent = msg;
-      successMsg.style.display = 'block';
-      setTimeout(()=> successMsg.style.display='none', 2000);
-    }
+  document.getElementById('img').addEventListener('change',e=>{
+    const file=e.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{ preview.innerHTML=`<img src="${reader.result}" alt="Preview"><div>${document.getElementById('title').value}</div>`; };
+    reader.readAsDataURL(file);
+  });
 
-    sacForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const idx = sacIndexEl.value ? parseInt(sacIndexEl.value,10) : null;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const imgSrc = event.target.result || 'assets/p1.jpg';
-        const sacData = { title: sacTitle.value, desc: sacDesc.value, price: sacPrice.value, img: imgSrc };
-        if(idx !== null) { sacs[idx] = sacData; showSuccess("Modification réussie !"); }
-        else { sacs.push(sacData); showSuccess("Ajout réussi !"); }
-        saveSacs();
-        renderSacs();
-        sacForm.reset();
-        sacIndexEl.value = '';
-      }
-      if(sacImg.files[0]) reader.readAsDataURL(sacImg.files[0]);
-      else reader.onload({target:{result:'assets/p1.jpg'}});
-    });
+  backBtn.addEventListener('click',()=>{window.location.href='index.html';});
 
-    sacsListEl.addEventListener('click', (e) => {
-      const parent = e.target.closest('.sac-item');
-      if(!parent) return;
-      const idx = parseInt(parent.dataset.index,10);
-      if(e.target.classList.contains('edit-btn')) {
-        const sac = sacs[idx];
-        sacTitle.value = sac.title;
-        sacDesc.value = sac.desc;
-        sacPrice.value = sac.price;
-        sacIndexEl.value = idx;
-        window.scrollTo({top:0, behavior:'smooth'});
-      }
-      if(e.target.classList.contains('delete-btn')) {
-        if(confirm('Supprimer ce sac ?')) {
-          sacs.splice(idx,1);
-          saveSacs();
-          renderSacs();
-          showSuccess("Suppression réussie !");
-        }
-      }
-    });
-
-    backBtn.addEventListener('click', () => { window.history.back(); });
-
-    renderSacs();
-  </script>
+  loadProducts(); renderProducts();
+});
+</script>
 </body>
 </html>
