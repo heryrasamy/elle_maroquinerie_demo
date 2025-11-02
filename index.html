@@ -1,291 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ELLE MAROQUINERIE — Démo</title>
-  <style>
-    body { font-family: Georgia, serif; background-color:#f6f1eb; margin:0; color:#3e2f1c; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05); gap:12px; }
-    header h1 { font-size:1.2rem; letter-spacing:2px; font-weight:600; margin:0; }
-    nav a { color:#3e2f1c; text-decoration:none; margin:0 8px; }
-    nav a:hover { text-decoration:underline; }
-    .cart-link { font-weight:bold; cursor:pointer; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELLE MAROQUINERIE — Démo</title>
+<style>
+/* --- Base --- */
+body{font-family:Georgia,serif;background:#f6f1eb;margin:0;color:#3e2f1c;}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 40px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);gap:12px;}
+header h1{font-size:1.2rem;letter-spacing:2px;font-weight:600;margin:0;}
+nav a{color:#3e2f1c;text-decoration:none;margin:0 8px;}
+nav a:hover{text-decoration:underline;}
+.cart-link, .cart{font-weight:bold;cursor:pointer;}
+main{text-align:center;padding:40px 0;}
+h2{font-weight:bold;margin-bottom:10px;}
+p.subtitle{font-style:italic;color:#6a5d4b;margin-bottom:40px;}
 
-    main { text-align:center; padding:40px 0; }
-    h2 { font-weight:bold; margin-bottom:10px; }
-    p.subtitle { font-style:italic; color:#6a5d4b; margin-bottom:40px; }
+/* --- Produits --- */
+.products{display:flex;justify-content:center;flex-wrap:wrap;gap:30px;padding:0 40px;}
+.card{background:linear-gradient(to bottom,#f8f4ef,#f0e8e0);border-radius:10px;width:260px;padding:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);transition:transform 0.2s;cursor:pointer;display:flex;flex-direction:column;align-items:stretch;}
+.card:hover{transform:translateY(-5px);}
+.card img{width:100%;height:220px;object-fit:contain;background:white;border-radius:6px;border:1px solid #ddd;display:block;}
+.card h3{margin-top:10px;font-size:1rem;}
+.card p{font-size:0.9rem;margin:5px 0 10px;}
+.price{font-weight:bold;margin-top:auto;}
+button{background-color:#8b5e34;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;}
+button:hover{background-color:#a66d40;}
+footer{text-align:center;padding:20px;font-size:0.9rem;color:#7d6c5f;margin-top:40px;}
 
-    .products { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:0 40px; }
-    .card { background:linear-gradient(to bottom,#f8f4ef,#f0e8e0); border-radius:10px; width:260px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer; display:flex; flex-direction:column; align-items:stretch; transition:transform 0.2s; }
-    .card:hover { transform:translateY(-5px); }
-    .card img { width:100%; height:220px; object-fit:contain; background:#fff; border-radius:6px; border:1px solid #ddd; }
-    .card h3 { margin-top:10px; font-size:1rem; }
-    .card p { font-size:0.9rem; margin:5px 0 10px; }
-    .price { font-weight:bold; margin-top:auto; }
-    button { background:#8b5e34; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-family:inherit; }
-    button:hover { background:#a66d40; }
+/* --- Modale produit --- */
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;padding:20px;}
+.modal[aria-hidden="false"]{display:flex;}
+.modal-content{background:#fff;padding:25px 25px 35px;border-radius:10px;max-width:520px;width:95%;text-align:left;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;}
+.modal-content img{width:100%;border-radius:6px;margin-bottom:10px;object-fit:contain;}
+.close{position:absolute;top:10px;right:15px;font-size:1.5rem;cursor:pointer;color:#8b5e34;background:transparent;border:none;}
 
-    footer { text-align:center; padding:20px; font-size:0.9rem; color:#7d6c5f; margin-top:40px; }
+/* --- Cart drawer --- */
+.cart-drawer{position:fixed;right:0;top:0;height:100vh;width:380px;max-width:95%;background:#fff;box-shadow:-8px 0 24px rgba(0,0,0,0.15);transform:translateX(100%);transition:transform 0.25s ease;z-index:1500;display:flex;flex-direction:column;padding:20px;}
+.cart-drawer[aria-hidden="false"]{transform:translateX(0);}
+.cart-items{flex:1;overflow-y:auto;margin-top:10px;display:grid;gap:12px;}
+.cart-item{display:flex;gap:10px;align-items:center;border-bottom:1px solid #eee;padding-bottom:10px;}
+.cart-item img{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #ddd;background:#fff;}
+.cart-item .meta{flex:1;text-align:left;}
+.qty-controls{display:flex;gap:6px;align-items:center;}
+.cart-footer{border-top:1px solid #eee;padding-top:12px;margin-top:12px;display:flex;flex-direction:column;gap:10px;}
 
-    /* Modal produit */
-    .modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.4); justify-content:center; align-items:center; padding:20px; }
-    .modal[aria-hidden="false"] { display:flex; }
-    .modal-content { background:#fff; padding:25px 25px 35px; border-radius:10px; max-width:520px; width:95%; text-align:left; position:relative; max-height:90vh; overflow-y:auto; }
-    .modal-content img { width:100%; border-radius:6px; margin-bottom:10px; object-fit:contain; }
-    .close { position:absolute; top:10px; right:15px; font-size:1.5rem; cursor:pointer; color:#8b5e34; background:transparent; border:none; }
+/* --- Contact --- */
+.contact{text-align:center;padding:40px 20px;background-color:#fafafa;border-top:1px solid #ddd;margin-top:40px;}
+.contact h2{margin-bottom:10px;font-size:1.6em;color:#b23b3b;}
+.contact form{max-width:600px;margin:20px auto;display:flex;flex-direction:column;gap:10px;}
+.contact input, .contact textarea{padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1em;}
+.contact button{background-color:#b23b3b;color:white;border:none;padding:10px;border-radius:6px;cursor:pointer;}
+.contact-info{margin-top:20px;color:#555;}
 
-    /* Cart drawer */
-    .cart-drawer {
-  position: fixed; right: 0; top: 0;
-  height: 100vh; width: 380px; max-width: 95%;
-  background: #fff; box-shadow: -8px 0 24px rgba(0,0,0,0.15);
-  transform: translateX(100%); transition: transform 0.25s ease;
-  z-index: 1500; display: flex; flex-direction: column; padding: 20px;
-  justify-content: flex-start; /* éviter que le footer se colle en bas */
-}
-
-    .cart-drawer[aria-hidden="false"] { transform:translateX(0); }
-    .cart-items { flex:1; overflow-y:auto; margin-top:10px; display:grid; gap:12px; }
-    .cart-item { display:flex; gap:10px; align-items:center; border-bottom:1px solid #eee; padding-bottom:10px; }
-    .cart-item img { width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #ddd; background:#fff; }
-    .cart-item .meta { flex:1; text-align:left; }
-    .qty-controls { display:flex; gap:6px; align-items:center; }
-    .cart-footer {
-  border-top: 1px solid #eee; 
-  padding: 12px 0 24px 0; /* 12px top, 24px bottom */
-  margin-top: 12px;
-}
-
-    .cart-footer div { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-    .cart-footer-buttons { display:flex; gap:8px; margin-top:10px; }
-
-    /* Contact global */
-    .contact { text-align:center; padding:40px 20px; background:#fafafa; border-top:1px solid #ddd; margin-top:40px; }
-    .contact h2 { margin-bottom:10px; font-size:1.6em; color:#b23b3b; }
-    .contact form { max-width:600px; margin:20px auto; display:flex; flex-direction:column; gap:10px; }
-    .contact input, .contact textarea { padding:10px; border:1px solid #ccc; border-radius:6px; font-size:1em; }
-    .contact button { background-color:#b23b3b; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer; }
-
-    @media(max-width:800px){ header{padding:12px 20px;} .products{gap:16px; padding:0 20px;} }
-    @media(max-width:600px){ header{flex-direction:column; gap:10px; align-items:flex-start;} .card{width:100%; max-width:420px;} html{scroll-behavior:smooth;} }
-
-  </style>
+@media (max-width:800px){header{padding:12px 20px;}.products{gap:16px;padding:0 20px;}}
+@media (max-width:600px){header{flex-direction:column;gap:10px;align-items:flex-start;}.card{width:100%;max-width:420px;}html{scroll-behavior:smooth;}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>ELLE MAROQUINERIE</h1>
-    <nav aria-label="Navigation principale">
-      <a href="#">Accueil</a> |
-      <a href="#">À propos</a>
-    </nav>
-    <div id="cartToggle" class="cart-link" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0">👜 Panier (0)</div>
-  </header>
 
-  <main>
-    <h2>Collection Capsule — Élégance & Simplicité</h2>
-    <p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
+<header>
+<h1>ELLE MAROQUINERIE</h1>
+<nav aria-label="Navigation principale">
+  <a href="#">Accueil</a> |
+  <a href="#">À propos</a>
+</nav>
+<div id="cartToggle" class="cart-link" role="button" aria-controls="cartDrawer" aria-expanded="false" tabindex="0">👜 Panier (0)</div>
+</header>
 
-    <!-- Section produits -->
-    <section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
+<main>
+<h2>Collection Capsule — Élégance & Simplicité</h2>
+<p class="subtitle">Petit aperçu : des sacs pensés pour durer et (surtout) pour faire tourner les têtes.</p>
 
-    <!-- Contact -->
-    <section id="contact" class="contact">
-      <h2>Contact</h2>
-      <form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
-        <input type="text" id="name" name="name" placeholder="Votre nom" required>
-        <input type="email" id="email" name="email" placeholder="Votre email" required>
-        <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
-        <button type="submit">Envoyer</button>
-      </form>
-    </section>
-  </main>
+<section id="tous-les-sacs" class="products" aria-label="Liste des produits"></section>
 
-  <!-- Modal produit -->
-  <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" aria-hidden="true">
-    <div class="modal-content" tabindex="-1">
-      <button class="close" id="closeModal" type="button" aria-label="Fermer la fenêtre produit">&times;</button>
-      <img id="modalImg" src="" alt="">
-      <h3 id="modalTitle"></h3>
-      <p id="modalDesc"></p>
-      <p class="price" id="modalPrice"></p>
-      <button id="modalAddBtn" type="button">Ajouter au panier</button>
-    </div>
-  </div>
+<section id="contact" class="contact">
+<h2>Contact</h2>
+<p>Une question, une commande spéciale ou un partenariat ? L’équipe ELLE Maroquinerie vous répond avec plaisir.</p>
+<form action="mailto:contact@ellemaroquinerie.fr" method="post" enctype="text/plain">
+<input type="text" id="name" name="name" placeholder="Votre nom" required>
+<input type="email" id="email" name="email" placeholder="Votre email" required>
+<textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+<button type="submit">Envoyer</button>
+</form>
+<div class="contact-info">
+<p><strong>Email :</strong> contact@ellemaroquinerie.fr</p>
+<p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
+<p><strong>Adresse :</strong> 25 Rue du Cuir, 75002 Paris</p>
+</div>
+</section>
 
-  <!-- Cart drawer -->
-  <aside class="cart-drawer" id="cartDrawer" role="region" aria-label="Panier" aria-hidden="true">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h3>Votre panier</h3>
-      <button id="closeCartBtn" type="button" aria-label="Fermer le panier" class="close">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
-      <div><strong>Total</strong><strong id="cartTotal">0,00 €</strong></div>
-      <div class="cart-footer-buttons">
-        <button id="checkoutBtn" type="button">Procéder au paiement</button>
-        <button id="clearCartBtn" type="button" style="background:#b23b3b;">Vider</button>
-      </div>
-    </div>
-  </aside>
-<footer>
-  <p>&copy; 2025 Elle Maroquinerie — Tous droits réservés</p>
-  <a href="admin.html" style="font-size:0.8rem; color:#b6a28b; text-decoration:none;">
-    Accès administration
-  </a>
-</footer>
+</main>
 
-  <footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
+<!-- Modale produit -->
+<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" aria-hidden="true">
+<div class="modal-content" tabindex="-1">
+  <button class="close" id="closeModal" type="button" aria-label="Fermer la fenêtre produit">&times;</button>
+  <img id="modalImg" src="" alt="">
+  <h3 id="modalTitle"></h3>
+  <p id="modalDesc"></p>
+  <p class="price" id="modalPrice"></p>
+  <button id="modalAddBtn" type="button">Ajouter au panier</button>
+</div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const products = [
-        { img:"assets/p1.jpg", title:"Sac Lydia", desc:"Réf : Elle 01<br>Long 50cm, Larg 15cm", price:"80,00 €" },
-        { img:"assets/p2.jpg", title:"Sac Salma", desc:"Réf : Elle 02<br>Long 50cm, Larg 15cm", price:"80,00 €" },
-        { img:"assets/p3.jpg", title:"Sac Eva", desc:"Réf : PF910<br>Hauteur 45cm, Long 50cm, Larg 17cm", price:"60,00 €" },
-        { img:"assets/p4.jpg", title:"Sac Anna", desc:"Réf : PF909<br>Hauteur 50cm, Long 50cm, Larg 15cm", price:"55,00 €" },
-        { img:"assets/p5.jpg", title:"Pochette Amina", desc:"Réf : PF909<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p6.jpg", title:"Sac Carla", desc:"Réf : 31<br>Hauteur 35cm, Long 35cm, Larg 17cm", price:"40,00 €" },
-        { img:"assets/p7.jpg", title:"Sac Alma", desc:"Réf : MC420<br>Hauteur 25cm, Long 30cm, Larg 8cm", price:"45,00 €" },
-        { img:"assets/p8.jpg", title:"Pochette Livia", desc:"Réf : Ml450<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p9.jpg", title:"Sac Week-end", desc:"Grand format, cuir souple, idéal escapades", price:"89,00 €" },
-        { img:"assets/p10.jpg", title:"Pochette Dora", desc:"Réf : Ml451<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p11.jpg", title:"Pochette Gemma", desc:"Réf : Ml452<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p12.jpg", title:"Sac Lydia (var)", desc:"Réf : Elle 02<br>Long 50cm, Larg 15cm", price:"80,00 €" },
-        { img:"assets/p13.jpg", title:"Pochette Mina", desc:"Réf : Ml452<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p14.jpg", title:"Pochette Enya", desc:"Réf : Ml453<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p15.jpg", title:"Pochette Sia", desc:"Réf : Ml454<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p16.jpg", title:"Pochette Vitaa", desc:"Réf : Ml455<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p17.jpg", title:"Pochette Celia", desc:"Réf : Ml456<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p18.jpg", title:"Pochette Nina", desc:"Réf : Ml457<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p19.jpg", title:"Sac Sport Chic", desc:"Style et confort", price:"68,00 €" },
-        { img:"assets/p20.jpg", title:"Pochette Dina", desc:"Réf : Ml458<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p21.jpg", title:"Pochette Mira", desc:"Réf : Ml459<br>Hauteur 17cm, Long 10cm", price:"17,50 €" },
-        { img:"assets/p22.jpg", title:"Sac Joy", desc:"Réf : PF908<br>Hauteur 35cm, Long 42cm", price:"65,00 €" },
-        { img:"assets/p23.jpg", title:"Sac Liana", desc:"Réf : PF909<br>Hauteur 35cm, Long 42cm", price:"65,00 €" },
-        { img:"assets/p24.jpg", title:"Sac Luxe", desc:"Pièce d’exception", price:"120,00 €" }
-      ];
+<!-- Cart drawer -->
+<aside class="cart-drawer" id="cartDrawer" role="region" aria-label="Panier" aria-hidden="true">
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h3>Votre panier</h3>
+  <button id="closeCartBtn" type="button" aria-label="Fermer le panier" class="close">&times;</button>
+</div>
+<div class="cart-items" id="cartItems"></div>
+<div class="cart-footer" id="cartFooter">
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <strong>Total</strong>
+  <strong id="cartTotal">0,00 €</strong>
+</div>
+<div style="margin-top:10px;display:flex;gap:8px;">
+  <button id="checkoutBtn" type="button">Procéder au paiement</button>
+  <button id="clearCartBtn" type="button" style="background:#b23b3b;">Vider</button>
+</div>
+</div>
+</aside>
 
-      const productsSection = document.getElementById('tous-les-sacs');
-      const modal = document.getElementById('productModal');
-      const modalContent = modal.querySelector('.modal-content');
-      const modalImg = document.getElementById('modalImg');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalDesc = document.getElementById('modalDesc');
-      const modalPrice = document.getElementById('modalPrice');
-      const modalAddBtn = document.getElementById('modalAddBtn');
-      const closeModalBtn = document.getElementById('closeModal');
-      const cartDrawer = document.getElementById('cartDrawer');
-      const cartItemsEl = document.getElementById('cartItems');
-      const cartTotalEl = document.getElementById('cartTotal');
-      const cartToggle = document.getElementById('cartToggle');
-      const closeCartBtn = document.getElementById('closeCartBtn');
-      const clearCartBtn = document.getElementById('clearCartBtn');
-      const checkoutBtn = document.getElementById('checkoutBtn');
-      const STORAGE_KEY = 'elle_cart_v1';
-      let cart = [];
+<footer>© 2025 ELLE Maroquinerie — Démo. Paiement non connecté.</footer>
 
-      function loadCart(){try{cart=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){cart=[];}}
-      function saveCart(){localStorage.setItem(STORAGE_KEY,JSON.stringify(cart));}
-      function parsePrice(str){return parseFloat(str.replace(/[^\d,.-]/g,'').replace(',','.'))||0;}
-      function getCartCount(){return cart.reduce((s,it)=>s+it.qty,0);}
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+const products=[
+{img:"assets/p1.jpg",title:"Sac Lydia",desc:"Référence : Elle 01<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).",price:"80,00 €"},
+{img:"assets/p2.jpg",title:"Sac Salma",desc:"Référence : Elle 02<br>Dimensions : Longueur 50 cm, largeur 15 cm (pliable).",price:"80,00 €"},
+{img:"assets/p3.jpg",title:"Sac Eva",desc:"Référence : PF910<br>Dimensions : Hauteur 45 cm, Longueur 50 cm, Largeur 17 cm.",price:"60,00 €"},
+{img:"assets/p4.jpg",title:"Sac Anna",desc:"Référence : PF909<br>Dimensions : Hauteur 50 cm, Longueur 50 cm, Largeur 15 cm (pliable).",price:"55,00 €"},
+{img:"assets/p5.jpg",title:"Pochette Amina",desc:"Référence : PF909<br>Dimensions : Hauteur 17 cm, Longueur 10 cm.",price:"17,50 €"},
+{img:"assets/p6.jpg",title:"Sac Carla",desc:"Référence : 31<br>Dimensions : Hauteur 35 cm, Longueur 35 cm, Largeur 17 cm.",price:"40,00 €"},
+{img:"assets/p7.jpg",title:"Sac Alma",desc:"Référence : MC420<br>Hauteur 25 cm, Longueur 30 cm, Largeur 8 cm.",price:"45,00 €"},
+{img:"assets/p8.jpg",title:"Pochette Livia",desc:"Référence : Ml450<br>Hauteur 17 cm, Longueur 10 cm.",price:"17,50 €"},
+{img:"assets/p9.jpg",title:"Sac Week-end",desc:"Grand format, cuir souple, idéal pour escapades.",price:"89,00 €"},
+{img:"assets/p10.jpg",title:"Pochette Dora",desc:"Référence : Ml451<br>Hauteur 17 cm, Longueur 10 cm.",price:"17,50 €"},
+{img:"assets/p11.jpg",title:"Pochette Gemma",desc:"Référence : Ml452<br>Hauteur 17 cm, Longueur 10 cm.",price:"17,50 €"},
+{img:"assets/p12.jpg",title:"Sac Bella",desc:"Référence : PF911<br>Hauteur 40 cm, Longueur 45 cm, Largeur 15 cm.",price:"60,00 €"},
+{img:"assets/p13.jpg",title:"Sac Clara",desc:"Référence : PF912<br>Hauteur 42 cm, Longueur 48 cm, Largeur 16 cm.",price:"65,00 €"},
+{img:"assets/p14.jpg","title":"Sac Mona","desc":"Référence : PF913<br>Hauteur 43 cm, Longueur 49 cm, Largeur 16 cm.","price":"70,00 €"},
+{img:"assets/p15.jpg","title":"Sac Nina","desc":"Référence : PF914<br>Hauteur 44 cm, Longueur 50 cm, Largeur 17 cm.","price":"72,00 €"},
+{img:"assets/p16.jpg","title":"Sac Olivia","desc":"Référence : PF915<br>Hauteur 45 cm, Longueur 51 cm, Largeur 17 cm.","price":"75,00 €"},
+{img:"assets/p17.jpg","title":"Sac Pia","desc":"Référence : PF916<br>Hauteur 46 cm, Longueur 52 cm, Largeur 17 cm.","price":"78,00 €"},
+{img:"assets/p18.jpg","title":"Sac Rita","desc":"Référence : PF917<br>Hauteur 47 cm, Longueur 53 cm, Largeur 18 cm.","price":"80,00 €"},
+{img:"assets/p19.jpg","title":"Sac Sara","desc":"Référence : PF918<br>Hauteur 48 cm, Longueur 54 cm, Largeur 18 cm.","price":"82,00 €"},
+{img:"assets/p20.jpg","title":"Sac Tina","desc":"Référence : PF919<br>Hauteur 49 cm, Longueur 55 cm, Largeur 18 cm.","price":"85,00 €"},
+{img:"assets/p21.jpg","title":"Sac Uma","desc":"Référence : PF920<br>Hauteur 50 cm, Longueur 56 cm, Largeur 18 cm.","price":"88,00 €"},
+{img:"assets/p22.jpg","title":"Sac Véra","desc":"Référence : PF921<br>Hauteur 51 cm, Longueur 57 cm, Largeur 19 cm.","price":"90,00 €"},
+{img:"assets/p23.jpg","title":"Sac Wendy","desc":"Référence : PF922<br>Hauteur 52 cm, Longueur 58 cm, Largeur 19 cm.","price":"92,00 €"},
+{img:"assets/p24.jpg","title":"Sac Xena","desc":"Référence : PF923<br>Hauteur 53 cm, Longueur 59 cm, Largeur 19 cm.","price":"95,00 €"}
+];
 
-      function renderProducts(){
-        productsSection.innerHTML = products.map((p,i)=>`
-          <div class="card" data-index="${i}" role="article" aria-label="${p.title}">
-            <img loading="lazy" src="${p.img}" alt="${p.title}">
-            <h3>${p.title}</h3>
-            <p>${p.desc.replace(/<br\s*\/?>/gi,' ')}</p>
-            <p class="price">${p.price}</p>
-            <button type="button" class="add-btn">Ajouter</button>
-          </div>
-        `).join('');
-      }
+const sacContainer=document.getElementById('tous-les-sacs');
+const modal=document.getElementById('productModal');
+const modalImg=document.getElementById('modalImg');
+const modalTitle=document.getElementById('modalTitle');
+const modalDesc=document.getElementById('modalDesc');
+const modalPrice=document.getElementById('modalPrice');
+const modalAddBtn=document.getElementById('modalAddBtn');
+const closeModalBtn=document.getElementById('closeModal');
 
-      function renderCart(){
-        if(!cart.length){cartItemsEl.innerHTML='<div>Votre panier est vide.</div>'; cartTotalEl.textContent='0,00 €'; cartToggle.textContent=`👜 Panier (0)`; return;}
-        cartItemsEl.innerHTML = cart.map(item=>{
-          const subtotal=item.price*item.qty;
-          return `<div class="cart-item" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.title}" loading="lazy">
-            <div class="meta">
-              <h4>${item.title}</h4>
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div class="qty-controls" data-id="${item.id}">
-                  <button type="button" class="dec-btn">−</button>
-                  <span class="qty">${item.qty}</span>
-                  <button type="button" class="inc-btn">+</button>
-                </div>
-                <div style="text-align:right;">
-                  <div>${priceFormatter(item.price)}</div>
-                  <div style="font-weight:bold;">${priceFormatter(subtotal)}</div>
-                </div>
-              </div>
-            </div>
-          </div>`;
-        }).join('');
-        const total=cart.reduce((s,it)=>s+it.price*it.qty,0);
-        cartTotalEl.textContent=priceFormatter(total);
-        cartToggle.textContent=`👜 Panier (${getCartCount()})`;
-      }
+const cartToggle=document.getElementById('cartToggle');
+const cartDrawer=document.getElementById('cartDrawer');
+const closeCartBtn=document.getElementById('closeCartBtn');
+const cartItemsContainer=document.getElementById('cartItems');
+const cartTotal=document.getElementById('cartTotal');
+const checkoutBtn=document.getElementById('checkoutBtn');
+const clearCartBtn=document.getElementById('clearCartBtn');
 
-      function addToCartFromProductIndex(idx,qty=1){
-        const p=products[idx];
-        if(!p) return;
-        const id=idx;
-        const price=parsePrice(p.price);
-        const existing=cart.find(item=>item.id===id);
-        if(existing) existing.qty+=qty;
-        else cart.push({id,title:p.title,price,img:p.img,qty});
-        saveCart();
-        renderCart();
-      }
+let cart=[];
 
-      function priceFormatter(v){return v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+// --- Render produits ---
+function renderProducts(){
+  sacContainer.innerHTML='';
+  products.forEach((p,i)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    div.tabIndex=0;
+    div.innerHTML=`<img src="${p.img}" alt="${p.title}"><h3>${p.title}</h3><p>${p.desc}</p><p class="price">${p.price}</p>`;
+    div.addEventListener('click',()=>openModal(i));
+    sacContainer.appendChild(div);
+  });
+}
 
-      // Render
-      renderProducts();
-      loadCart();
-      renderCart();
+// --- Modal ---
+let selectedIndex=null;
+function openModal(i){
+  selectedIndex=i;
+  modalImg.src=products[i].img;
+  modalTitle.textContent=products[i].title;
+  modalDesc.innerHTML=products[i].desc;
+  modalPrice.textContent=products[i].price;
+  modal.setAttribute('aria-hidden','false');
+}
+function closeModal(){modal.setAttribute('aria-hidden','true');}
+closeModalBtn.addEventListener('click',closeModal);
 
-      // Event: ouvrir modal
-      productsSection.addEventListener('click',e=>{
-        const card=e.target.closest('.card');
-        if(!card) return;
-        const idx=parseInt(card.dataset.index);
-        const p=products[idx];
-        if(!p) return;
-        modalImg.src=p.img; modalImg.alt=p.title;
-        modalTitle.textContent=p.title;
-        modalDesc.innerHTML=p.desc;
-        modalPrice.textContent=p.price;
-        modalAddBtn.onclick=()=>{addToCartFromProductIndex(idx); modal.setAttribute('aria-hidden','true');};
-        modal.setAttribute('aria-hidden','false');
-      });
+// --- Cart ---
+function updateCart(){
+  cartItemsContainer.innerHTML='';
+  let total=0;
+  cart.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`<img src="${item.img}" alt="${item.title}">
+    <div class="meta"><div>${item.title}</div><div>${item.price}</div></div>`;
+    cartItemsContainer.appendChild(div);
+    total+=parseFloat(item.price.replace(',','.').replace(/[^\d\.]/g,''));
+  });
+  cartTotal.textContent=total.toFixed(2).replace('.',',')+' €';
+  cartToggle.textContent=`👜 Panier (${cart.length})`;
+}
 
-      closeModalBtn.addEventListener('click',()=>modal.setAttribute('aria-hidden','true'));
-      modal.addEventListener('click',e=>{if(e.target===modal) modal.setAttribute('aria-hidden','true');});
+modalAddBtn.addEventListener('click',()=>{
+  if(selectedIndex!==null){cart.push(products[selectedIndex]); updateCart(); closeModal();}
+});
 
-      // Cart toggle
-      cartToggle.addEventListener('click',()=>{
-        const hidden=cartDrawer.getAttribute('aria-hidden')==='true';
-        cartDrawer.setAttribute('aria-hidden',!hidden);
-      });
-      closeCartBtn.addEventListener('click',()=>cartDrawer.setAttribute('aria-hidden','true'));
+// --- Cart drawer ---
+cartToggle.addEventListener('click',()=>{cartDrawer.setAttribute('aria-hidden','false');});
+closeCartBtn.addEventListener('click',()=>{cartDrawer.setAttribute('aria-hidden','true');});
+clearCartBtn.addEventListener('click',()=>{cart=[];updateCart();});
+checkoutBtn.addEventListener('click',()=>{window.location.href='cart.html';});
 
-      // Cart actions
-      cartItemsEl.addEventListener('click',e=>{
-        const id=parseInt(e.target.closest('.qty-controls')?.dataset.id);
-        if(id==null) return;
-        const item=cart.find(it=>it.id===id); if(!item) return;
-        if(e.target.classList.contains('inc-btn')) item.qty++;
-        if(e.target.classList.contains('dec-btn')) item.qty=item.qty>1?item.qty-1:1;
-        saveCart(); renderCart();
-      });
+// --- Init ---
+renderProducts();
+updateCart();
+});
+</script>
 
-      clearCartBtn.addEventListener('click',()=>{cart=[];saveCart();renderCart();});
-      checkoutBtn.addEventListener('click',()=>{window.location.href='cart.html';});
-    });
-  </script>
 </body>
 </html>
