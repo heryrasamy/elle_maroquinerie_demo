@@ -3,104 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Gestion des sacs</title>
+<title>Admin — ELLE Maroquinerie</title>
 <style>
-body{font-family:Georgia,serif;background:#f6f1eb;margin:0;color:#3e2f1c;padding:20px;}
-h1{text-align:center;margin-bottom:20px;}
-#sacList{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
-.sac-card{border:1px solid #ddd;border-radius:6px;padding:8px;width:120px;text-align:center;background:#fff;position:relative;}
-.sac-card img{width:100%;height:80px;object-fit:cover;border-radius:4px;margin-bottom:4px;}
-.sac-card button{position:absolute;top:4px;right:4px;background:#b23b3b;color:white;border:none;border-radius:4px;padding:2px 6px;font-size:0.8rem;cursor:pointer;}
-form{display:flex;flex-direction:column;gap:10px;background:#fff;padding:15px;border-radius:8px;border:1px solid #ddd;}
-form input, form textarea{padding:8px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;width:100%;}
-form button{background:#8b5e34;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;}
-form button:hover{background:#a66d40;}
-#preview{border:1px solid #ccc;padding:10px;margin-top:10px;border-radius:6px;text-align:center;background:#fafafa;}
-#preview img{width:100px;height:100px;object-fit:cover;border-radius:4px;margin-bottom:4px;}
-#message{margin:10px 0;color:green;font-weight:bold;text-align:center;}
-#backBtn{margin-bottom:15px;background:#6a5d4b;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;}
-@media(max-width:600px){#sacList{justify-content:center;}}
+  body{font-family:Georgia,serif;margin:0;background:#f6f1eb;color:#3e2f1c;}
+  header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
+  header img{height:40px;}
+  main{padding:20px; max-width:800px;margin:0 auto;}
+  h2{margin-bottom:15px;}
+  #loginSection,#adminSection{background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+  input,textarea{width:100%;padding:8px;margin:5px 0;border:1px solid #ccc;border-radius:6px;font-family:inherit;}
+  button{background:#8b5e34;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;margin-top:5px;}
+  button:hover{background:#a66d40;}
+  .sac-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;}
+  .sac-card{border:1px solid #ddd;border-radius:6px;padding:8px;width:calc(50% - 10px);display:flex;flex-direction:column;align-items:center;background:#fdf8f2;}
+  .sac-card img{width:100%;height:120px;object-fit:contain;margin-bottom:5px;border:1px solid #ccc;border-radius:4px;}
+  .sac-card button{background:#b23b3b;margin-top:5px;}
+  .sac-card button:hover{background:#d04a4a;}
+  .message{padding:8px;margin-top:10px;border-radius:6px;background:#d4edda;color:#155724;display:none;}
+  @media(max-width:600px){.sac-card{width:100%;}}
 </style>
 </head>
 <body>
 
-<h1>Admin — Gestion des sacs</h1>
-<button id="backBtn">← Retour à l’accueil</button>
-<div id="message"></div>
+<header>
+  <img src="assets/Logo.png" alt="ELLE Maroquinerie">
+  <h1>Admin</h1>
+</header>
 
-<h2>Liste des sacs</h2>
-<div id="sacList"></div>
+<main>
+  <div id="loginSection">
+    <h2>Connexion Admin</h2>
+    <input type="password" id="adminPassword" placeholder="Mot de passe">
+    <button id="loginBtn">Se connecter</button>
+    <p id="loginError" style="color:red;display:none;">Mot de passe incorrect</p>
+  </div>
 
-<h2>Ajouter un nouveau sac</h2>
-<form id="addSacForm">
-  <input type="text" id="title" placeholder="Titre du sac" required>
-  <input type="text" id="price" placeholder="Prix (ex: 45,00 €)" required>
-  <textarea id="desc" placeholder="Description" rows="3" required></textarea>
-  <input type="file" id="img" accept="image/*" required>
-  <button type="submit">Ajouter le sac</button>
-</form>
+  <div id="adminSection" style="display:none;">
+    <h2>Gestion des sacs</h2>
+    <div class="message" id="adminMessage">Action réussie !</div>
 
-<div id="preview"></div>
+    <h3>Ajouter un sac</h3>
+    <input type="text" id="sacTitle" placeholder="Titre du sac">
+    <textarea id="sacDesc" placeholder="Description"></textarea>
+    <input type="text" id="sacPrice" placeholder="Prix (€)">
+    <input type="file" id="sacImg" accept="image/*">
+    <button id="addSacBtn">Ajouter le sac</button>
+
+    <h3>Liste des sacs</h3>
+    <div class="sac-list" id="sacList"></div>
+  </div>
+</main>
 
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
-  const STORAGE_KEY='elle_products_v1';
-  const sacList=document.getElementById('sacList');
-  const addForm=document.getElementById('addSacForm');
-  const message=document.getElementById('message');
-  const preview=document.getElementById('preview');
-  const backBtn=document.getElementById('backBtn');
+  const loginSection=document.getElementById('loginSection');
+  const adminSection=document.getElementById('adminSection');
+  const loginBtn=document.getElementById('loginBtn');
+  const loginError=document.getElementById('loginError');
+  const adminMessage=document.getElementById('adminMessage');
 
-  let products=[];
-  function loadProducts(){try{const raw=localStorage.getItem(STORAGE_KEY);products=raw?JSON.parse(raw):[];}catch(e){products=[];}}
-  function saveProducts(){localStorage.setItem(STORAGE_KEY,JSON.stringify(products));}
+  const sacListEl=document.getElementById('sacList');
+  const addBtn=document.getElementById('addSacBtn');
+  const sacTitle=document.getElementById('sacTitle');
+  const sacDesc=document.getElementById('sacDesc');
+  const sacPrice=document.getElementById('sacPrice');
+  const sacImg=document.getElementById('sacImg');
 
-  function renderProducts(){
-    sacList.innerHTML=products.map((p,i)=>`
-      <div class="sac-card" data-id="${i}">
-        <img src="${p.img}" alt="${p.title}">
-        <div>${p.title}</div>
-        <button class="delBtn">×</button>
-      </div>
-    `).join('');
+  let sacs=JSON.parse(localStorage.getItem('products'))||[];
+
+  function showMessage(msg){
+    adminMessage.textContent=msg;
+    adminMessage.style.display='block';
+    setTimeout(()=>{adminMessage.style.display='none';},2000);
   }
 
-  function showMessage(txt){message.textContent=txt; setTimeout(()=>{message.textContent='';},2000);}
+  function renderSacs(){
+    sacListEl.innerHTML='';
+    sacs.forEach((s,i)=>{
+      const div=document.createElement('div'); div.className='sac-card';
+      const imgSrc=s.img||'';
+      div.innerHTML=`<img src="${imgSrc}" alt="${s.title}">
+        <strong>${s.title}</strong>
+        <div>${s.desc}</div>
+        <div>${s.price}</div>
+        <button data-index="${i}">Supprimer</button>`;
+      sacListEl.appendChild(div);
+      div.querySelector('button').addEventListener('click',()=>{
+        sacs.splice(i,1);
+        localStorage.setItem('products',JSON.stringify(sacs));
+        renderSacs();
+        showMessage('Sac supprimé');
+      });
+    });
+  }
 
-  sacList.addEventListener('click',e=>{
-    if(e.target.classList.contains('delBtn')){
-      const id=parseInt(e.target.closest('.sac-card').dataset.id,10);
-      products.splice(id,1);
-      saveProducts(); renderProducts(); showMessage('Sac supprimé !');
-    }
+  loginBtn.addEventListener('click',()=>{
+    const pwd=document.getElementById('adminPassword').value;
+    if(pwd==='Anthony31'){
+      loginSection.style.display='none';
+      adminSection.style.display='block';
+      renderSacs();
+    }else loginError.style.display='block';
   });
 
-  addForm.addEventListener('submit',e=>{
-    e.preventDefault();
-    const title=document.getElementById('title').value;
-    const price=document.getElementById('price').value;
-    const desc=document.getElementById('desc').value;
-    const imgFile=document.getElementById('img').files[0];
-    if(!imgFile)return;
+  addBtn.addEventListener('click',()=>{
+    const title=sacTitle.value.trim();
+    const desc=sacDesc.value.trim();
+    const price=sacPrice.value.trim();
+    const file=sacImg.files[0];
+    if(!title||!desc||!price||!file){ alert('Tous les champs sont requis'); return; }
     const reader=new FileReader();
-    reader.onload=()=>{ 
-      products.push({title,price,desc,img:reader.result});
-      saveProducts(); renderProducts(); showMessage('Sac ajouté !'); addForm.reset(); preview.innerHTML=''; 
+    reader.onload=function(e){
+      sacs.push({title,desc,price,img:e.target.result});
+      localStorage.setItem('products',JSON.stringify(sacs));
+      renderSacs();
+      showMessage('Sac ajouté');
+      sacTitle.value=''; sacDesc.value=''; sacPrice.value=''; sacImg.value='';
     };
-    reader.readAsDataURL(imgFile);
-  });
-
-  document.getElementById('img').addEventListener('change',e=>{
-    const file=e.target.files[0]; if(!file)return;
-    const reader=new FileReader();
-    reader.onload=()=>{ preview.innerHTML=`<img src="${reader.result}" alt="Preview"><div>${document.getElementById('title').value}</div>`; };
     reader.readAsDataURL(file);
   });
-
-  backBtn.addEventListener('click',()=>{window.location.href='index.html';});
-
-  loadProducts(); renderProducts();
 });
 </script>
+
 </body>
 </html>
