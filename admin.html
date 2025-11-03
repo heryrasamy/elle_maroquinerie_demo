@@ -1,129 +1,207 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Admin — ELLE Maroquinerie</title>
 <style>
-  body{font-family:Georgia,serif;margin:0;background:#f6f1eb;color:#3e2f1c;}
-  header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
-  header img{height:40px;}
-  main{padding:20px; max-width:800px;margin:0 auto;}
-  h2{margin-bottom:15px;}
-  #loginSection,#adminSection{background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-  input,textarea{width:100%;padding:8px;margin:5px 0;border:1px solid #ccc;border-radius:6px;font-family:inherit;}
-  button{background:#8b5e34;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;margin-top:5px;}
-  button:hover{background:#a66d40;}
-  .sac-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;}
-  .sac-card{border:1px solid #ddd;border-radius:6px;padding:8px;width:calc(50% - 10px);display:flex;flex-direction:column;align-items:center;background:#fdf8f2;}
-  .sac-card img{width:100%;height:120px;object-fit:contain;margin-bottom:5px;border:1px solid #ccc;border-radius:4px;}
-  .sac-card button{background:#b23b3b;margin-top:5px;}
-  .sac-card button:hover{background:#d04a4a;}
-  .message{padding:8px;margin-top:10px;border-radius:6px;background:#d4edda;color:#155724;display:none;}
-  @media(max-width:600px){.sac-card{width:100%;}}
+  :root{--bg:#f6f1eb;--text:#3e2f1c;--accent:#8b5e34;--danger:#b23b3b}
+  *{box-sizing:border-box}
+  body{font-family:Georgia,serif;background:var(--bg);color:var(--text);margin:0}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+  header .brand{display:flex;align-items:center;gap:12px}
+  header img{height:56px}
+  main{padding:18px;max-width:980px;margin:0 auto}
+  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .login{max-width:420px;margin:0 auto}
+  input,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;margin-top:8px;font-family:inherit}
+  button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer;margin-top:10px}
+  button.danger{background:var(--danger)}
+  .sac-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+  .sac-card{width:calc(33.333% - 8px);background:#fff;border:1px solid #eee;border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:center}
+  .sac-card img{width:100%;height:120px;object-fit:cover;border-radius:6px}
+  .msg{background:#d4edda;color:#155724;padding:8px;border-radius:6px;display:none;margin-top:10px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .top-actions{display:flex;gap:10px;align-items:center}
+  @media(max-width:900px){.sac-card{width:calc(50% - 8px)}}
+  @media(max-width:520px){header img{height:44px}.sac-card{width:100%}}
 </style>
 </head>
 <body>
-
 <header>
-  <img src="assets/Logo.png" alt="ELLE Maroquinerie">
-  <h1>Admin</h1>
+  <div class="brand">
+    <img src="assets/Logo.png" alt="ELLE Maroquinerie">
+    <div>
+      <strong>Admin — ELLE MAROQUINERIE</strong>
+    </div>
+  </div>
+  <div>
+    <a href="index.html" style="text-decoration:none;color:var(--text);margin-right:10px">🏠 Retour à l’accueil</a>
+  </div>
 </header>
 
 <main>
-  <div id="loginSection">
+  <div class="card login" id="loginCard">
     <h2>Connexion Admin</h2>
-    <input type="password" id="adminPassword" placeholder="Mot de passe">
-    <button id="loginBtn">Se connecter</button>
-    <p id="loginError" style="color:red;display:none;">Mot de passe incorrect</p>
+    <input id="pwd" type="password" placeholder="Mot de passe">
+    <div class="controls">
+      <button id="loginBtn">Se connecter</button>
+    </div>
+    <p id="err" style="color:#b23b3b;display:none;margin-top:8px">Mot de passe incorrect</p>
   </div>
 
-  <div id="adminSection" style="display:none;">
-    <h2>Gestion des sacs</h2>
-    <div class="message" id="adminMessage">Action réussie !</div>
+  <div id="adminArea" style="display:none;margin-top:16px">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+        <h2>Gestion des sacs</h2>
+        <div class="top-actions">
+          <button id="refreshList">🔁 Recharger</button>
+          <a href="index.html" style="text-decoration:none"><button style="background:#555">Retour boutique</button></a>
+        </div>
+      </div>
 
-    <h3>Ajouter un sac</h3>
-    <input type="text" id="sacTitle" placeholder="Titre du sac">
-    <textarea id="sacDesc" placeholder="Description"></textarea>
-    <input type="text" id="sacPrice" placeholder="Prix (€)">
-    <input type="file" id="sacImg" accept="image/*">
-    <button id="addSacBtn">Ajouter le sac</button>
+      <div style="margin-top:10px">
+        <strong>Ajouter un sac</strong>
+        <input id="title" placeholder="Titre">
+        <textarea id="desc" rows="3" placeholder="Description"></textarea>
+        <input id="price" placeholder="Prix (ex: 45.50)">
+        <input id="imgFile" type="file" accept="image/*">
+        <div style="margin-top:8px">
+          <button id="addBtn">➕ Ajouter le sac</button>
+        </div>
+        <div id="preview" style="margin-top:8px"></div>
+        <div class="msg" id="message">Modification réussie ✅</div>
+      </div>
 
-    <h3>Liste des sacs</h3>
-    <div class="sac-list" id="sacList"></div>
+      <hr style="margin:14px 0">
+
+      <strong>Liste des sacs</strong>
+      <div class="sac-list" id="sacList" aria-live="polite" style="margin-top:10px"></div>
+    </div>
   </div>
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const loginSection=document.getElementById('loginSection');
-  const adminSection=document.getElementById('adminSection');
-  const loginBtn=document.getElementById('loginBtn');
-  const loginError=document.getElementById('loginError');
-  const adminMessage=document.getElementById('adminMessage');
+document.addEventListener('DOMContentLoaded', ()=>{
+  const LS_PRODUCTS = 'products';
+  const ADMIN_PWD = 'Anthony31';
 
-  const sacListEl=document.getElementById('sacList');
-  const addBtn=document.getElementById('addSacBtn');
-  const sacTitle=document.getElementById('sacTitle');
-  const sacDesc=document.getElementById('sacDesc');
-  const sacPrice=document.getElementById('sacPrice');
-  const sacImg=document.getElementById('sacImg');
+  const loginCard = document.getElementById('loginCard');
+  const loginBtn = document.getElementById('loginBtn');
+  const pwdInput = document.getElementById('pwd');
+  const err = document.getElementById('err');
 
-  let sacs=JSON.parse(localStorage.getItem('products'))||[];
+  const adminArea = document.getElementById('adminArea');
+  const sacList = document.getElementById('sacList');
+  const addBtn = document.getElementById('addBtn');
+  const titleInput = document.getElementById('title');
+  const descInput = document.getElementById('desc');
+  const priceInput = document.getElementById('price');
+  const imgFile = document.getElementById('imgFile');
+  const preview = document.getElementById('preview');
+  const message = document.getElementById('message');
+  const refreshListBtn = document.getElementById('refreshList');
 
-  function showMessage(msg){
-    adminMessage.textContent=msg;
-    adminMessage.style.display='block';
-    setTimeout(()=>{adminMessage.style.display='none';},2000);
+  function showMsg(txt='Modification réussie ✅'){
+    message.textContent = txt; message.style.display = 'block';
+    setTimeout(()=>{ message.style.display = 'none'; },1800);
   }
 
-  function renderSacs(){
-    sacListEl.innerHTML='';
-    sacs.forEach((s,i)=>{
-      const div=document.createElement('div'); div.className='sac-card';
-      const imgSrc=s.img||'';
-      div.innerHTML=`<img src="${imgSrc}" alt="${s.title}">
-        <strong>${s.title}</strong>
-        <div>${s.desc}</div>
-        <div>${s.price}</div>
-        <button data-index="${i}">Supprimer</button>`;
-      sacListEl.appendChild(div);
-      div.querySelector('button').addEventListener('click',()=>{
-        sacs.splice(i,1);
-        localStorage.setItem('products',JSON.stringify(sacs));
-        renderSacs();
-        showMessage('Sac supprimé');
+  function loadProducts(){
+    try{ return JSON.parse(localStorage.getItem(LS_PRODUCTS)) || []; }
+    catch(e){ return []; }
+  }
+  function saveProducts(products){ localStorage.setItem(LS_PRODUCTS, JSON.stringify(products)); }
+
+  function renderList(){
+    const products = loadProducts();
+    sacList.innerHTML = '';
+    if(products.length === 0){
+      sacList.innerHTML = '<div style="color:#666">Aucun produit (les produits par défaut sont utilisés sur la boutique)</div>';
+      return;
+    }
+    products.forEach((p, idx)=>{
+      const card = document.createElement('div');
+      card.className = 'sac-card';
+      card.innerHTML = `
+        <img src="${p.img}" alt="${p.title}">
+        <strong style="margin-top:6px">${p.title}</strong>
+        <div style="margin-top:6px">${p.desc}</div>
+        <div style="margin-top:6px;font-weight:700">${p.price} €</div>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button class="del" data-idx="${idx}" style="background:${'#b23b3b'};color:#fff;border:none;padding:6px;border-radius:6px;cursor:pointer">Supprimer</button>
+        </div>
+      `;
+      sacList.appendChild(card);
+
+      card.querySelector('.del').addEventListener('click', ()=> {
+        const i = Number(card.querySelector('.del').dataset.idx);
+        if(confirm('Voulez-vous vraiment supprimer ce sac ?')) {
+          products.splice(i,1);
+          saveProducts(products);
+          renderList();
+          showMsg('Sac supprimé avec succès ✅');
+        }
       });
     });
   }
 
-  loginBtn.addEventListener('click',()=>{
-    const pwd=document.getElementById('adminPassword').value;
-    if(pwd==='Anthony31'){
-      loginSection.style.display='none';
-      adminSection.style.display='block';
-      renderSacs();
-    }else loginError.style.display='block';
+  // preview image on file select
+  imgFile.addEventListener('change', (e)=>{
+    const f = e.target.files[0];
+    if(!f) { preview.innerHTML=''; return; }
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      preview.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><img src="${ev.target.result}" style="width:90px;height:70px;object-fit:cover;border-radius:6px;border:1px solid #ccc"><div>${f.name}</div></div>`;
+    }
+    reader.readAsDataURL(f);
   });
 
-  addBtn.addEventListener('click',()=>{
-    const title=sacTitle.value.trim();
-    const desc=sacDesc.value.trim();
-    const price=sacPrice.value.trim();
-    const file=sacImg.files[0];
-    if(!title||!desc||!price||!file){ alert('Tous les champs sont requis'); return; }
-    const reader=new FileReader();
-    reader.onload=function(e){
-      sacs.push({title,desc,price,img:e.target.result});
-      localStorage.setItem('products',JSON.stringify(sacs));
-      renderSacs();
-      showMessage('Sac ajouté');
-      sacTitle.value=''; sacDesc.value=''; sacPrice.value=''; sacImg.value='';
-    };
+  // add product
+  addBtn.addEventListener('click', ()=>{
+    const title = titleInput.value.trim();
+    const desc = descInput.value.trim();
+    const price = priceInput.value.trim();
+    const file = imgFile.files[0];
+
+    if(!title || !desc || !price){
+      alert('Veuillez remplir titre, description et prix.');
+      return;
+    }
+    if(!file){
+      alert('Veuillez sélectionner une image.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      const products = loadProducts();
+      products.push({title, desc, price: price, img: ev.target.result});
+      saveProducts(products);
+      titleInput.value=''; descInput.value=''; priceInput.value=''; imgFile.value='';
+      preview.innerHTML='';
+      renderList();
+      showMsg('Sac ajouté ✅');
+    }
     reader.readAsDataURL(file);
   });
+
+  refreshListBtn.addEventListener('click', renderList);
+
+  // login
+  loginBtn.addEventListener('click', ()=>{
+    const pwd = pwdInput.value;
+    if(pwd === ADMIN_PWD){
+      loginCard.style.display = 'none';
+      adminArea.style.display = 'block';
+      renderList();
+    } else {
+      err.style.display = 'block';
+      setTimeout(()=>{ err.style.display='none'; },1800);
+    }
+  });
+
 });
 </script>
-
 </body>
 </html>
